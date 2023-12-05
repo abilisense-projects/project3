@@ -7,13 +7,15 @@ const audioRecorderPlayer = new AudioRecorderPlayer();
 const Recorder = () => {
   const [isRecording, setIsRecording] = useState(false);
 
-//   useEffect(() => {
-//     return () => {
-//       audioRecorderPlayer.stopPlayer();
-//       audioRecorderPlayer.stopRecorder();
-//       audioRecorderPlayer.removePlayBackListener();
-//     };
-//   }, []);
+  useEffect(() => {
+    return () => {
+      // audioRecorderPlayer.stopPlayer();
+      // audioRecorderPlayer.stopRecorder();
+      // audioRecorderPlayer.removePlayBackListener();
+     
+    };
+    
+  }, []);
 
   const startRecording = async () => {
     if (!isRecording) {
