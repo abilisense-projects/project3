@@ -1,37 +1,50 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, Text, StyleSheet, Button } from 'react-native';
 import { Audio } from 'expo-av';
+import backendService from '../../services/backend_service';
 
-export default function App() {
+export default function RecordAudio() {
   const [recording, setRecording] = useState(null);
   const [isRecording, setIsRecording] = useState(false);
 
- 
-    const startRecording = async () => {
-      try {
-        console.log('Recording started');
-        const recording = new Audio.Recording();
-        await recording.prepareToRecordAsync(Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY);
-        await recording.startAsync();
-        setRecording(recording);
-        setIsRecording(true);
-      } catch (error) {
-        console.error('Failed to start recording', error);
-      }
-    };
 
-    const stopRecording = async () => {
-      if (!recording) return;
+  const startRecording = async () => {
+    try {
+      console.log('Recording started');
+      const recording = new Audio.Recording();
+      await recording.prepareToRecordAsync(Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY);
+      await recording.startAsync();
+      setRecording(recording);
+      setIsRecording(true);
+    } catch (error) {
+      console.error('Failed to start recording', error);
+    }
+  };
 
-      try {
-        console.log('Recording stopped');
-        await recording.stopAndUnloadAsync();
-        setIsRecording(false);
-      } catch (error) {
-        console.error('Failed to stop recording', error);
-      }
-    };
+  const stopRecording = async () => {
+    if (!recording) return;
 
+    try {
+      console.log('Recording stopped');
+      await recording.stopAndUnloadAsync();
+      setIsRecording(false);
+    } catch (error) {
+      console.error('Failed to stop recording', error);
+    }
+
+  };
+
+  // This is a function for the development!!!
+  const playRecording = async () => {
+
+    const soundObject = new Audio.Sound();
+
+    const source = recording.getURI()
+
+    await soundObject.loadAsync({ uri: source });
+    await soundObject.playAsync();
+  };
+  //************************************* */
 
   const handleButtonPress = () => {
     if (isRecording) {
@@ -40,6 +53,7 @@ export default function App() {
       startRecording();
     }
   };
+
 
   const buttonColor = isRecording ? 'green' : 'red';
 
@@ -53,7 +67,7 @@ export default function App() {
           {isRecording ? 'Stop Recording' : 'Start Recording'}
         </Text>
       </TouchableOpacity>
-    </View>
+         </View>
   );
 }
 
