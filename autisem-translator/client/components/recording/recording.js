@@ -1,69 +1,76 @@
-import React, { useState, useEffect } from 'react';
-import { View, TouchableOpacity, Text } from 'react-native';
-import AudioRecorderPlayer from 'react-native-audio-recorder-player';
+import React, { useState } from 'react';
+import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { Audio } from 'expo-av';
 
-const audioRecorderPlayer = new AudioRecorderPlayer();
-
-const Recorder = () => {
+export default function App() {
+  const [recording, setRecording] = useState(null);
   const [isRecording, setIsRecording] = useState(false);
 
-  useEffect(() => {
-    return () => {
-      // audioRecorderPlayer.stopPlayer();
-      // audioRecorderPlayer.stopRecorder();
-      // audioRecorderPlayer.removePlayBackListener();
-     
-    };
-    
-  }, []);
-
-  const startRecording = async () => {
-    if (!isRecording) {
+ 
+    const startRecording = async () => {
       try {
-        console.log(audioRecorderPlayer);
-        await audioRecorderPlayer.startRecorder();
-        audioRecorderPlayer.addRecordBackListener(e => {
-            console.log('Recording . . . ', e.currentPosition);
-             return;
-            });
-        
+        console.log('Recording started');
+        const recording = new Audio.Recording();
+        await recording.prepareToRecordAsync(Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY);
+        await recording.startAsync();
+        setRecording(recording);
         setIsRecording(true);
       } catch (error) {
-        console.error('Error starting recording:', error);
+        console.error('Failed to start recording', error);
       }
-    }
-  };
+    };
 
-  const stopRecording = async () => {
-    if (isRecording) {
+    const stopRecording = async () => {
+      if (!recording) return;
+
       try {
-        await audioRecorderPlayer.stopRecorder();
+        console.log('Recording stopped');
+        await recording.stopAndUnloadAsync();
         setIsRecording(false);
       } catch (error) {
-        console.error('Error stopping recording:', error);
+        console.error('Failed to stop recording', error);
       }
+    };
+
+
+  const handleButtonPress = () => {
+    if (isRecording) {
+      stopRecording();
+    } else {
+      startRecording();
     }
   };
 
+  const buttonColor = isRecording ? 'green' : 'red';
+
   return (
-    <View style={{ alignItems: 'center', marginTop: 20 }}>
+    <View style={styles.container}>
       <TouchableOpacity
-        onPress={isRecording ? stopRecording : startRecording}
-        style={{
-          width: 80,
-          height: 80,
-          borderRadius: 40,
-          backgroundColor: isRecording ? 'red' : 'green',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
+        style={[styles.recordButton, { backgroundColor: buttonColor }]}
+        onPress={handleButtonPress}
       >
-        <Text style={{ color: 'white', fontSize: 16 }}>
-          {isRecording ? 'Stop' : 'Record'}
+        <Text style={styles.buttonText}>
+          {isRecording ? 'Stop Recording' : 'Start Recording'}
         </Text>
       </TouchableOpacity>
     </View>
   );
-};
+}
 
-export default Recorder;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  recordButton: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: 'white',
+  },
+});
