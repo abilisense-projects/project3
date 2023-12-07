@@ -1,28 +1,49 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, Pressable, CheckBox } from "react-native";
+import { View, Text, Pressable, CheckBox } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import GenericForm from "../shared/form";
+import validations from "../shared/validations";
+
+const fields = [
+  {
+    name: "User Name",
+    state: "username",
+    placeholder: "Enter your email",
+    type: "text",
+    rules: validations.email,
+  },
+  {
+    name: "Password",
+    state: "password",
+    placeholder: "Enter your password",
+    type: "text",
+    secureTextEntry: true,
+    rules: validations.password,
+  },
+];
 
 export default function Login() {
   const navigation = useNavigation();
 
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
 
-  const handleLogin = () => {
-    // Add your login logic here
-    console.log("Username:", username);
-    console.log("Password:", password);
-    console.log("Remember Me:", rememberMe);
+  const onSubmit = (data) => {
+    //clear form?
+    //Handle form submission logic
+    //save the data in db
+    //did all data go through validations / wran user
+    //save data / send to server
+    console.log("Form data:", data);
   };
 
   return (
     <View>
-      <Text>Username or primary email</Text>
-      <TextInput value={username} onChangeText={setUsername} />
-
-      <Text>Password</Text>
-      <TextInput value={password} onChangeText={setPassword} secureTextEntry />
+      {/* add link that includes navigation and text */}
+      <GenericForm
+        fields={fields}
+        onSubmit={onSubmit}
+        submitButton="Login"
+      ></GenericForm>
 
       <Pressable onPress={() => navigation.navigate("Forgot your password")}>
         <Text style={{ color: "red" }}>Forgot your password?</Text>
@@ -32,10 +53,6 @@ export default function Login() {
         <CheckBox value={rememberMe} onValueChange={setRememberMe} />
         <Text style={{ marginLeft: 8 }}>Remember me</Text>
       </View>
-
-      <Pressable onPress={handleLogin}>
-        <Text>Login</Text>
-      </Pressable>
     </View>
   );
 }

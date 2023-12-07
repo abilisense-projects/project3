@@ -1,32 +1,33 @@
-import React, { useState } from "react";
-import { View, Text, TextInput, Pressable } from "react-native";
+import React from "react";
+import { View} from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import GenericForm from '../shared/form';
+import validations from '../shared/validations';
+
+const fields = [
+  { name: 'User Name', state: 'username', placeholder: 'Enter your email',type: 'text',rules: validations.email},
+];
+
 export default function ForgotYourPassword() {
   const navigation = useNavigation();
 
-  const [useremail, setUseremail] = useState("");
+  const onSubmit = (data) => {
+    //clear form?
+    //Handle form submission logic
+    //save the data in db
+    //did all data go through validations / wran user
+    //save data / send to server
+    console.log('Form data:', data);
 
-  const handleUseremail = () => {
-    // Add your login logic here
-    console.log("useremail:", useremail);
+    navigation.navigate('New Password');
+    
   };
 
   return (
     <View>
-      <Text>Email</Text>
-      <TextInput value={useremail} onChangeText={setUseremail} />
 
-      <Pressable
-        onPress={() => {
-          handleUseremail();
-          navigation.navigate("New Password");
-        }}
-        style={{ backgroundColor: "#0f968c", padding: 10, borderRadius: 5 }}
-      >
-        <Text style={{ color: "white", textAlign: "center" }}>
-          Reset Password{" "}
-        </Text>
-      </Pressable>
+      <GenericForm fields={fields} onSubmit={onSubmit} submitButton="Reset Password"></GenericForm>
+
     </View>
   );
 }
