@@ -19,7 +19,13 @@ const GenericForm = ({ fields, onSubmit, submitButton }) => {
                         <Controller
                             control={control}
                             render={({ field: { value } }) => (
-                                <TextInputField value={value} onChangeText={(text) => handleInputChange(field.name, text)} placeholder={field.placeholder} secure={field.secureTextEntry}></TextInputField>
+                                <TextInputField
+                                    value={value}
+                                    onChangeText={(text) => handleInputChange(field.name, text)}
+                                    placeholder={field.placeholder}
+                                    secure={field.secureTextEntry}
+                                    error={errors[field.name]}
+                                ></TextInputField>
                             )}
                             name={field.name}
                             rules={field.rules}
@@ -27,24 +33,29 @@ const GenericForm = ({ fields, onSubmit, submitButton }) => {
                         />
                     )}
                     {field.type === 'picker' && (
-                        <Controller
-                            control={control}
-                            render={({ field: { value } }) => (
-                                <Picker
-                                    selectedValue={value}
-                                    onValueChange={(itemValue) => setValue(field.name, itemValue)}
-                                >
-                                    {field.options.map((option) => (
-                                        <Picker.Item key={option.value} label={option.name} value={option.value} />
-                                    ))}
-                                </Picker>
+                        <View>
+                            <Controller
+                                control={control}
+                                render={({ field: { value } }) => (
+                                    <Picker
+                                        selectedValue={value}
+                                        onValueChange={(itemValue) => setValue(field.name, itemValue)}
+                                    >
+                                        {field.options.map((option) => (
+                                            <Picker.Item key={option.value} label={option.name} value={option.value} />
+                                        ))}
+                                    </Picker>
+
+                                )}
+                                name={field.name}
+                                rules={field.rules}
+                                defaultValue=""
+                            />
+                            {errors[field.name] && (
+                                <Text style={styles.error}>{errors[field.name].message}</Text>
                             )}
-                            name={field.name}
-                            rules={field.rules}
-                            defaultValue=""
-                        />
+                        </View>
                     )}
-                    {errors[field.name] && <Text style={styles.error}>{errors[field.name].message}</Text>}
                 </View>
             ))}
             <GenericButton onPress={handleSubmit(onSubmit)} title={submitButton}></GenericButton>
@@ -54,13 +65,12 @@ const GenericForm = ({ fields, onSubmit, submitButton }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 16,
         justifyContent: 'center',
     },
     error: {
         color: 'red',
-        fontSize: 10,
-        marginBottom: 5,
+        fontSize: 12,
+        marginTop: 5,
     },
 });
 export default GenericForm;
