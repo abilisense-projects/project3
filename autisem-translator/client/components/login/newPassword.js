@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, Text } from "react-native";
 import GenericForm from "../shared/form";
-import validations from "../shared/validations";
+import validations from "../../config/validations";
 
 const fields = [
   {

@@ -2,7 +2,7 @@ import React from "react";
 import { View} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import GenericForm from '../shared/form';
-import validations from '../shared/validations';
+import validations from '../../config/validations';
 
 const fields = [
   { name: 'User Name', state: 'username', placeholder: 'Enter your email',type: 'text',rules: validations.email},

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, Text, Pressable, CheckBox } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import GenericForm from "../shared/form";
-import validations from "../shared/validations";
+import validations from "../../config/validations";
 
 const fields = [
   {
