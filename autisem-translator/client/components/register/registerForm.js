@@ -1,7 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import GenericForm from '../shared/form';
-import validations from '../shared/validations';
+import validations from '../../config/validations';
 
 const userTypeOptions = [
   { name: 'Select User Type', value: '' },
@@ -15,6 +15,7 @@ const fields = [
   { name: 'Last Name', state: 'lastName', placeholder: 'Enter your lastName',type: 'text' ,rules: validations.name },
   { name: 'Phone Number', state: 'phoneNumber', placeholder: 'Enter your phoneNumber',type: 'text' ,rules: validations.phoneNumber },
   { name: 'Password', state: 'password', placeholder: 'Enter your password',type: 'text', secureTextEntry: true ,rules: validations.password },
+  { name: 'RepeatPassword', state: 'repeatPassword', placeholder: 'Verify your password',type: 'text', secureTextEntry: true ,rules: validations.password },
   { name: 'Type', state: 'type', options: userTypeOptions,type: 'picker', rules: { required: 'type is required.' } },
 ];
 
