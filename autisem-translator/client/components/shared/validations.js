@@ -43,8 +43,23 @@ const validations = {
 
   repeatPassword: {
     required: "Password is required.",
-    
   },
- };
+
+  code: {
+    required: "code is required.",
+    pattern: {
+      value: /^\d+$/,
+      message: "Code must contain only numbers.",
+    },
+    minLength: {
+      value: 6,
+      message: "Code number must be at least 6 digits.",
+    },
+    maxLength: {
+      value: 6,
+      message: "Code number must not exceed 6 digits.",
+    },
+  },
+};
 
 export default validations;

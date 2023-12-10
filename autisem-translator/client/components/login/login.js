@@ -44,11 +44,9 @@ export default function Login() {
         onSubmit={onSubmit}
         submitButton="Login"
       ></GenericForm>
-
-      <Pressable onPress={() => navigation.navigate("Forgot your password")}>
-        <Text style={{ color: "red" }}>Forgot your password?</Text>
+      <Pressable onPress={() => navigation.navigate("ForgotYourPassword")}>
+        <Text style={{ color: "blue" }}>Forgot your password?</Text>
       </Pressable>
-
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <CheckBox value={rememberMe} onValueChange={setRememberMe} />
         <Text style={{ marginLeft: 8 }}>Remember me</Text>
