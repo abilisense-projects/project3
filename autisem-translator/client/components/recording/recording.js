@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { View, TouchableOpacity, Text, StyleSheet, Button } from 'react-native';
 import { Audio } from 'expo-av';
-import backendService from '../../services/backend_service';
 
-export default function RecordAudio() {
+export default function RecordAudio(props) {
   const [recording, setRecording] = useState(null);
   const [isRecording, setIsRecording] = useState(false);
 
@@ -23,11 +22,12 @@ export default function RecordAudio() {
 
   const stopRecording = async () => {
     if (!recording) return;
-
+    console.log('recording', recording);
     try {
       console.log('Recording stopped');
       await recording.stopAndUnloadAsync();
       setIsRecording(false);
+      props.setRecordedData(recording.getURI());
     } catch (error) {
       console.error('Failed to stop recording', error);
     }
@@ -36,7 +36,6 @@ export default function RecordAudio() {
 
   // This is a function for the development!!!
   const playRecording = async () => {
-
     const soundObject = new Audio.Sound();
 
     const source = recording.getURI()

@@ -1,13 +1,29 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import Recorder from './components/recording/recording';
+import { Button, StyleSheet, Text, View } from 'react-native';
 import RecordAudio from './components/recording/recording';
-
+import { useState } from 'react';
+import backendService from './services/backend_service';
 export default function App() {
-  return (
+  const [recordedData, setRecordedData] = useState(null);
+
+
+  const uploadToServer = async () => {
+    try {
+      if (recordedData) {
+        console.log('App', typeof(recordedData));
+        const response = await backendService.uploadRecording('patient/uploadRecording', recordedData);
+        console.log('Recording uploaded to server', response);
+      } else {
+        console.warn('No recording data available.');
+      }
+    } catch (error) {
+      console.error('Error uploading recording', error);
+    }
+  };  return (
     <View style={styles.container}>
       <Text>Open up App.js to start working on your app!</Text>
-      <RecordAudio></RecordAudio>
+      <RecordAudio setRecordedData = {setRecordedData}>  </RecordAudio>
+      <Button onPress={uploadToServer}>שליחה לשרת</Button>
       <StatusBar style="auto" />
     </View>
   );
