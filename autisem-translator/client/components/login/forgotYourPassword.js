@@ -1,9 +1,11 @@
 import React from "react";
 import { View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+
 import GenericForm from "../shared/form";
-import validations from "../shared/validations";
 import axios from "axios";
+import validations from '../../config/validations';
+
 
 const fields = [
   {
