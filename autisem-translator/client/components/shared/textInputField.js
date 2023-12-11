@@ -27,7 +27,6 @@ const TextInputField = ({ value, onChangeText, placeholder, secure, error }) => 
           />
         </Pressable>
       )}
-      {error && <Text style={styles.error}>{error.message}</Text>}
     </View>
   );
 };
@@ -50,11 +49,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 10,
     top: 18,
-  },
-  error: {
-    color: 'red',
-    fontSize: 10,
-    marginBottom: 5,
   },
 });
 

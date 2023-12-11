@@ -6,19 +6,23 @@ import validations from "../../config/validations";
 
 const fields = [
   {
-    name: "User Name",
-    state: "username",
+    name: "userName",
     placeholder: "Enter your email",
     type: "text",
     rules: validations.email,
   },
   {
-    name: "Password",
-    state: "password",
+    name: "password",
     placeholder: "Enter your password",
     type: "text",
     secureTextEntry: true,
     rules: validations.password,
+  },
+  {
+    name: "forgotPassword",
+    type: "link",
+    onPress: (navigation) => navigation.navigate("Forgot your password"),
+    text: "Forgot your password?",
   },
 ];
 
@@ -38,15 +42,16 @@ export default function Login() {
 
   return (
     <View>
-      {/* add link that includes navigation and text */}
       <GenericForm
         fields={fields}
         onSubmit={onSubmit}
         submitButton="Login"
+        navigation={navigation}
       ></GenericForm>
       <Pressable onPress={() => navigation.navigate("ForgotYourPassword")}>
         <Text style={{ color: "blue" }}>Forgot your password?</Text>
       </Pressable>
+
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <CheckBox value={rememberMe} onValueChange={setRememberMe} />
         <Text style={{ marginLeft: 8 }}>Remember me</Text>

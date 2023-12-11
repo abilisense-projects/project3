@@ -1,13 +1,15 @@
 const Therapist = require('../models/therapist');
 
-async function createTherapist(username,firstName,lastName,phoneNumber, password) {
+async function createTherapist(userName,firstName,lastName,phoneNumber, password,listOfPatients) {
     //const hashedPassword = await bcrypt.hash(password, 10);
+
     const newTherapist = new Therapist({
-        username,
+        userName,
         firstName,
         lastName,
         phoneNumber,
         password,
+        listOfPatients,
     })
     return newTherapist.save();
 }

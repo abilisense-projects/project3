@@ -4,12 +4,11 @@ import { useNavigation } from "@react-navigation/native";
 
 import GenericForm from "../shared/form";
 import axios from "axios";
-import validations from '../../config/validations';
-
+import validations from "../../config/validations";
 
 const fields = [
   {
-    name: "UserName",
+    name: "User Name",
     state: "username",
     placeholder: "Enter your email",
     type: "text",
@@ -39,32 +38,9 @@ export default function ForgotYourPassword() {
     //save the data in db
     //did all data go through validations / wran user
     //save data / send to server
-    console.log("Form data:", formData);
-    //navigat to New Password
+    console.log("Form data:", data);
 
-    navigation.navigate("Code From The Email", { generatedCode: randomNum() });
-  };
-
-  const handleSendEmail = async (formData) => {
-    try {
-      const numbers = randomNum();
-      await axios.post("http://localhost:3001/sendEmail", {
-        to: formData.UserName,
-        subject: "abilisense verification code",
-        text:
-          "Hello The verification code you received from abilisense is:" +
-          numbers +
-          "Thanks",
-      });
-      // Alert.alert('Email sent successfully!');
-      console.log("Email sent successfully!");
-    } catch (error) {
-      console.error("Error sending email:", error.response.formData);
-      // Alert.alert('Failed to send email. Please check the console for details.');
-      console.log(
-        "Failed to send email. Please check the console for details."
-      );
-    }
+    navigation.navigate("New Password");
   };
 
   return (
