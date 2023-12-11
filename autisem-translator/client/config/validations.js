@@ -35,7 +35,7 @@ const validations = {
       message: "Password must be at least 8 characters.",
     },
     pattern: {
-      value: /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/,
+      value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
       message:
         "Password must include at least one letter, one number, and one symbolic character.",
     },
@@ -43,7 +43,12 @@ const validations = {
 
   repeatPassword: {
     required: "Password is required.",
-    
+    validate: (value, { password }) => {
+      if (value !== password) {
+        return 'Passwords do not match.';
+      }
+      return true;
+    },
   },
  };
 

@@ -6,10 +6,15 @@ import TextInputField from './textInputField';
 /**
  * check if fields & userTypeOptions are not null
  */
-const GenericForm = ({ fields, onSubmit, submitButton }) => {
+const GenericForm = ({ fields, onSubmit, submitButton, navigation }) => {
     const { control, handleSubmit, setValue, formState: { errors } } = useForm();
     const handleInputChange = (field, text) => {
         setValue(field, text);
+    };
+    const handleLinkPress = (onPress) => {
+        if (onPress) {
+            onPress(navigation);
+        }
     };
     return (
         <View style={styles.container}>
@@ -24,7 +29,6 @@ const GenericForm = ({ fields, onSubmit, submitButton }) => {
                                     onChangeText={(text) => handleInputChange(field.name, text)}
                                     placeholder={field.placeholder}
                                     secure={field.secureTextEntry}
-                                    error={errors[field.name]}
                                 ></TextInputField>
                             )}
                             name={field.name}
@@ -33,29 +37,29 @@ const GenericForm = ({ fields, onSubmit, submitButton }) => {
                         />
                     )}
                     {field.type === 'picker' && (
-                        <View>
-                            <Controller
-                                control={control}
-                                render={({ field: { value } }) => (
-                                    <Picker
-                                        selectedValue={value}
-                                        onValueChange={(itemValue) => setValue(field.name, itemValue)}
-                                    >
-                                        {field.options.map((option) => (
-                                            <Picker.Item key={option.value} label={option.name} value={option.value} />
-                                        ))}
-                                    </Picker>
-
-                                )}
-                                name={field.name}
-                                rules={field.rules}
-                                defaultValue=""
-                            />
-                            {errors[field.name] && (
-                                <Text style={styles.error}>{errors[field.name].message}</Text>
+                        <Controller
+                            control={control}
+                            render={({ field: { value } }) => (
+                                <Picker
+                                    selectedValue={value}
+                                    onValueChange={(itemValue) => setValue(field.name, itemValue)}
+                                >
+                                    {field.options.map((option) => (
+                                        <Picker.Item key={option.value} label={option.name} value={option.value} />
+                                    ))}
+                                </Picker>
                             )}
-                        </View>
+                            name={field.name}
+                            rules={field.rules}
+                            defaultValue=""
+                        />
                     )}
+                    {field.type === 'link' && (
+                        <Pressable onPress={() => handleLinkPress(field.onPress)}>
+                            <Text style={styles.link}>{field.text}</Text>
+                        </Pressable>
+                    )}
+                    {errors[field.name] && <Text style={styles.error}>{errors[field.name].message}</Text>}
                 </View>
             ))}
             <GenericButton onPress={handleSubmit(onSubmit)} title={submitButton}></GenericButton>
@@ -65,12 +69,17 @@ const GenericForm = ({ fields, onSubmit, submitButton }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        padding: 10,
         justifyContent: 'center',
     },
     error: {
         color: 'red',
-        fontSize: 12,
-        marginTop: 5,
+        fontSize: 10,
+        marginBottom: 15,
+    },
+    link: {
+        color: 'red',
+        textDecorationLine: 'underline',
     },
 });
 export default GenericForm;
