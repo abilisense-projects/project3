@@ -10,7 +10,6 @@ export default function App() {
   const uploadToServer = async () => {
     try {
       if (recordedData) {
-        console.log('App', typeof(recordedData));
         const response = await backendService.uploadRecording('patient/uploadRecording', recordedData);
         console.log('Recording uploaded to server', response);
       } else {
