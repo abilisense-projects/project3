@@ -1,9 +1,9 @@
 import axios from "axios"
-const baseUrl = 'http://localhost:3000';
+import { REACT_APP_BASE_URL } from '@env';
 
 const PatientService = {
   createPatient: (patient) =>
-   axios.post(`${baseUrl}/patients/register`, patient)
+   axios.post(`${REACT_APP_BASE_URL}/patients/register`, patient)
   .then(response => response.data),
 }
 export default PatientService;
