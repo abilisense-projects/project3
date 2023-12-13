@@ -12,7 +12,10 @@ i18n.translations = {
 i18n.locale = 'he';  //It's for the meantime. The language depence on the user selection.
 
 
- export const translationService = {
+export const translationService = {
+    getLanguage: () => {
+        return i18n.locale;
+    },
     storeLanguage: async (language) => {
         try {
             await AsyncStorage.setItem('language', language)
@@ -20,13 +23,13 @@ i18n.locale = 'he';  //It's for the meantime. The language depence on the user s
             console.log(e);
         }
     },
-    translate : (word) => {
+    translate: (word) => {
         try {
-            return i18n.t(word);   
-        } catch(e) {
-          console.log(e);
+            return i18n.t(word);
+        } catch (e) {
+            console.log(e);
         }
-    }      
+    }
 }
 
 
