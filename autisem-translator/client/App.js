@@ -8,6 +8,9 @@ import LoginScreen from "./pages/login";
 import ForgotPassword from "./pages/forgotPassword";
 import RegistrationScreen from "./pages/register";
 import HomeScreen from "./pages/home";
+// import { translationService } from "./services/translationService";
+
+
 
 export default function App() {
   const Stack = createStackNavigator();

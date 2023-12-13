@@ -2,18 +2,19 @@ import React from "react";
 import { View } from "react-native";
 import GenericForm from "../shared/form";
 import validations from "../../config/validations";
-
+import { translationService } from "../../services/translationService";
+const translate = translationService.translate;
 const fields = [
   {
     name: "password",
-    placeholder: "Enter new Password",
+    placeholder: translate('new password'),
     type: "text",
     secureTextEntry: true,
     rules: validations.password,
   },
   {
     name: "repeatPassword",
-    placeholder: "Enter repeat Password",
+    placeholder:translate('verify password'),
     type: "text",
     secureTextEntry: true,
     rules: validations.repeatPassword,
