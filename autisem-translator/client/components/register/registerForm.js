@@ -11,6 +11,9 @@ const userTypeOptions = [
   { name: translate('select user type'), value: '' },
   { name: translate('therapist'), value: 'therapist' },
   { name: translate('patient'), value: 'treated' },
+// import AsyncStorage from '@react-native-async-storage/async-storage';
+import PatientService from '../../services/backendServices/patientService';
+
 ];
 
 const fields = [
@@ -51,14 +54,23 @@ export default function RegistrationForm() {
   const onSubmit = async (data) => {
     //clear form - navigate to a different page
     //did all data go through validations / wran user
-    console.log('Form data:', data);
+    console.log('Form data:', data.type);
      if (data.type === 'therapist') {
       try {
         await TherapistService.createTherapist(data);
         console.log('Therapist created successfully.');
-        await AsyncStorage.removeItem(STORAGE_KEY);
+        // await AsyncStorage.removeItem(STORAGE_KEY);
       } catch (error) {
-        console.error('Error creating therapist:', error.message);
+        console.error('Error creating Therapist:', error.message);
+      }
+     }
+     else if (data.type === 'patient') {
+      try {
+        await PatientService.createPatient(data);
+        console.log('Patient created successfully.');
+        // await AsyncStorage.removeItem(STORAGE_KEY);
+      } catch (error) {
+        console.error('Error creating Patient:', error.message);
       }
      }
     
