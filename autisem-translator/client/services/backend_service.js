@@ -3,10 +3,10 @@ const baseUrl = process.env.REACT_APP_API_KEY || "http://localhost:3000";
 const backendService = {
   uploadRecording: (path, audioURI) => {
     const audioBlob =  fetch(audioURI).then((r) => r.blob());
-    const audioFile = new File([audioBlob], 'audio.mp3', { type: 'audio/mp3' });
+    const audioFile = new Blob([audioBlob],  { type: 'audio/mp3' });
     // console.log('type', typeof (audioFile));
     // console.log('arrayBuffer', audioFile.arrayBuffer);
-    console.log(audioBlob);
+    console.log(audioBlob.then((r)=>console.log(r)));
     try {
       console.log(`${baseUrl}/${path}`);
       const formData = new FormData();

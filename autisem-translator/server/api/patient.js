@@ -8,7 +8,7 @@ const app = express();
 
 router.post('/uploadRecording', upload.single('audio'), (req, res) => {
   //This function in the meantime only save the recording as a file
-  const file = req.file;
+  const file = req.file.path;
   // console.log(typeof(file));
   console.log(file);
   console.log(`Received file: ${file}`);
