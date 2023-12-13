@@ -1,0 +1,26 @@
+{
+    "greeting": "Hello",
+    "reset password":"reset password", 
+    "email":"email", 
+    "first name":"first name",
+    "last name":"last name", 
+    "phone number":"phone number", 
+    "password":"password",
+    "select user type":"select user type",
+    "therapist":"therapist",
+    "patient":"patient",
+    "registration":"registration",
+    "login":"login",
+    "forgot your password":"forgot your password?",
+    "remember me":"remember me",
+    "start recording": "start recording",
+    "stop recording": "stop recording",
+    "list of words": "list of words",
+    "settings": "settings",
+    "new password": "new password",
+    "verify password": "verify password",
+    "capital letter": "capital letter",
+    "lower-case letter": "lower case letter",
+    "special character": "special character"
+
+  }

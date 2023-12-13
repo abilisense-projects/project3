@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { StyleSheet, View } from "react-native";
@@ -8,8 +8,16 @@ import LoginScreen from "./pages/login";
 import ForgotPassword from "./pages/forgotPassword";
 import RegistrationScreen from "./pages/register";
 import HomeScreen from "./pages/home";
+import { translationService } from "./services/translationService";
+
 
 export default function App() {
+  useEffect(() => {
+    if(translationService.getLanguage() === 'he')  {
+      document.dir = 'rtl';
+    }
+    }, []);
+    
   const Stack = createStackNavigator();
   return (
     <NavigationContainer>

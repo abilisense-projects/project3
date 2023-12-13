@@ -3,9 +3,13 @@ import { View} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import GenericForm from '../shared/form';
 import validations from '../../config/validations';
+import { translationService } from "../../services/translationService";
 
+
+
+const translate = translationService.translate;
 const fields = [
-  { name: 'userName',placeholder: 'Enter your email',type: 'text',rules: validations.email},
+  { name: 'userName',placeholder: translate('email'),type: 'text',rules: validations.email},
 ];
 
 export default function ForgotYourPassword() {
@@ -24,7 +28,7 @@ export default function ForgotYourPassword() {
 
   return (
     <View>
-      <GenericForm fields={fields} onSubmit={onSubmit} submitButton="Reset Password"></GenericForm>
+      <GenericForm fields={fields} onSubmit={onSubmit} submitButton={translate('reset password')}></GenericForm>
     </View>
   );
 }
