@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { View, StyleSheet, Text } from "react-native";
 import GenericForm from "../shared/form";
-import validations from "../shared/validations";
+import validations from "../../config/validations";
 import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
 
 const fields = [
   {
@@ -14,27 +15,32 @@ const fields = [
   },
 ];
 
-export default function CodeFromTheEmail({ route }) {
+export default function CodeFromTheEmail() {
   const navigation = useNavigation();
-  const { generatedCode } = route.params; // Get the passed parameter
   const [errorMessage, setErrorMessage] = useState(null);
 
-  const onSubmit = (formData) => {
-    // Use the generated code as needed
-    console.log(formData);
-    if (formData.Code === generatedCode) {
-      console.log("Code matches, proceed to the next function");
-      //navigat to New Password
-      navigation.navigate("New Password");
-    } else {
-      console.log("Code does not match, display an error message");
-      setErrorMessage("Invalid code. Please try again.");
-
-      // alert("Invalid code. Please try again.");
+  const onSubmit = async (formData) => {
+    try {
+      // Send the verification code to the server for validation
+      const response = await axios.post("http://localhost:3000/verifyCode", {
+        code: formData.Code,
+      });
+      // Check the response from the server
+      console.log(response);
+      if (response.data === "Code is valid") {
+        console.log("Code matches, proceed to the next function");
+        // Navigate to the next screen (e.g., New Password)
+        navigation.navigate("NewPassword");
+      } else {
+        console.log("Code does not match, display an error message");
+        setErrorMessage("Invalid code. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error verifying code:", error.response.formData);
+      // Alert.alert(
+      //   "Failed to verify code. Please check the console for details."
+      // );
     }
-    console.log(formData.Code === generatedCode);
-
-    console.log("Form data:", formData);
   };
 
   const styles = StyleSheet.create({
@@ -50,10 +56,10 @@ export default function CodeFromTheEmail({ route }) {
       shadowRadius: 2,
       elevation: 3, // This property adds an elevation effect on Android
     },
-    errorMessage: {
-      color: "red",
-      marginTop: 10,
-    },
+    // errorMessage: {
+    //   color: "red",
+    //   marginTop: 10,
+    // },
   });
   return (
     <View style={styles.modalContent}>

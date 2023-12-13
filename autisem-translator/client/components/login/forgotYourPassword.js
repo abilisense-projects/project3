@@ -1,14 +1,13 @@
-import React from "react";
-import { View } from "react-native";
+import React, { useState } from "react";
+import { View, Alert } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-
 import GenericForm from "../shared/form";
-import axios from "axios";
 import validations from "../../config/validations";
+import axios from "axios";
 
 const fields = [
   {
-    name: "User Name",
+    name: "UserName",
     state: "username",
     placeholder: "Enter your email",
     type: "text",
@@ -19,15 +18,22 @@ const fields = [
 export default function ForgotYourPassword() {
   const navigation = useNavigation();
 
-  const randomNum = () => {
-    let newNumbers = "";
-    // Generate 6 random numbers
-    while (newNumbers.length < 6) {
-      const randomNumber = Math.floor(Math.random() * 9) + 1; // Adjust the range as needed
-      newNumbers = newNumbers + randomNumber;
-      console.log(newNumbers);
+  const handleSendEmail = async (formData) => {
+    try {
+      // Send the email and verification code to the server
+      console.log(formData.UserName);
+      const response = await axios.post("http://localhost:3000/sendEmail", {
+        to: formData.UserName,
+      });
+      navigation.navigate("CodeFromTheEmail");
+      console.log("Email sent successfully!");
+      // Alert.alert("Email sent successfully!");
+    } catch (error) {
+      console.error("Error sending email:", error.response.formData);
+      // Alert.alert(
+      //   "Failed to send email. Please check the console for details."
+      // );
     }
-    return newNumbers;
   };
 
   const onSubmit = (formData) => {
@@ -38,9 +44,7 @@ export default function ForgotYourPassword() {
     //save the data in db
     //did all data go through validations / wran user
     //save data / send to server
-    console.log("Form data:", data);
-
-    navigation.navigate("New Password");
+    console.log("Form data:", formData);
   };
 
   return (

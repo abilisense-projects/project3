@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { View, Text, Pressable, CheckBox } from "react-native";
+import React from "react";
+import { View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import GenericForm from "../shared/form";
 import validations from "../../config/validations";
@@ -21,7 +21,7 @@ const fields = [
   {
     name: "forgotPassword",
     type: "link",
-    onPress: (navigation) => navigation.navigate("Forgot your password"),
+    onPress: (navigation) => navigation.navigate("ForgotYourPassword"),
     text: "Forgot your password?",
   },
 ];
@@ -29,7 +29,7 @@ const fields = [
 export default function Login() {
   const navigation = useNavigation();
 
-  const [rememberMe, setRememberMe] = useState(false);
+  // const [rememberMe, setRememberMe] = useState(false);
 
   const onSubmit = (data) => {
     //clear form?
@@ -48,14 +48,11 @@ export default function Login() {
         submitButton="Login"
         navigation={navigation}
       ></GenericForm>
-      <Pressable onPress={() => navigation.navigate("ForgotYourPassword")}>
-        <Text style={{ color: "blue" }}>Forgot your password?</Text>
-      </Pressable>
 
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
+      {/* <View style={{ flexDirection: "row", alignItems: "center" }}>
         <CheckBox value={rememberMe} onValueChange={setRememberMe} />
         <Text style={{ marginLeft: 8 }}>Remember me</Text>
-      </View>
+      </View> */}
     </View>
   );
 }
