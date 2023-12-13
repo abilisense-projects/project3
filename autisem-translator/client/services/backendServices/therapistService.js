@@ -1,9 +1,8 @@
 import axios from "axios"
-//const baseUrl = process.env.REACT_APP_API_KEY;
-const baseUrl = 'http://localhost:3000';
+import { REACT_APP_BASE_URL } from '@env';
 
 const TherapistService = {
-  createTherapist: (therapist) => axios.post(`${baseUrl}/therapists/register`, therapist)
+  createTherapist: (therapist) => axios.post(`${REACT_APP_BASE_URL}/therapists/register`, therapist)
   .then(response => response.data),
 }
 export default TherapistService;
