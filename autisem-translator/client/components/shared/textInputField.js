@@ -9,12 +9,18 @@ const TextInputField = ({ value, onChangeText, placeholder, secure, error }) => 
     setPasswordVisible(!passwordVisible);
   };
 
+  const getBorderColor = () => {
+    return error ? 'red' :  value && !error ? 'green' : '#ccc';
+  }
+
   return (
     <View style={styles.container}>
       <TextInput
-        style={[styles.input, { borderColor: error ? 'red' : '#ccc' }]}
+        style={[styles.input, { borderColor: getBorderColor() }]}
         value={value}
-        onChangeText={onChangeText}
+        onChangeText={(text) => {
+          onChangeText(text);
+        }}
         placeholder={placeholder}
         secureTextEntry={!passwordVisible && secure}
       />
@@ -22,7 +28,7 @@ const TextInputField = ({ value, onChangeText, placeholder, secure, error }) => 
         <Pressable onPress={togglePasswordVisibility} style={styles.eyeIcon}>
           <MaterialCommunityIcons
             name={passwordVisible ? 'eye-off' : 'eye'}
-            size={24}
+            size={20}
             color="#ccc"
           />
         </Pressable>
@@ -47,8 +53,8 @@ const styles = StyleSheet.create({
   },
   eyeIcon: {
     position: 'absolute',
-    right: 10,
-    top: 18,
+    right: 12,
+    top: 23,
   },
 });
 

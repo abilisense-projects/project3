@@ -7,9 +7,14 @@ import TextInputField from './textInputField';
  * check if fields & userTypeOptions are not null
  */
 const GenericForm = ({ fields, onSubmit, submitButton, navigation }) => {
-    const { control, handleSubmit, setValue, formState: { errors } } = useForm();
-    const handleInputChange = (field, text) => {
+    const { control,trigger, handleSubmit, setValue, formState: { errors } } = useForm({ mode: 'onChange' });
+    const handleInputChange = async  (field, text) => {
         setValue(field, text);
+        await trigger(field);
+    };
+    const handlePickerChange = async  (field, text) => {
+        setValue(field, text);
+        await trigger(field);
     };
     const handleLinkPress = (onPress) => {
         if (onPress) {
@@ -29,6 +34,7 @@ const GenericForm = ({ fields, onSubmit, submitButton, navigation }) => {
                                     onChangeText={(text) => handleInputChange(field.name, text)}
                                     placeholder={field.placeholder}
                                     secure={field.secureTextEntry}
+                                    error={errors[field.name]}
                                 ></TextInputField>
                             )}
                             name={field.name}
@@ -42,7 +48,7 @@ const GenericForm = ({ fields, onSubmit, submitButton, navigation }) => {
                             render={({ field: { value } }) => (
                                 <Picker
                                     selectedValue={value}
-                                    onValueChange={(itemValue) => setValue(field.name, itemValue)}
+                                    onValueChange={(itemValue) => handlePickerChange(field.name, itemValue)}
                                 >
                                     {field.options.map((option) => (
                                         <Picker.Item key={option.value} label={option.name} value={option.value} />
