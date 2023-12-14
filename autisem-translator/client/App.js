@@ -9,7 +9,7 @@ import ForgotPassword from "./pages/forgotPassword";
 import RegistrationScreen from "./pages/register";
 import HomeScreen from "./pages/home";
 import { translationService } from "./services/translationService";
-
+import Hamburger from './components/side_bar/hamburger'
 
 export default function App() {
   useEffect(() => {
@@ -30,8 +30,11 @@ export default function App() {
         <Stack.Screen name="Registration" component={RegistrationScreen} /> 
       </Stack.Navigator>
     </NavigationContainer>
+      <Hamburger/>
+
   );
 }
+//name of fanction.
 
 const styles = StyleSheet.create({
   container: {
