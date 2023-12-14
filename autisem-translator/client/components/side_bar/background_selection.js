@@ -19,9 +19,20 @@ const backgroundOptions = [
 
 const BackgroundSelection = () => {
   const [selectedImage, setSelectedImage] = useState(null);
+  const [confirmedImage, setConfirmedImage] = useState(null);
 
   const handleImageSelect = (imageId) => {
     setSelectedImage(imageId);
+  };
+
+  const handleConfirm = () => {
+    if (selectedImage !== null) {
+      const selectedOption = backgroundOptions.find((option) => option.id === selectedImage);
+      setConfirmedImage(selectedOption.image);
+      console.log(`Image ${selectedImage} selected`);
+    } else {
+      console.log('Please select an image');
+    }
   };
 
   const renderItem = (item) => (
@@ -32,18 +43,11 @@ const BackgroundSelection = () => {
     </TouchableOpacity>
   );
 
-  const handleConfirm = () => {
-    if (selectedImage !== null) {
-      console.log(`Image ${selectedImage} selected`);
-    } else {
-      console.log('Please select an image');
-    }
-  };
-
   return (
     <View style={styles.container}>
+      {confirmedImage && <Image source={confirmedImage} style={styles.backgroundImage} />}
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-      {backgroundOptions.map(({ id, image }) => renderItem({ id, image, key: id }))}
+        {backgroundOptions.map(({ id, image }) => renderItem({ id, image, key: id }))}
       </ScrollView>
       <Button title="Confirm" onPress={handleConfirm} />
     </View>
@@ -52,15 +56,23 @@ const BackgroundSelection = () => {
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',   
+    alignItems: 'center',
     justifyContent: 'center',
+    flex: 1,
+    backgroundColor: '#fff',
   },
-
+  backgroundImage: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+  },
   scrollContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    marginVertical: 12, 
+    marginVertical: 12,
   },
   imageContainer: {
     margin: 5,
@@ -76,10 +88,7 @@ const styles = StyleSheet.create({
     width: 100,
     height: 120,
   },
-
-
 });
 
 export default BackgroundSelection;
-
 

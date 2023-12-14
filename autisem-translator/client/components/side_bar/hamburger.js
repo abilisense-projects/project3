@@ -8,7 +8,10 @@ const HamburgerModal = ({ modalVisible, closeModal, openBackgroundSelection  }) 
   <Modal transparent visible={modalVisible} onRequestClose={closeModal}> 
     <Pressable style={styles.modalBackground} onPress={closeModal}>
     <View style={styles.modalContainer}>
-    <Text>modal</Text>
+    {/* <Pressable style={styles.languageButton} onPress={}>
+            <Text>language</Text>
+      </Pressable> */}
+
       <Pressable style={styles.backgroundButton} onPress={openBackgroundSelection}>
             <Text>Open Background Selection</Text>
       </Pressable>
@@ -68,12 +71,13 @@ const styles = StyleSheet.create({
     width: 250, 
   },
   backgroundButton: {
-    marginTop: 10,
-    padding: 10,
-    borderRadius: 5,
+    //marginTop: 10,
+    //padding: 10,
+    //borderRadius: 5,
   },
 
 });
 
 export default Hamburger;
+
 
