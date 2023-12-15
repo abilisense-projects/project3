@@ -6,13 +6,12 @@ import TherapistService from '../../services/backendServices/therapistService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { translationService } from '../../services/translationService';
 const translate = translationService.translate;
+import PatientService from '../../services/backendServices/patientService';
 
 const userTypeOptions = [
   { name: translate('select user type'), value: '' },
   { name: translate('therapist'), value: 'therapist' },
   { name: translate('patient'), value: 'treated' },
-// import AsyncStorage from '@react-native-async-storage/async-storage';
-import PatientService from '../../services/backendServices/patientService';
 
 ];
 

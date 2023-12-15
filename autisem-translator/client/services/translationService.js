@@ -23,6 +23,14 @@ export const translationService = {
             console.log(e);
         }
     },
+    getLanguagehFromStorage: async () => {
+        try {
+            const language = await AsyncStorage.getItem('language');
+            //not perfect!!!
+        } catch (e) {
+            console.log(e);
+        }
+    },
     translate: (word) => {
         try {
             return i18n.t(word);
