@@ -29,8 +29,8 @@ export default function App() {
         <Stack.Screen name="New Password" component={NewPassword} />
         <Stack.Screen name="Registration" component={RegistrationScreen} /> 
       </Stack.Navigator>
-    </NavigationContainer>
       <Hamburger/>
+    </NavigationContainer>
 
   );
 }
