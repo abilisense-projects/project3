@@ -65,6 +65,15 @@ const validations = {
       value: 6,
       message: "Code number must not exceed 6 digits.",
     },
+    // validate: (value) => {
+    //   if (value === "Code is valid") {
+    //     // No error message if the code is valid
+    //     return true;
+    //   } else {
+    //     // Display an error message
+    //     return "Invalid code. Please try again.";
+    //   }
+    // },
   },
 };
 

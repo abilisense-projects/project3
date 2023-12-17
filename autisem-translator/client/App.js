@@ -2,12 +2,12 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { StyleSheet } from "react-native";
-import NewPassword from "./components/login/newPassword";
+import HomeScreen from "./pages/home";
+import RegistrationScreen from "./pages/register";
 import LoginScreen from "./pages/login";
 import ForgotPassword from "./pages/forgotPassword";
 import CodeFromTheEmail from "./components/login/codeFromTheEmail";
-import RegistrationScreen from "./pages/register";
-import HomeScreen from "./pages/home";
+import NewPassword from "./components/login/newPassword";
 
 export default function App() {
   const Stack = createStackNavigator();

@@ -2,7 +2,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const therapistRouter = require("../routes/therapistRoutes");
-const sendEmailRouter = require("./routes/sendEmailRouter");
+const sendEmailRouter = require("../routes/sendEmailRouters");
+// const sendEmailRouter = require("./path/to/sendEmailRouters");
 
 const cors = require("cors");
 
@@ -16,8 +17,7 @@ mongoose.connect(
 app.use(cors());
 app.use(bodyParser.json());
 app.use("/therapists", therapistRouter);
-app.use("/therapists", therapistRouter);
-app.use("/sendEmail", sendEmailRouter);
+app.use("/sendEmailRouter", sendEmailRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
