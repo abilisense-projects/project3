@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { StyleSheet } from "react-native";
@@ -8,8 +8,18 @@ import LoginScreen from "./pages/login";
 import ForgotPassword from "./pages/forgotPassword";
 import CodeFromTheEmail from "./components/login/codeFromTheEmail";
 import NewPassword from "./components/login/newPassword";
+import RegistrationScreen from "./pages/register";
+import HomeScreen from "./pages/home";
+import { translationService } from "./services/translationService";
+import Hamburger from "./components/side_bar/hamburger";
 
 export default function App() {
+  useEffect(() => {
+    if (translationService.getLanguage() === "he") {
+      document.dir = "rtl";
+    }
+  }, []);
+
   const Stack = createStackNavigator();
   return (
     <NavigationContainer>
@@ -21,9 +31,11 @@ export default function App() {
         <Stack.Screen name="CodeFromTheEmail" component={CodeFromTheEmail} />
         <Stack.Screen name="Registration" component={RegistrationScreen} />
       </Stack.Navigator>
+      <Hamburger />
     </NavigationContainer>
   );
 }
+//name of fanction.
 
 const styles = StyleSheet.create({
   container: {

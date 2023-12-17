@@ -4,12 +4,13 @@ import { useNavigation } from "@react-navigation/native";
 import GenericForm from "../shared/form";
 import validations from "../../config/validations";
 import axios from "axios";
+import { translationService } from "../../services/translationService";
 
+const translate = translationService.translate;
 const fields = [
   {
-    name: "UserName",
-    state: "username",
-    placeholder: "Enter your email",
+    name: "userName",
+    placeholder: translate("email"),
     type: "text",
     rules: validations.email,
   },
@@ -62,6 +63,7 @@ export default function ForgotYourPassword() {
         onSubmit={onSubmit}
         submitButton="Reset Password"
       ></GenericForm>
+      {/* <GenericForm fields={fields} onSubmit={onSubmit} submitButton={translate('reset password')}></GenericForm> */}
     </View>
   );
 }

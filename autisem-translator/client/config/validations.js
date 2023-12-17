@@ -1,48 +1,60 @@
+import { translationService } from "../services/translationService";
 const validations = {
   email: {
-    required: "Email is required.",
+    required: translationService.translate("email is required"),
     pattern: {
       value: /\S+@\S+\.\S+/,
-      message: "Email is invalid.",
+      message: translationService.translate("email is invalid"),
     },
   },
   name: {
-    required: "Name is required.",
+    required: translationService.translate("name is required"),
     maxLength: {
       value: 50,
-      message: "Name must not exceed 50 characters.",
+      message: translationService.translate(
+        "name must not exceed 50 characters"
+      ),
     },
   },
   phoneNumber: {
-    required: "Phone number is required.",
+    required: translationService.translate("phone number is required"),
     pattern: {
       value: /^\d+$/,
-      message: "Phone number must contain only numbers.",
+      message: translationService.translate(
+        "phone number must contain only numbers"
+      ),
     },
     minLength: {
       value: 10,
-      message: "Phone number must be at least 10 digits.",
+      message: translationService.translate(
+        "phone number must be at least 10 digits"
+      ),
     },
     maxLength: {
       value: 15,
-      message: "Phone number must not exceed 15 digits.",
+      message: translationService.translate(
+        "phone number must not exceed 15 digits"
+      ),
     },
   },
   password: {
-    required: "Password is required.",
+    required: translationService.translate("password is required"),
     minLength: {
       value: 8,
-      message: "Password must be at least 8 characters.",
+      message: translationService.translate(
+        "password must be at least 8 characters"
+      ),
     },
     pattern: {
       value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-      message:
-        "Password must include at least one letter, one number, and one symbolic character.",
+      message: translationService.translate(
+        "password must include at least one letter, one number, and one symbolic character"
+      ),
     },
   },
 
   repeatPassword: {
-    required: "Password is required.",
+    required: translationService.translate("password is required"),
     validate: (value, { password }) => {
       if (value !== password) {
         return "Passwords do not match.";

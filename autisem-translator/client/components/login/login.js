@@ -3,17 +3,19 @@ import { View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import GenericForm from "../shared/form";
 import validations from "../../config/validations";
+import { translationService } from "../../services/translationService";
 
+const translate = translationService.translate;
 const fields = [
   {
     name: "userName",
-    placeholder: "Enter your email",
+    placeholder: translate("email"),
     type: "text",
     rules: validations.email,
   },
   {
     name: "password",
-    placeholder: "Enter your password",
+    placeholder: translate("password"),
     type: "text",
     secureTextEntry: true,
     rules: validations.password,
@@ -22,7 +24,7 @@ const fields = [
     name: "forgotPassword",
     type: "link",
     onPress: (navigation) => navigation.navigate("ForgotYourPassword"),
-    text: "Forgot your password?",
+    text: translate("forgot your password"),
   },
 ];
 
@@ -45,13 +47,13 @@ export default function Login() {
       <GenericForm
         fields={fields}
         onSubmit={onSubmit}
-        submitButton="Login"
+        submitButton={translate("login")}
         navigation={navigation}
       ></GenericForm>
 
       {/* <View style={{ flexDirection: "row", alignItems: "center" }}>
         <CheckBox value={rememberMe} onValueChange={setRememberMe} />
-        <Text style={{ marginLeft: 8 }}>Remember me</Text>
+        <Text style={{ marginLeft: 8 }}>{translate('remember me')}</Text>
       </View> */}
     </View>
   );
