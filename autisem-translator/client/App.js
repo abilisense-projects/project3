@@ -8,10 +8,8 @@ import LoginScreen from "./pages/login";
 import ForgotPassword from "./pages/forgotPassword";
 import CodeFromTheEmail from "./components/login/codeFromTheEmail";
 import NewPassword from "./components/login/newPassword";
-import RegistrationScreen from "./pages/register";
-import HomeScreen from "./pages/home";
 import { translationService } from "./services/translationService";
-import Hamburger from "./components/side_bar/hamburger";
+// import Hamburger from "./components/side_bar/hamburger";
 
 export default function App() {
   useEffect(() => {
@@ -31,7 +29,7 @@ export default function App() {
         <Stack.Screen name="CodeFromTheEmail" component={CodeFromTheEmail} />
         <Stack.Screen name="Registration" component={RegistrationScreen} />
       </Stack.Navigator>
-      <Hamburger />
+      {/* <Hamburger /> */}
     </NavigationContainer>
   );
 }
