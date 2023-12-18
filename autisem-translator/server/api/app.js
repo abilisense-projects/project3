@@ -10,6 +10,11 @@ const app = express();
 const PORT = process.env.PORT;
 const MONGO_DB_URL=process.env.DB_URL;
 
+//generate secret key
+// const crypto = require('crypto');
+// const secretKey = crypto.randomBytes(32).toString('hex');
+// console.log(secretKey);
+
 mongoose.connect(MONGO_DB_URL);
 app.use(cors());
 app.use(bodyParser.json());
