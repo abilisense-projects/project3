@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity, Text, StyleSheet, Button } from 'react-native';
+import { View, TouchableOpacity, Text, StyleSheet} from 'react-native';
 import { Audio } from 'expo-av';
 
 export default function RecordAudio(props) {
