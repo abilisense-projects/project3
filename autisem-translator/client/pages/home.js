@@ -12,7 +12,7 @@ export default function HomeScreen() {
   };
 
   return (
-    <View>
+    <View accessible={true}>
       <GenericButton
         title={translate('registration')}
         onPress={() => navigateToScreen("Registration")}

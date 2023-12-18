@@ -9,8 +9,7 @@ import ForgotPassword from "./pages/forgotPassword";
 import RegistrationScreen from "./pages/register";
 import HomeScreen from "./pages/home";
 import { translationService } from "./services/translationService";
-import Hamburger from './components/side_bar/hamburger'
-
+import Hamburger from './components/side_bar/hamburger';
 export default function App() {
   useEffect(() => {
     if(translationService.getLanguage() === 'he')  {
@@ -20,6 +19,7 @@ export default function App() {
     
   const Stack = createStackNavigator();
   return (
+
     <NavigationContainer>
       <Stack.Navigator
         screenOptions={{cardStyle: styles.container}}>

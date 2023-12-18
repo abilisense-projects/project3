@@ -4,7 +4,7 @@ import Login from "../components/login/login";
 
 export default function LoginScreen() {
   return (
-    <View>
+    <View accessible={true}>
       <Login></Login>
     </View>
   );
