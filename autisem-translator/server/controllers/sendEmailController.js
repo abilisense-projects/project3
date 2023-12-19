@@ -62,6 +62,7 @@ const verifyCode = (req, res) => {
   } else {
     console.log("Invalid code");
     res.status(200).json("Invalid code");
+    //500
   }
 };
 

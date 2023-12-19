@@ -19,104 +19,58 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
 });
+// let validationMode = "client";
 
 const fields = [
   {
-    // name: "code",
     name: "Code",
     state: "code",
     placeholder: "Enter your code",
     type: "text",
-    rules: validations.code,
+    rules: validations.code.client,
+
+    // rules: validations.code[validationMode],
   },
 ];
 
 export default function CodeFromTheEmail() {
   const navigation = useNavigation();
-  // const [errorMessage, setErrorMessage] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null); // New state for error message
 
-  // const handleFromEmail = async (data) => {
-  //   try {
-  //     console.log(data.Code);
-  //     // Send the verification code to the server for validation
-  //     const response = await CodeFromTheEmailService.createCodeFromEmail({
-  //       code: data.Code,
-  //     });
-  //     // const response = await axios.post(
-  //     //   "http://localhost:3000/sendEmailRouter/verifyCode",
-  //     //   {
-  //     //     code: formData.Code,
-  //     //   }
-  //     // );
-  //     // Check the response from the server
-  //     console.log(response);
-  //     // console.log(formData);
+  const onSubmit = (data) => {
+    Handle(data);
 
-  //     // navigation.navigate("NewPassword");
+    // navigation.navigate("NewPassword");
+  };
 
-  //     // const responseData = response.data.trim(); // Extract data from the response
-
-  //     // if (responseData === "Code is valid") {
-  //     //   console.log("Code matches, proceed to the next function");
-  //     //   // Navigate to the next screen (e.g., New Password)
-  //     //   navigation.navigate("NewPassword");
-  //     // } else if (responseData === "Invalid code") {
-  //     //   console.log("Code does not match, display an error message");
-  //     //   // setErrorMessage("Invalid code. Please try again.");
-  //     // } else {
-  //     //   // Handle other possible response scenarios if needed
-  //     //   console.log("Unexpected response:", responseData);
-  //     // }
-  //   } catch (error) {
-  //     console.error("Error verifying code:", error);
-  //   }
-  // };
-
-  // const onSubmit = (data) => {
-  //   // console.log("New Password:", data.password);
-  //   // console.log("Repeat Password:", data.repeatPassword);
-  //   navigation.navigate("NewPassword");
-  // };
-
-  const onSubmit = async (data) => {
+  const Handle = async (data) => {
     try {
       console.log(data.Code);
+      // Set loading state to true to indicate that the code is being verified
+      setIsLoading(true);
       // Send the verification code to the server for validation
       const response = await CodeFromTheEmailService.createCodeFromEmail({
         code: data.Code,
       });
 
       console.log(response);
-
-      //Use Yup schema for validation directly
-      // const validationResult = await validations.responseCode.validate(
-      //   response,
-      //   {
-      //     abortEarly: false,
-      //   }
-      // );
-
-      const validationResult = validations.responseCode.validate(response, {
-        abortEarly: false,
-      });
-
-      if (validationResult === true) {
-        // If the code is valid, navigate to NewPassword
-        navigation.navigate("NewPassword");
+      const validationResult = validations.code.server.validate(response);
+      console.log(validationResult);
+      if (validationResult !== true) {
+        // Set the error state with the validation message
+        setError(validationResult);
       } else {
-        // If the code is invalid, display the validation error message
-        console.error("Invalid code:", validationResult);
+        // Reset the error state if the validation passes
+        setError(null);
+        // Code is valid, navigate to the next screen
+        navigation.navigate("NewPassword");
       }
-
-      // if (response === "Code is valid") {
-      //   // If the code is valid, navigate to NewPassword
-      //   navigation.navigate("NewPassword");
-      // } else {
-      //   // If the code is invalid, display the validation error message
-      //   console.error("Invalid code:", response);
-      // }
     } catch (error) {
       console.error("Error verifying code:", error);
+    } finally {
+      // Set loading state to false after the validation is complete
+      setIsLoading(false);
     }
   };
 
@@ -125,11 +79,11 @@ export default function CodeFromTheEmail() {
       <GenericForm
         fields={fields}
         onSubmit={onSubmit}
-        submitButton="Next"
+        // submitButton="Next"
+        submitButton={isLoading ? "Verifying..." : "Next"}
+        disabled={isLoading}
       ></GenericForm>
-
-      {/* Display error message if it is set */}
-      {/* {errorMessage && <Text style={styles.errorMessage}>{errorMessage}</Text>} */}
+      {error && <Text style={styles.errorText}>{error}</Text>}
     </View>
   );
 }
