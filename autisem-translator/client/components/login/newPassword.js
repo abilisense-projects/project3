@@ -29,7 +29,7 @@ export default function NewPassword() {
   };
 
   return (
-    <View>
+    <View accessible={true}>
       <GenericForm
         fields={fields}
         onSubmit={onSubmit}

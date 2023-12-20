@@ -14,7 +14,7 @@ export default function HomeScreen() {
   };
 
   return (
-    <View>
+    <View accessible={true}>
       <GenericButton
         title={translate('login')}
         onPress={() => navigateToScreen("Login")}

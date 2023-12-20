@@ -12,6 +12,7 @@ import { translationService } from "./services/translationService";
 import Hamburger from "./components/side_bar/hamburger";
 
 export default function App() {
+  translationService.initializeLanguage();
   useEffect(() => {
     if (translationService.getLanguage() === "he") {
       document.dir = "rtl";
@@ -20,6 +21,7 @@ export default function App() {
 
   const Stack = createStackNavigator();
   return (
+
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ cardStyle: styles.container }}>
         <Stack.Screen name="Home" component={HomeScreen} />
