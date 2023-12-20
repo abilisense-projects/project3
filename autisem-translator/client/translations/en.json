@@ -33,5 +33,9 @@
   "password is required": "password is required",
   "password must be at least 8 characters": "password must be at least 8 characters",
   "password must include at least one letter, one number, and one symbolic character": "password must include at least one letter, one number, and one symbolic character",
-  "passwords do not match": "passwords do not match"
+  "passwords do not match": "passwords do not match",
+  "type is required":"type is required",
+  "created successfully":"created successfully",
+  "don't have an account":"Don't have an account?",
+  "register here":"Register here"
 }
