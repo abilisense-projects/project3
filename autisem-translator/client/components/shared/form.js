@@ -1,15 +1,20 @@
-import React from 'react';
-import { View, Text, StyleSheet, Picker, Pressable } from 'react-native';
-import { useForm, Controller } from 'react-hook-form';
-import GenericButton from './button';
-import TextInputField from './textInputField';
+import React from "react";
+import { View, Text, StyleSheet, Picker, Pressable } from "react-native";
+import { useForm, Controller } from "react-hook-form";
+import GenericButton from "./button";
+import TextInputField from "./textInputField";
 /**
  * check if fields & userTypeOptions are not null
  */
 const GenericForm = ({ fields, onSubmit, submitButton, navigation }) => {
-    const { control, handleSubmit, setValue, formState: { errors } } = useForm();
-    const handleInputChange = (field, text) => {
+    const { control,trigger, handleSubmit, setValue, formState: { errors } } = useForm({ mode: 'onChange' });
+    const handleInputChange = async  (field, text) => {
         setValue(field, text);
+        await trigger(field);
+    };
+    const handlePickerChange = async  (field, text) => {
+        setValue(field, text);
+        await trigger(field);
     };
     const handleLinkPress = (onPress) => {
         if (onPress) {
@@ -29,6 +34,7 @@ const GenericForm = ({ fields, onSubmit, submitButton, navigation }) => {
                                     onChangeText={(text) => handleInputChange(field.name, text)}
                                     placeholder={field.placeholder}
                                     secure={field.secureTextEntry}
+                                    error={errors[field.name]}
                                 ></TextInputField>
                             )}
                             name={field.name}
@@ -42,7 +48,7 @@ const GenericForm = ({ fields, onSubmit, submitButton, navigation }) => {
                             render={({ field: { value } }) => (
                                 <Picker
                                     selectedValue={value}
-                                    onValueChange={(itemValue) => setValue(field.name, itemValue)}
+                                    onValueChange={(itemValue) => handlePickerChange(field.name, itemValue)}
                                 >
                                     {field.options.map((option) => (
                                         <Picker.Item key={option.value} label={option.name} value={option.value} />
@@ -64,22 +70,22 @@ const GenericForm = ({ fields, onSubmit, submitButton, navigation }) => {
             ))}
             <GenericButton onPress={handleSubmit(onSubmit)} title={submitButton}></GenericButton>
         </View>
-    );
-};
+      )}
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 10,
-        justifyContent: 'center',
-    },
-    error: {
-        color: 'red',
-        fontSize: 10,
-        marginBottom: 15,
-    },
-    link: {
-        color: 'red',
-        textDecorationLine: 'underline',
-    },
+  container: {
+    flex: 1,
+    padding: 10,
+    justifyContent: "center",
+  },
+  error: {
+    color: "red",
+    fontSize: 10,
+    marginBottom: 5,
+  },
+  link: {
+    color: "blue",
+    // textDecorationLine: "underline",
+    textDecorationLine: "none",
+  },
 });
 export default GenericForm;
