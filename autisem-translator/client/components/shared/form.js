@@ -1,8 +1,8 @@
-import React from 'react';
-import { View, Text, StyleSheet, Picker, Pressable } from 'react-native';
-import { useForm, Controller } from 'react-hook-form';
-import GenericButton from './button';
-import TextInputField from './textInputField';
+import React from "react";
+import { View, Text, StyleSheet, Picker, Pressable } from "react-native";
+import { useForm, Controller } from "react-hook-form";
+import GenericButton from "./button";
+import TextInputField from "./textInputField";
 /**
  * check if fields & userTypeOptions are not null
  */
@@ -70,22 +70,22 @@ const GenericForm = ({ fields, onSubmit, submitButton, navigation }) => {
             ))}
             <GenericButton onPress={handleSubmit(onSubmit)} title={submitButton}></GenericButton>
         </View>
-    );
-};
+      )}
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 10,
-        justifyContent: 'center',
-    },
-    error: {
-        color: 'red',
-        fontSize: 10,
-        marginBottom: 15,
-    },
-    link: {
-        color: 'red',
-        textDecorationLine: 'underline',
-    },
+  container: {
+    flex: 1,
+    padding: 10,
+    justifyContent: "center",
+  },
+  error: {
+    color: "red",
+    fontSize: 10,
+    marginBottom: 15,
+  },
+  link: {
+    color: "blue",
+    // textDecorationLine: "underline",
+    textDecorationLine: "none",
+  },
 });
 export default GenericForm;

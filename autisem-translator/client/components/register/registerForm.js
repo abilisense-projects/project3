@@ -3,22 +3,25 @@ import { View } from 'react-native';
 import GenericForm from '../shared/form';
 import validations from '../../config/validations';
 import TherapistService from '../../services/backendServices/therapistService';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { translationService } from '../../services/translationService';
+const translate = translationService.translate;
 import PatientService from '../../services/backendServices/patientService';
 
 const userTypeOptions = [
-  { name: 'Select User Type', value: '' },
-  { name: 'Therapist', value: 'therapist' },
-  { name: 'Patient', value: 'patient' },
+  { name: translate('select user type'), value: '' },
+  { name: translate('therapist'), value: 'therapist' },
+  { name: translate('patient'), value: 'treated' },
+
 ];
 
 const fields = [
-  { name: 'userName', placeholder: 'Enter your email',type: 'text',rules: validations.email},
-  { name: 'firstName', placeholder: 'Enter your firstName',type: 'text' ,rules: validations.name},
-  { name: 'lastName', placeholder: 'Enter your lastName',type: 'text' ,rules: validations.name },
-  { name: 'phoneNumber', placeholder: 'Enter your phoneNumber',type: 'text' ,rules: validations.phoneNumber },
-  { name: 'password', placeholder: 'Enter your password',type: 'text', secureTextEntry: true,rules: validations.password},
-  { name: 'repeatPassword', placeholder: 'Verify your password',type: 'text', secureTextEntry: true ,rules: validations.repeatPassword},
+  { name: 'userName', placeholder:translate('email'),type: 'text',rules: validations.email},
+  { name: 'firstName', placeholder: translate('first name'),type: 'text' ,rules: validations.name},
+  { name: 'lastName', placeholder: translate('last name'),type: 'text' ,rules: validations.name },
+  { name: 'phoneNumber', placeholder: translate('phone number'),type: 'text' ,rules: validations.phoneNumber },
+  { name: 'password', placeholder: translate('password'),type: 'text', secureTextEntry: true,rules: validations.password},
+  { name: 'repeatPassword', placeholder: translate('verify password'),type: 'text', secureTextEntry: true ,rules: validations.repeatPassword},
   { name: 'type', options: userTypeOptions,type: 'picker', rules: { required: 'type is required.' } },
 ];
 
@@ -74,7 +77,7 @@ export default function RegistrationForm() {
   return (
     <View>
       {/* check if fields & userTypeOptions are not null */}
-      <GenericForm fields={fields} onSubmit={onSubmit} submitButton="Register"></GenericForm>
+      <GenericForm fields={fields} onSubmit={onSubmit} submitButton={translate('registration')}></GenericForm>
     </View>
   );
 }
