@@ -1,9 +1,11 @@
 import axios from "axios";
 import { MMKV } from 'react-native-mmkv';
 import { REACT_APP_BASE_URL } from '@env';
+//import { useNavigation } from "@react-navigation/native";
 
 const storage = new MMKV();
-
+let storedToken = storage.getString('token');
+//const navigation = useNavigation();
 const TherapistService = {
   createTherapist: async (therapist) => {
     try {
@@ -18,26 +20,44 @@ const TherapistService = {
     }
   },
 
-  getTherapistDetails: async (userName) => {
+  getTherapistDetails: async () => {
     try {
-      const storedToken = storage.getString('token');
+      const userName="bg@bg.bg"
+      //const storedToken = storage.getString('token');
       console.log("storedToken", storedToken);
       const response = await axios.get(
         `${REACT_APP_BASE_URL}/therapists/get`,
         {
-          headers: {
-            Authorization: `Bearer ${storedToken}`,
-          },
-        },
-        {
           params: {
             userName,
           },
+          headers: {
+            Authorization: `Bearer ${storedToken}`,
+          },
         }
       );
+      console.log("response:",response)
+      console.log("All headers:", response.headers);
+      // Check for a new token in the response headers
+      const newToken = response.headers['x-new-token'];
+      console.log("new token",newToken)
+      //only if diffrent from old token
+      if (newToken && newToken !== storedToken) {
+        // Update the stored token with the new one
+        storage.set('token', newToken);
+        console.log("new token 2",storage.getString('token'))
+      }
       return response.data;
     } catch (error) {
-      console.error('Get therapist details error:', error);
+      console.log('Get therapist details error:', error);
+      console.log(error.response.status)
+      if (error.response && error.response.status === 403) {
+        // Token is invalid or expired, navigate to the login screen
+        console.log('Token invalid or expired. Redirecting to login screen.');
+        // You may use navigation functions or state management to handle redirection
+        // to the login screen in your React Native application.
+        // navigation.navigate("Login");
+      }
       throw error;
     }
   },

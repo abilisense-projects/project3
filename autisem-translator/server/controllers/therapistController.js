@@ -7,8 +7,8 @@ async function registerTherapist(req, res) {
   try {
     const { userName, firstName, lastName, phoneNumber, password, listOfPatients } = req.body;
     await therapistService.createTherapist(userName, firstName, lastName, phoneNumber, password, listOfPatients);
-    //what happens after 1 hour
-    const token = jwt.sign({ userName }, SECRET_KEY, { expiresIn: '1h' });
+    //after 1 hour refresh for another hour
+    const token = jwt.sign({ userName }, SECRET_KEY, { expiresIn: '2m' });
     res.status(201).json({ message: 'Therapist registered successfully' ,token});
   } catch (error) {
     console.error(error);
@@ -17,11 +17,15 @@ async function registerTherapist(req, res) {
 }
 async function getTherapistDetailes(req, res) {
   try {
-    // Extract the user information from the token in the request header
+    //after middleware the data is in user
     const decodedToken = req.user;
     console.log("getTherapistDetailes",decodedToken)
     const { userName } = decodedToken;
     const therapistDetails = await therapistService.getTherapist(userName);
+
+    const newToken = res.getHeader('X-New-Token');
+    console.log('New token from headers:', newToken);
+    
     res.status(200).json({ message: 'Therapist details retrieved successfully', therapistDetails });
   } catch (error) {
     console.error(error);
