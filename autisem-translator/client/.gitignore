@@ -1,1 +1,3 @@
-autisem-translator/client/node_modules
+node_modules
+.expo
+.env
