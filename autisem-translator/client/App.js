@@ -12,6 +12,7 @@ import { translationService } from "./services/translationService";
 import Hamburger from "./components/side_bar/hamburger";
 
 export default function App() {
+  translationService.initializeLanguage();
   useEffect(() => {
     if (translationService.getLanguage() === "he") {
       document.dir = "rtl";
