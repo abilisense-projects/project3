@@ -57,7 +57,7 @@ const validations = {
     required: translationService.translate("password is required"),
     validate: (value, { password }) => {
       if (value !== password) {
-        return "Passwords do not match.";
+        return translationService.translate("passwords do not match");
       }
       return true;
     },

@@ -39,22 +39,21 @@ const TextInputField = ({ value, onChangeText, placeholder, secure, error }) => 
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 15,
-    position: 'relative',
+     marginBottom: 5,
+     position: 'relative',
   },
   input: {
-    height: 60,
+    height: 50,
     borderColor: '#ccc',
     borderWidth: 1,
-    marginBottom: 2,
-    paddingHorizontal: 10,
+    marginBottom: 5,
     borderRadius: 8,
     fontSize: 16,
   },
   eyeIcon: {
     position: 'absolute',
     right: 12,
-    top: 23,
+    top: 20,
   },
 });
 

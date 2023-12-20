@@ -1,11 +1,10 @@
 import axios from "axios";
 import { MMKV } from 'react-native-mmkv';
 import { REACT_APP_BASE_URL } from '@env';
-//import { useNavigation } from "@react-navigation/native";
 
 const storage = new MMKV();
 let storedToken = storage.getString('token');
-//const navigation = useNavigation();
+
 const TherapistService = {
   createTherapist: async (therapist) => {
     try {
@@ -22,8 +21,8 @@ const TherapistService = {
 
   getTherapistDetails: async () => {
     try {
-      const userName="bg@bg.bg"
-      //const storedToken = storage.getString('token');
+      //take userNmae of redux
+      const userName="thera@r.t"
       console.log("storedToken", storedToken);
       const response = await axios.get(
         `${REACT_APP_BASE_URL}/therapists/get`,
@@ -37,15 +36,14 @@ const TherapistService = {
         }
       );
       console.log("response:",response)
-      console.log("All headers:", response.headers);
       // Check for a new token in the response headers
       const newToken = response.headers['x-new-token'];
-      console.log("new token",newToken)
+     // console.log("new token",newToken)
       //only if diffrent from old token
       if (newToken && newToken !== storedToken) {
         // Update the stored token with the new one
         storage.set('token', newToken);
-        console.log("new token 2",storage.getString('token'))
+        console.log("new token",storage.getString('token'))
       }
       return response.data;
     } catch (error) {

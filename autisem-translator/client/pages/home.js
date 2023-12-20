@@ -4,6 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import GenericButton from "../components/shared/button";
 import TherapistService from "../services/backendServices/therapistService";
 import { translationService } from "../services/translationService";
+import PatientService from "../services/backendServices/patientService";
 const translate = translationService.translate;
 export default function HomeScreen() {
   const navigation = useNavigation();
@@ -14,10 +15,6 @@ export default function HomeScreen() {
 
   return (
     <View>
-      <GenericButton
-        title={translate('registration')}
-        onPress={() => navigateToScreen("Registration")}
-      />
       <GenericButton
         title={translate('login')}
         onPress={() => navigateToScreen("Login")}
