@@ -4,8 +4,12 @@ import { useNavigation } from "@react-navigation/native";
 import GenericForm from "../shared/form";
 import validations from "../../config/validations";
 import { translationService } from "../../services/translationService";
-
+import { useDispatch } from 'react-redux';
+import { setUser } from '../../redux/actions/userAction';
 const translate = translationService.translate;
+
+
+
 const fields = [
   {
     name: "userName",
@@ -29,6 +33,8 @@ const fields = [
 ];
 
 export default function Login() {
+  const dispatch = useDispatch();
+
   const navigation = useNavigation();
 
   // const [rememberMe, setRememberMe] = useState(false);
@@ -40,6 +46,7 @@ export default function Login() {
     //did all data go through validations / wran user
     //save data / send to server
     console.log("Form data:", data);
+    dispatch(setUser(data));//This is for the meantime, untill the login request will be perfect.
   };
 
   return (
