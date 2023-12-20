@@ -8,8 +8,6 @@ import LoginScreen from "./pages/login";
 import ForgotPassword from "./pages/forgotPassword";
 import CodeFromTheEmail from "./components/login/codeFromTheEmail";
 import NewPassword from "./components/login/newPassword";
-import RegistrationScreen from "./pages/register";
-import HomeScreen from "./pages/home";
 import { translationService } from "./services/translationService";
 import Hamburger from "./components/side_bar/hamburger";
 
