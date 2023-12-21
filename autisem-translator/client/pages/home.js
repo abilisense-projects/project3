@@ -19,10 +19,10 @@ export default function HomeScreen() {
         title={translate('login')}
         onPress={() => navigateToScreen("Login")}
       />
-      {/* <Button
+      <Button
         title="details"
         onPress={() => TherapistService.getTherapistDetails()}
-      /> */}
+      />
       {/* <Button
         title="Record"
         onPress={() => navigateToScreen("Record")}

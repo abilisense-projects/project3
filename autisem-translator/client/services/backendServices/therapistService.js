@@ -9,7 +9,7 @@ const TherapistService = {
   createTherapist: async (therapist) => {
     try {
       const response = await axios.post(
-        `${REACT_APP_BASE_URL}/therapists/register`,
+        `${REACT_APP_BASE_URL}/user/register`,
         therapist
       );
       const { token } = response.data;
@@ -17,17 +17,23 @@ const TherapistService = {
       storage.set("token", token);
       return token;
     } catch (error) {
-      console.error("Registration error:", error);
-      throw error;
+      if (error.response && error.response.status === 409) {
+        console.log("Username conflict. Throwing an error.");
+        throw new Error("Username conflict");
+      } else {
+        // For other errors, log and rethrow
+        console.error("Registration error:", error);
+        throw error;
+      }
     }
   },
 
   getTherapistDetails: async () => {
     try {
       //take userNmae of redux
-      const userName = "thera@r.t";
+      const userName = "pompom@p.p";
       console.log("storedToken", storedToken);
-      const response = await axios.get(`${REACT_APP_BASE_URL}/therapists/get`, {
+      const response = await axios.get(`${REACT_APP_BASE_URL}/user/profile`, {
         params: {
           userName,
         },
@@ -42,6 +48,7 @@ const TherapistService = {
       //only if diffrent from old token
       if (newToken && newToken !== storedToken) {
         // Update the stored token with the new one
+        //this doesnt work properly...
         storage.set("token", newToken);
         console.log("new token", storage.getString("token"));
       }
@@ -59,26 +66,6 @@ const TherapistService = {
       throw error;
     }
   },
-
-  checkUserNameExists: async (userName) => {
-    try {
-      const response = await axios.get(
-        `${REACT_APP_BASE_URL}/therapists/register`,
-        {
-          params: {
-            userName,
-          },
-          //do i need auth?
-          //is it enough safe?
-        }
-      );
-      return response.data.exists;
-    } catch (error) {
-      console.error('Check username error:', error);
-      throw error;
-    }
-  },
-
 };
 
 export default TherapistService;
