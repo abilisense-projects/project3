@@ -23,20 +23,22 @@ const fields = [
   },
 ];
 
-export default function NewPassword() {
+export default function NewPassword({ route }) {
   const navigation = useNavigation();
 
   const onSubmit = async (data) => {
-    console.log("New Password:", data.password);
-    console.log("Repeat Password:", data.repeatPassword);
-    // navigation.navigate("Home");
     try {
-      const response = await PasswordUpdateService.updatePassword(
-        data
-        // {password: data.repeatPassword,}
-      );
+      const { userName } = route.params;
+      console.log(userName);
+
+      const response = await PasswordUpdateService.updatePassword({
+        userName: userName.route.params.userName,
+        newPassword: data.repeatPassword,
+      });
+      console.log(userName.route.params.userName);
+      console.log("Form Data:", data, route);
+
       console.log(response);
-      console.log("Password updated successfully");
     } catch (error) {
       console.error("Error updating password:", error);
       // Handle error, e.g., display an error message to the user

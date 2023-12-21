@@ -19,7 +19,6 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
 });
-// let validationMode = "client";
 
 const fields = [
   {
@@ -28,20 +27,16 @@ const fields = [
     placeholder: "Enter your code",
     type: "text",
     rules: validations.code.client,
-
-    // rules: validations.code[validationMode],
   },
 ];
 
-export default function CodeFromTheEmail() {
+export default function CodeFromTheEmail(userName) {
   const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null); // New state for error message
+  const [error, setError] = useState(null);
 
   const onSubmit = (data) => {
     Handle(data);
-
-    // navigation.navigate("NewPassword");
   };
 
   const Handle = async (data) => {
@@ -64,7 +59,7 @@ export default function CodeFromTheEmail() {
         // Reset the error state if the validation passes
         setError(null);
         // Code is valid, navigate to the next screen
-        navigation.navigate("NewPassword");
+        navigation.navigate("NewPassword", { userName });
       }
     } catch (error) {
       console.error("Error verifying code:", error);
@@ -79,7 +74,6 @@ export default function CodeFromTheEmail() {
       <GenericForm
         fields={fields}
         onSubmit={onSubmit}
-        // submitButton="Next"
         submitButton={isLoading ? "Verifying..." : "Next"}
         disabled={isLoading}
       ></GenericForm>

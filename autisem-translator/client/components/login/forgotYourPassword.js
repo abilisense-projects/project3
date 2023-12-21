@@ -35,7 +35,7 @@ export default function ForgotYourPassword() {
 
       // Check the response from the server
       console.log(response);
-      navigation.navigate("CodeFromTheEmail");
+      navigation.navigate("CodeFromTheEmail", { userName: data.userName }); //send userName
       console.log("Email sent successfully!");
     } catch (error) {
       console.error(

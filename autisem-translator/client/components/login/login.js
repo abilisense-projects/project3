@@ -51,7 +51,6 @@ export default function Login() {
       const response = await LoginService.createLogin(data);
       console.log("Response object:", response);
       if (response.message === "User exists") {
-        // navigation.navigate("NewPassword");
         setErrorMessage(null);
       } else {
         setErrorMessage("The email or password is incorrect, try again.");
