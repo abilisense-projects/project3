@@ -9,7 +9,8 @@ import ForgotPassword from "./pages/forgotPassword";
 import CodeFromTheEmail from "./components/login/codeFromTheEmail";
 import NewPassword from "./components/login/newPassword";
 import { translationService } from "./services/translationService";
-import Hamburger from "./components/side_bar/hamburger"; import { Provider, useSelector } from 'react-redux';
+import Hamburger from "./components/side_bar/hamburger";
+ import { Provider } from 'react-redux';
 import store from './redux/store';
 
 export default function App() {
