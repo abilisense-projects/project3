@@ -1,5 +1,5 @@
 const nodemailer = require("nodemailer");
-require("dotenv").config();
+// require("dotenv").config();
 
 // const port = 3001; // or any other port you prefer
 
@@ -62,7 +62,7 @@ const verifyCode = (req, res) => {
   } else {
     console.log("Invalid code");
     res.status(200).json("Invalid code");
-    // res.status(400).json("Invalid code");
+    //500
   }
 };
 

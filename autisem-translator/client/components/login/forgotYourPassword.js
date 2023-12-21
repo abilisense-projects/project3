@@ -1,16 +1,19 @@
 import React, { useState } from "react";
-import { View, Alert } from "react-native";
+import { View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import GenericForm from "../shared/form";
 import validations from "../../config/validations";
-import axios from "axios";
-import { translationService } from "../../services/translationService";
+import SendTheEmailService from "../../services/backendServices/SendTheEmailService";
 
-const translate = translationService.translate;
+// import { translationService } from "../../services/translationService";
+
+// const translate = translationService.translate;
 const fields = [
   {
+    // name: "UserName",
     name: "userName",
-    placeholder: translate("email"),
+    // placeholder: translate("email"),
+    placeholder: "Enter your email",
     type: "text",
     rules: validations.email,
   },
@@ -18,50 +21,41 @@ const fields = [
 
 export default function ForgotYourPassword() {
   const navigation = useNavigation();
+  const [isLoading, setIsLoading] = useState(false);
 
-  const onSubmit = async (formData) => {
+  const onSubmit = async (data) => {
     try {
+      setIsLoading(true);
       // Send the email and verification code to the server
-      console.log(formData.UserName);
-      const response = await axios.post(
-        "http://localhost:3000/sendEmailRouter/sendEmail",
-        {
-          to: formData.UserName,
-        }
-      );
+      console.log(data.userName);
+
+      const response = await SendTheEmailService.createSendTheEmail({
+        to: data.userName,
+      });
+
       // Check the response from the server
       console.log(response);
-      navigation.navigate("CodeFromTheEmail");
+      navigation.navigate("CodeFromTheEmail", { userName: data.userName }); //send userName
       console.log("Email sent successfully!");
-      // Alert.alert("Email sent successfully!");
     } catch (error) {
       console.error(
         "Error sending email:",
-        error.response?.formData || error.toString()
+        error.response?.data || error.toString()
       );
-      // Alert.alert(
-      //   "Failed to send email. Please check the console for details."
-      // );
+    } finally {
+      // Set loading state to false after the validation is complete
+      setIsLoading(false);
     }
   };
-
-  // const onSubmit = (formData) => {
-  //   //send email
-  //   handleSendEmail(formData);
-  //   //clear form?
-  //   //Handle form submission logic
-  //   //save the data in db
-  //   //did all data go through validations / wran user
-  //   //save data / send to server
-  //   console.log("Form data:", formData);
-  // };
 
   return (
     <View>
       <GenericForm
         fields={fields}
         onSubmit={onSubmit}
-        submitButton="Reset Password"
+        // submitButton="Reset Password"
+        submitButton={isLoading ? "sender..." : "Reset Password"}
+        disabled={isLoading}
       ></GenericForm>
       {/* <GenericForm fields={fields} onSubmit={onSubmit} submitButton={translate('reset password')}></GenericForm> */}
     </View>
