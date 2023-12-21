@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { View ,StyleSheet, Text} from 'react-native';
+import { View } from 'react-native';
 import GenericForm from '../shared/form';
 import validations from '../../config/validations';
 import TherapistService from '../../services/backendServices/therapistService';
 import { translationService } from '../../services/translationService';
 const translate = translationService.translate;
 import PatientService from '../../services/backendServices/patientService';
+import BannerNotification from '../shared/bannerNotification';
 
 const userTypeOptions = [
   { name: translate('select user type'), value: '' },
@@ -27,7 +28,9 @@ const fields = [
 
 export default function RegistrationForm() {
 
-  const [isSuccess, setIsSuccess] = useState(false);
+  const [notification, setNotification] = useState(null);
+  
+  
 
   const onSubmit = async (data) => {
     try {
@@ -36,10 +39,10 @@ export default function RegistrationForm() {
       } else if (data.type === 'patient') {
         await PatientService.createPatient(data);
       }
-      console.log('User created successfully.');
-      setIsSuccess(true);
+      setNotification({ message: translate('created successfully'), severity: 'success' });
     } catch (error) {
       console.error('Error creating user:', error.message);
+      setNotification({ message: translate('error creating user'), severity: 'error' });
     }
   };
 
@@ -47,28 +50,15 @@ export default function RegistrationForm() {
     <View>
       {/* check if fields & userTypeOptions are not null */}
       <GenericForm fields={fields} onSubmit={onSubmit} submitButton={translate('registration')}></GenericForm>
-      {isSuccess && (
-        <View style={styles.successBanner}>
-          <Text style={styles.successText}>{translate('created successfully')}</Text>
+      {notification &&(
+        <View >
+          <BannerNotification
+          message={notification.message}
+          severity={notification.severity}
+          onClose={() => setNotification(null)}
+        />
         </View>
       )}
     </View>
   );
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  successBanner: {
-    backgroundColor: 'green',
-    padding: 10,
-    marginTop: 10,
-    borderRadius: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  successText: {
-    color: 'white',
-    fontWeight: 'bold',
-  },
-});

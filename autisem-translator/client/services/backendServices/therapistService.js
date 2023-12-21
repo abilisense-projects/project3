@@ -59,6 +59,26 @@ const TherapistService = {
       throw error;
     }
   },
+
+  checkUserNameExists: async (userName) => {
+    try {
+      const response = await axios.get(
+        `${REACT_APP_BASE_URL}/therapists/register`,
+        {
+          params: {
+            userName,
+          },
+          //do i need auth?
+          //is it enough safe?
+        }
+      );
+      return response.data.exists;
+    } catch (error) {
+      console.error('Check username error:', error);
+      throw error;
+    }
+  },
+
 };
 
 export default TherapistService;

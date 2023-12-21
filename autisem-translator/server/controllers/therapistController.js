@@ -6,6 +6,11 @@ const { SECRET_KEY } = process.env;
 async function registerTherapist(req, res) {
   try {
     const { userName, firstName, lastName, phoneNumber, password, listOfPatients } = req.body;
+    // Check if the username already exists
+    const userNameExists = await therapistService.checkUserNameExists(userName);
+    if (userNameExists.success && userNameExists.exists) {
+        return res.status(400).json({ message: 'Username already exists' });
+    }
     await therapistService.createTherapist(userName, firstName, lastName, phoneNumber, password, listOfPatients);
     //after 1 hour refresh for another hour
     const token = jwt.sign({ userName }, SECRET_KEY, { expiresIn: '2m' });
