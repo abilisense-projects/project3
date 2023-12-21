@@ -64,28 +64,32 @@ const validations = {
   },
 
   code: {
-    required: "code is required.",
-    pattern: {
-      value: /^\d+$/,
-      message: "Code must contain only numbers.",
+    client: {
+      required: "code is required.",
+      pattern: {
+        value: /^\d+$/,
+        message: "Code must contain only numbers.",
+      },
+      minLength: {
+        value: 6,
+        message: "Code number must be at least 6 digits.",
+      },
+      maxLength: {
+        value: 6,
+        message: "Code number must not exceed 6 digits.",
+      },
     },
-    minLength: {
-      value: 6,
-      message: "Code number must be at least 6 digits.",
+    server: {
+      validate: (value) => {
+        // Assume 'value' is the response from the server
+        if (value === "Code is valid") {
+          // Return true for a valid code
+          return true;
+        }
+        // Return an error message for an invalid code
+        return "Invalid code. Please try again.";
+      },
     },
-    maxLength: {
-      value: 6,
-      message: "Code number must not exceed 6 digits.",
-    },
-    // validate: (value) => {
-    //   if (value === "Code is valid") {
-    //     // No error message if the code is valid
-    //     return true;
-    //   } else {
-    //     // Display an error message
-    //     return "Invalid code. Please try again.";
-    //   }
-    // },
   },
 };
 
