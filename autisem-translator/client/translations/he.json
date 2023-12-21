@@ -33,6 +33,9 @@
     "password is required": "נדרשת סיסמא",
     "password must be at least 8 characters": "סיסמא חייבת להכיל 8 תווים לפחות",
     "password must include at least one letter, one number, and one symbolic character": "סיסמא חייבת לכלול לפחות אות אחת, ספרה אחת, ותו מיוחד אחד",
-    "passwords do not match": "הסיסמאות אינן תואמות"
-  
+    "passwords do not match": "הסיסמאות אינן תואמות",
+    "type is required":"נדרש סוג",
+    "created successfully":"נוצר בהצלחה",
+    "don't have an account":"אין לך חשבון?",
+    "register here":"הירשם כאן"
 }

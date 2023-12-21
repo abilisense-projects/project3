@@ -9,9 +9,12 @@ import ForgotPassword from "./pages/forgotPassword";
 import CodeFromTheEmail from "./components/login/codeFromTheEmail";
 import NewPassword from "./components/login/newPassword";
 import { translationService } from "./services/translationService";
-// import Hamburger from "./components/side_bar/hamburger";
+import Hamburger from "./components/side_bar/hamburger";
+import { Provider, useSelector } from "react-redux";
+import store from "./redux/store";
 
 export default function App() {
+  translationService.initializeLanguage();
   useEffect(() => {
     if (translationService.getLanguage() === "he") {
       document.dir = "rtl";
@@ -20,17 +23,19 @@ export default function App() {
 
   const Stack = createStackNavigator();
   return (
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{ cardStyle: styles.container }}>
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="ForgotYourPassword" component={ForgotPassword} />
-        <Stack.Screen name="NewPassword" component={NewPassword} />
-        <Stack.Screen name="CodeFromTheEmail" component={CodeFromTheEmail} />
-        <Stack.Screen name="Registration" component={RegistrationScreen} />
-      </Stack.Navigator>
-      {/* <Hamburger /> */}
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{ cardStyle: styles.container }}>
+          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="ForgotYourPassword" component={ForgotPassword} />
+          <Stack.Screen name="NewPassword" component={NewPassword} />
+          <Stack.Screen name="CodeFromTheEmail" component={CodeFromTheEmail} />
+          <Stack.Screen name="Registration" component={RegistrationScreen} />
+        </Stack.Navigator>
+        <Hamburger />
+      </NavigationContainer>
+    </Provider>
   );
 }
 //name of fanction.

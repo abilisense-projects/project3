@@ -4,7 +4,7 @@ import ForgotYourPassword from "../components/login/forgotYourPassword";
 
 export default function ForgotPassword() {
   return (
-    <View>
+    <View accessible={true}> 
       <ForgotYourPassword></ForgotYourPassword>
     </View>
   );

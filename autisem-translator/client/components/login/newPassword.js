@@ -46,7 +46,7 @@ export default function NewPassword({ route }) {
   };
 
   return (
-    <View>
+    <View accessible={true}>
       <GenericForm
         fields={fields}
         onSubmit={onSubmit}

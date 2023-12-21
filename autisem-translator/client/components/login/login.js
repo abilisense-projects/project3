@@ -14,6 +14,8 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
 });
+import { useDispatch } from "react-redux";
+import { setUser } from "../../redux/actions/userAction";
 
 const fields = [
   {
@@ -38,6 +40,8 @@ const fields = [
 ];
 
 export default function Login() {
+  const dispatch = useDispatch();
+
   const navigation = useNavigation();
   const [errorMessage, setErrorMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -61,6 +65,7 @@ export default function Login() {
       // Set loading state to false after the validation is complete
       setIsLoading(false);
     }
+    dispatch(setUser(data)); //This is for the meantime, untill the login request will be perfect.
   };
 
   return (
