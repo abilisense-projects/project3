@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { View ,StyleSheet, Text} from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import GenericForm from '../shared/form';
 import validations from '../../config/validations';
 import TherapistService from '../../services/backendServices/therapistService';
 import { translationService } from '../../services/translationService';
 const translate = translationService.translate;
 import PatientService from '../../services/backendServices/patientService';
+import BannerNotification from '../shared/bannerNotification';
 
 const userTypeOptions = [
   { name: translate('select user type'), value: '' },
@@ -15,19 +16,20 @@ const userTypeOptions = [
 ];
 
 const fields = [
-  { name: 'userName', placeholder:translate('email'),type: 'text',rules: validations.email},
-  { name: 'firstName', placeholder: translate('first name'),type: 'text' ,rules: validations.name},
-  { name: 'lastName', placeholder: translate('last name'),type: 'text' ,rules: validations.name },
-  { name: 'phoneNumber', placeholder: translate('phone number'),type: 'text' ,rules: validations.phoneNumber },
-  { name: 'password', placeholder: translate('password'),type: 'text', secureTextEntry: true,rules: validations.password},
-  { name: 'repeatPassword', placeholder: translate('verify password'),type: 'text', secureTextEntry: true ,rules: validations.repeatPassword},
-  { name: 'type', options: userTypeOptions,type: 'picker', rules: { required: translate('type is required') } },
+  { name: 'userName', placeholder: translate('email'), type: 'text', rules: validations.email },
+  { name: 'firstName', placeholder: translate('first name'), type: 'text', rules: validations.name },
+  { name: 'lastName', placeholder: translate('last name'), type: 'text', rules: validations.name },
+  { name: 'phoneNumber', placeholder: translate('phone number'), type: 'text', rules: validations.phoneNumber },
+  { name: 'password', placeholder: translate('password'), type: 'text', secureTextEntry: true, rules: validations.password },
+  { name: 'repeatPassword', placeholder: translate('verify password'), type: 'text', secureTextEntry: true, rules: validations.repeatPassword },
+  { name: 'type', options: userTypeOptions, type: 'picker', rules: { required: translate('type is required') } },
 ];
 //save userName in redux
 
 export default function RegistrationForm() {
 
-  const [isSuccess, setIsSuccess] = useState(false);
+  const [notification, setNotification] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const onSubmit = async (data) => {
     try {
@@ -36,39 +38,41 @@ export default function RegistrationForm() {
       } else if (data.type === 'patient') {
         await PatientService.createPatient(data);
       }
-      console.log('User created successfully.');
-      setIsSuccess(true);
+      setNotification({ message: translate('created successfully'), severity: 'success' });
     } catch (error) {
-      console.error('Error creating user:', error.message);
+      if (error.message === "Username conflict") {
+        setErrorMessage(translate('username exists'))
+      } else {
+        setNotification({ message: translate('error creating user'), severity: 'error' });
+      }
     }
+
   };
 
   return (
     <View>
       {/* check if fields & userTypeOptions are not null */}
       <GenericForm fields={fields} onSubmit={onSubmit} submitButton={translate('registration')}></GenericForm>
-      {isSuccess && (
-        <View style={styles.successBanner}>
-          <Text style={styles.successText}>{translate('created successfully')}</Text>
+      {notification && (
+        <View >
+          <BannerNotification
+            message={notification.message}
+            severity={notification.severity}
+            onClose={() => setNotification(null)}
+          />
+        </View>
+      )}
+      {errorMessage && (
+        <View >
+          <Text style={styles.errorText}>{errorMessage}</Text>
         </View>
       )}
     </View>
   );
 }
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  successBanner: {
-    backgroundColor: 'green',
-    padding: 10,
+  errorText: {
+    color: "red",
     marginTop: 10,
-    borderRadius: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  successText: {
-    color: 'white',
-    fontWeight: 'bold',
   },
 });
