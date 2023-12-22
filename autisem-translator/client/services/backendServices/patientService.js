@@ -9,7 +9,7 @@ const PatientService = {
 
   createPatient: async (patient) => {
     try {
-      const response = await axios.post(`${REACT_APP_BASE_URL}/patients/register`, patient);
+      const response = await axios.post(`${REACT_APP_BASE_URL}/user/register`, patient);
       const { token } = response.data;
       console.log("token", token);
       storage.set('token', token);
@@ -27,7 +27,7 @@ const PatientService = {
       const userName="pati@w.r"
       console.log("storedToken", storedToken);
       const response = await axios.get(
-        `${REACT_APP_BASE_URL}/patients/get`,
+        `${REACT_APP_BASE_URL}/user/profile`,
         {
           params: {
             userName,
