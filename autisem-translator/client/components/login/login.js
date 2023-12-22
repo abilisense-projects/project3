@@ -54,6 +54,8 @@ export default function Login() {
       setIsLoading(true);
       const response = await LoginService.createLogin(data);
       console.log("Response object:", response);
+      console.log(response);
+      dispatch(setUser(response));
       if (response.message === "User exists") {
         setErrorMessage(null);
       } else {
@@ -65,7 +67,6 @@ export default function Login() {
       // Set loading state to false after the validation is complete
       setIsLoading(false);
     }
-    dispatch(setUser(data)); //This is for the meantime, untill the login request will be perfect.
   };
 
   return (
