@@ -58,19 +58,22 @@ async function getUser(userName) {
   }
 }
 
-async function checkUserNameExists(userName, password) {
+async function loginUser(userName, password) {
   try {
-    console.log(userName,password)
-    let therapist, patient;
-    if (password) {
-      therapist = await Therapist.findOne({ userName, password });
-      console.log("therapist",therapist)
-      patient = await Patient.findOne({ userName, password });
-      console.log("patient",patient)
-    } else {
-      therapist = await Therapist.findOne({ userName });
-      patient = await Patient.findOne({ userName });
-    }
+    let therapist = await Therapist.findOne({ userName, password });
+    let patient = await Patient.findOne({ userName, password });
+    return { user: therapist || patient };
+  } catch (error) {
+    console.error(error);
+    throw new Error("Error logging in");
+  }
+}
+
+// Check if a username already exists (for new user registration)
+async function doesUserNameExist(userName) {
+  try {
+    let therapist = await Therapist.findOne({ userName });
+    let patient = await Patient.findOne({ userName });
     return { exists: therapist || patient };
   } catch (error) {
     console.error(error);
@@ -79,9 +82,11 @@ async function checkUserNameExists(userName, password) {
 }
 
 
+
 module.exports = {
   updateNew,
   createUser,
   getUser,
-  checkUserNameExists,
+  loginUser,
+  doesUserNameExist
 };
