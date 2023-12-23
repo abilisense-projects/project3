@@ -8,26 +8,20 @@ async function userLogin(req, res) {
     const { userName, password } = req.body;
     // Check if the required fields are provided
     if (!userName || !password) {
-      return (
-        res.status(200).json({ message: "Username and password are required" })
-      );
+      return res.status(200).json({ message: 'Username and password are required' });
     }
-    const userExists = await userService.checkUserExists(userName, password);
-    console.log("user exist controller",userExists)
-    //here i changed...
-    if (userExists.exists!=null) {
-      // User exists, you can continue or return true
-      res.status(200).json({ message: "User exists" });
+
+    const user = await userService.loginUser(userName, password);
+    if (user) {
+      // User exists, return the user details
+      res.status(200).json({ message: 'User exists', user });
     } else {
       // User does not exist, return a message to register
-      res
-        .status(200)
-        //404
-        .json({ message: "User does not exist. Please register." });
+      res.status(200).json({ message: 'User does not exist. Please register.' });
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ message: 'Internal server error' });
   }
 }
 
@@ -47,7 +41,7 @@ async function updatePassword(req, res) {
       );
     }
 
-    const passwordUpdateResult = await userService.checkUserExists(
+    const passwordUpdateResult = await userService.doesUserNameExist(
       userName
     );
     console.log("passwordUpdateResult",passwordUpdateResult)
@@ -83,7 +77,7 @@ async function createUser(req, res) {
   try {
     const { userName, firstName, lastName, phoneNumber, password, type } = req.body;
     // Check if the username already exists
-    const userNameExists = await userService.checkUserExists(userName);
+    const userNameExists = await userService.doesUserNameExist(userName);
     if (userNameExists.success && userNameExists.exists) {
       return res.status(409).json({ message: 'Username already exists' });
     }
