@@ -3,7 +3,7 @@ import { View, StyleSheet, Text } from "react-native";
 import GenericForm from "../shared/form";
 import validations from "../../config/validations";
 import { useNavigation } from "@react-navigation/native";
-import CodeFromTheEmailService from "../../services/backendServices/codeFromTheEmailService";
+import sendTheEmailService from "../../services/backendServices/sendTheEmailService";
 
 const styles = StyleSheet.create({
   modalContent: {
@@ -45,7 +45,7 @@ export default function CodeFromTheEmail(userName) {
       // Set loading state to true to indicate that the code is being verified
       setIsLoading(true);
       // Send the verification code to the server for validation
-      const response = await CodeFromTheEmailService.createCodeFromEmail({
+      const response = await sendTheEmailService.createCodeFromEmail({
         code: data.Code,
       });
 

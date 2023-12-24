@@ -2,17 +2,15 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import GenericForm from '../shared/form';
 import validations from '../../config/validations';
-import TherapistService from '../../services/backendServices/therapistService';
+import UserService from '../../services/backendServices/userService';
 import { translationService } from '../../services/translationService';
-const translate = translationService.translate;
-import PatientService from '../../services/backendServices/patientService';
 import BannerNotification from '../shared/bannerNotification';
+const translate = translationService.translate;
 
 const userTypeOptions = [
   { name: translate('select user type'), value: '' },
   { name: translate('therapist'), value: 'therapist' },
   { name: translate('patient'), value: 'treated' },
-
 ];
 
 const fields = [
@@ -33,11 +31,7 @@ export default function RegistrationForm() {
 
   const onSubmit = async (data) => {
     try {
-      if (data.type === 'therapist') {
-        await TherapistService.createTherapist(data);
-      } else if (data.type === 'patient') {
-        await PatientService.createPatient(data);
-      }
+      await UserService.createUser(data);
       setNotification({ message: translate('created successfully'), severity: 'success' });
     } catch (error) {
       if (error.message === "Username conflict") {

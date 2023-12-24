@@ -3,7 +3,7 @@ import { View } from "react-native";
 import GenericForm from "../shared/form";
 import validations from "../../config/validations";
 import { useNavigation } from "@react-navigation/native";
-import PasswordUpdateService from "../../services/backendServices/PasswordUpdateService";
+import UserService from "../../services/backendServices/userService";
 // import { translationService } from "../../services/translationService";
 // const translate = translationService.translate;
 const fields = [
@@ -31,7 +31,7 @@ export default function NewPassword({ route }) {
       const { userName } = route.params;
       console.log(userName);
 
-      const response = await PasswordUpdateService.updatePassword({
+      const response = await UserService.updateUsersPassword({
         userName: userName.route.params.userName,
         newPassword: data.repeatPassword,
       });
