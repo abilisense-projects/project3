@@ -6,6 +6,7 @@ import validations from '../../config/validations';
 import UserService from '../../services/backendServices/userService';
 import { translationService } from '../../services/translationService';
 import BannerNotification from '../shared/bannerNotification';
+import { useRef } from 'react';
 const translate = translationService.translate;
 
 const userTypeOptions = [

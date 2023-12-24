@@ -5,23 +5,23 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import BackgroundSelection from './background_selection';
 import HamburgerModal from './hamburgerModal';
 
-const HamburgerModal = ({ modalVisible, closeModal, openBackgroundSelection }) => (
-  <Modal
-    transparent
-    visible={modalVisible}
-    onRequestClose={closeModal}
-    accessible
-    accessibilityLabel="Settings Menu"
-  >
-    <Pressable style={styles.modalBackground} onPress={closeModal} accessible accessibilityLabel="Close Menu">
-      <View style={styles.modalContainer}>
-        <Pressable style={styles.backgroundButton} onPress={openBackgroundSelection} accessible accessibilityLabel="Open Background Selection">
-          <Text>Open Background Selection</Text>
-        </Pressable>
-      </View>
-    </Pressable>
-  </Modal>
-);
+// const HamburgerModal = ({ modalVisible, closeModal, openBackgroundSelection }) => (
+//   <Modal
+//     transparent
+//     visible={modalVisible}
+//     onRequestClose={closeModal}
+//     accessible
+//     accessibilityLabel="Settings Menu"
+//   >
+//     <Pressable style={styles.modalBackground} onPress={closeModal} accessible accessibilityLabel="Close Menu">
+//       <View style={styles.modalContainer}>
+//         <Pressable style={styles.backgroundButton} onPress={openBackgroundSelection} accessible accessibilityLabel="Open Background Selection">
+//           <Text>Open Background Selection</Text>
+//         </Pressable>
+//       </View>
+//     </Pressable>
+//   </Modal>
+// );
 
 const Hamburger = () => {
   const [modalVisible, setModalVisible] = useState(false);

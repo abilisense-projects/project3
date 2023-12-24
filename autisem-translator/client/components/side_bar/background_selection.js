@@ -34,10 +34,11 @@ const BackgroundSelection = () => {
       setConfirmedImage(selectedOption.image);
       setConfirmed(true);
       console.log(`Image ${selectedImage} selected`);
-      AccessibilityInfo.announceForAccessibility(`Confirmed Image ${selectedImage    } else {
-      AccessibilityInfo.announceForAccessibility('Please select an image');
-    }
+      AccessibilityInfo.announceForAccessibility(`Confirmed Image ${selectedImage}`)
+  }    else {
+    AccessibilityInfo.announceForAccessibility('Please select an image');
   };
+
   
 
   const renderItem = (item) => (
@@ -64,7 +65,7 @@ const BackgroundSelection = () => {
     </View>
   );
   
-};
+}};
 
 const styles = StyleSheet.create({
 
@@ -108,3 +109,4 @@ const styles = StyleSheet.create({
 
 export default BackgroundSelection;
 
+  
