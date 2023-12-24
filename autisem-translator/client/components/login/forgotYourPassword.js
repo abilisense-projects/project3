@@ -1,63 +1,83 @@
 import React, { useState } from "react";
-import { View } from "react-native";
+import { View, Text, StyleSheet, AccessibilityInfo, findNodeHandle } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import GenericForm from "../shared/form";
 import validations from "../../config/validations";
 import SendTheEmailService from "../../services/backendServices/SendTheEmailService";
 
-// import { translationService } from "../../services/translationService";
+// Assuming GenericForm and its fields are already designed with accessibility in mind
 
-// const translate = translationService.translate;
+const styles = StyleSheet.create({
+  formContainer: {
+    // Ensure adequate padding and spacing for touch targets
+    padding: 20,
+  },
+  loadingText: {
+    marginTop: 10, // Maintain touch target size
+  },
+});
+
 const fields = [
   {
-    // name: "UserName",
     name: "userName",
-    // placeholder: translate("email"),
-    placeholder: "Enter your email",
+    placeholder: "Enter your email", // Consider using translationService for multi-language support
     type: "text",
     rules: validations.email,
+    accessibilityLabel: "Email Input", // Descriptive label for screen readers
+    accessibilityHint: "Enter the email associated with your account", // Additional context for screen readers
   },
 ];
 
 export default function ForgotYourPassword() {
   const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
+  const loadingRef = React.useRef(null);
+
+  React.useEffect(() => {
+    // Focus on the loading text for screen readers when loading starts
+    if (isLoading && loadingRef.current) {
+      const tag = findNodeHandle(loadingRef.current);
+      AccessibilityInfo.setAccessibilityFocus(tag);
+    }
+  }, [isLoading]);
 
   const onSubmit = async (data) => {
     try {
       setIsLoading(true);
-      // Send the email and verification code to the server
       console.log(data.userName);
 
       const response = await SendTheEmailService.createSendTheEmail({
         to: data.userName,
       });
 
-      // Check the response from the server
       console.log(response);
-      navigation.navigate("CodeFromTheEmail", { userName: data.userName }); //send userName
+      navigation.navigate("CodeFromTheEmail", { userName: data.userName });
       console.log("Email sent successfully!");
     } catch (error) {
-      console.error(
-        "Error sending email:",
-        error.response?.data || error.toString()
-      );
+      console.error("Error sending email:", error.response?.data || error.toString());
     } finally {
-      // Set loading state to false after the validation is complete
       setIsLoading(false);
     }
   };
 
   return (
-    <View>
+    <View style={styles.formContainer}>
       <GenericForm
         fields={fields}
         onSubmit={onSubmit}
-        // submitButton="Reset Password"
-        submitButton={isLoading ? "sender..." : "Reset Password"}
+        submitButton={isLoading ? "Sending..." : "Reset Password"}
         disabled={isLoading}
-      ></GenericForm>
-      {/* <GenericForm fields={fields} onSubmit={onSubmit} submitButton={translate('reset password')}></GenericForm> */}
+      />
+      {isLoading && (
+        <Text
+          style={styles.loadingText}
+          ref={loadingRef}
+          accessible
+          accessibilityLabel="Sending email"
+        >
+          Sending...
+        </Text>
+      )}
     </View>
   );
 }

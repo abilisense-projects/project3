@@ -13,7 +13,7 @@ export default function LoginScreen({ navigation }) {
   return (
     <View>
       <Login />
-      <View style={{ alignItems: 'center', marginTop: 20 }}>
+      <View style={{ alignItems: 'center', marginTop: 20 }}accessible={true}>
         <Text style={{ color: 'black' }}>
           {translate("don't have an account")}
           <Pressable onPress={handleRegisterNowPress} accessibilityRole="button">
