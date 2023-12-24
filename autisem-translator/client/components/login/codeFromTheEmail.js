@@ -3,7 +3,7 @@ import { View, StyleSheet, Text, AccessibilityInfo, findNodeHandle } from "react
 import GenericForm from "../shared/form";
 import validations from "../../config/validations";
 import { useNavigation } from "@react-navigation/native";
-import CodeFromTheEmailService from "../../services/backendServices/codeFromTheEmailService";
+import sendTheEmailService from "../../services/backendServices/sendTheEmailService";
 
 const styles = StyleSheet.create({
   modalContent: {
@@ -54,6 +54,35 @@ export default function CodeFromTheEmail(userName) {
     Handle(data);
   };
 
+  const Handle = async (data) => {
+    try {
+      console.log(data.Code);
+      // Set loading state to true to indicate that the code is being verified
+      setIsLoading(true);
+      // Send the verification code to the server for validation
+      const response = await sendTheEmailService.createCodeFromEmail({
+        code: data.Code,
+      });
+
+      console.log(response);
+      const validationResult = validations.code.server.validate(response);
+      console.log(validationResult);
+      if (validationResult !== true) {
+        // Set the error state with the validation message
+        setError(validationResult);
+      } else {
+        // Reset the error state if the validation passes
+        setError(null);
+        // Code is valid, navigate to the next screen
+        navigation.navigate("NewPassword", { userName });
+      }
+    } catch (error) {
+      console.error("Error verifying code:", error);
+    } finally {
+      // Set loading state to false after the validation is complete
+      setIsLoading(false);
+    }
+  };
   // ... Existing Handle function ...
 
   return (

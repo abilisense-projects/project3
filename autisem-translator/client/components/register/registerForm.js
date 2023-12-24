@@ -1,22 +1,18 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from 'react';
 import { View, StyleSheet, Text, AccessibilityInfo, findNodeHandle } from "react-native";
-import GenericForm from "../shared/form";
-import validations from "../../config/validations";
 import { useNavigation } from "@react-navigation/native";
-import PasswordUpdateService from "../../services/backendServices/PasswordUpdateService";
+import GenericForm from '../shared/form';
+import validations from '../../config/validations';
+import UserService from '../../services/backendServices/userService';
+import { translationService } from '../../services/translationService';
+import BannerNotification from '../shared/bannerNotification';
+const translate = translationService.translate;
 
-// Assuming translationService is set up for multi-language support
-// const translate = translationService.translate;
-
-const styles = StyleSheet.create({
-  container: {
-    padding: 20, // Adequate padding for touch targets
-  },
-  errorText: {
-    color: "red",
-    marginTop: 10,
-  },
-});
+const userTypeOptions = [
+  { name: translate('select user type'), value: '' },
+  { name: translate('therapist'), value: 'therapist' },
+  { name: translate('patient'), value: 'treated' },
+];
 
 const fields = [
   {
@@ -53,6 +49,8 @@ export default function NewPassword({ route }) {
 
   const onSubmit = async (data) => {
     try {
+      await UserService.createUser(data);
+      setNotification({ message: translate('created successfully'), severity: 'success' });
       const { userName } = route.params;
       const response = await PasswordUpdateService.updatePassword({
         userName: userName,
@@ -89,3 +87,13 @@ export default function NewPassword({ route }) {
     </View>
   );
 }
+const styles = StyleSheet.create({
+  container: {
+    padding: 20, // Adequate padding for touch targets
+  },
+  errorText: {
+    color: "red",
+    marginTop: 10,
+  },
+});
+

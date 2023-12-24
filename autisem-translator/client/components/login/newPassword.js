@@ -3,9 +3,8 @@ import { View, StyleSheet, Text, AccessibilityInfo, findNodeHandle } from "react
 import GenericForm from "../shared/form";
 import validations from "../../config/validations";
 import { useNavigation } from "@react-navigation/native";
-import PasswordUpdateService from "../../services/backendServices/PasswordUpdateService";
-
-// Assuming translationService is set up for multi-language support
+import UserService from "../../services/backendServices/userService";
+// import { translationService } from "../../services/translationService";
 // const translate = translationService.translate;
 
 const styles = StyleSheet.create({
@@ -54,8 +53,10 @@ export default function NewPassword({ route }) {
   const onSubmit = async (data) => {
     try {
       const { userName } = route.params;
-      const response = await PasswordUpdateService.updatePassword({
-        userName: userName,
+      console.log(userName);
+
+      const response = await UserService.updateUsersPassword({
+        userName: userName.route.params.userName,
         newPassword: data.repeatPassword,
       });
 

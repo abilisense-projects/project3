@@ -2,9 +2,8 @@ import React from "react";
 import { View, Button } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import GenericButton from "../components/shared/button";
-import TherapistService from "../services/backendServices/therapistService";
+import UserService from "../services/backendServices/userService";
 import { translationService } from "../services/translationService";
-import PatientService from "../services/backendServices/patientService";
 const translate = translationService.translate;
 export default function HomeScreen() {
   const navigation = useNavigation();
@@ -21,7 +20,7 @@ export default function HomeScreen() {
       />
       <Button
         title="details"
-        onPress={() => TherapistService.getTherapistDetails()}
+        onPress={() => UserService.getUserDetails()}
       />
       {/* <Button
         title="Record"

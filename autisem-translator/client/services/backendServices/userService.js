@@ -5,15 +5,14 @@ import { REACT_APP_BASE_URL } from "@env";
 const storage = new MMKV();
 let storedToken = storage.getString("token");
 
-const TherapistService = {
-  createTherapist: async (therapist) => {
+const UserService = {
+  createUser: async (user) => {
     try {
       const response = await axios.post(
         `${REACT_APP_BASE_URL}/user/register`,
-        therapist
+        user
       );
       const { token } = response.data;
-      console.log("token", token);
       storage.set("token", token);
       return token;
     } catch (error) {
@@ -28,10 +27,10 @@ const TherapistService = {
     }
   },
 
-  getTherapistDetails: async () => {
+  getUserDetails: async () => {
     try {
-      //take userNmae of redux
-      const userName = "pompom@p.p";
+      //take userName of redux
+      const userName = "piki@example.com";
       console.log("storedToken", storedToken);
       const response = await axios.get(`${REACT_APP_BASE_URL}/user/profile`, {
         params: {
@@ -44,13 +43,12 @@ const TherapistService = {
       console.log("response:", response);
       // Check for a new token in the response headers
       const newToken = response.headers["x-new-token"];
-      // console.log("new token",newToken)
       //only if diffrent from old token
       if (newToken && newToken !== storedToken) {
-        // Update the stored token with the new one
-        //this doesnt work properly...
+        console.log("new token", newToken)
         storage.set("token", newToken);
-        console.log("new token", storage.getString("token"));
+        storedToken = storage.getString("token");
+        console.log("storedTokennnnnnnn", storedToken);
       }
       return response.data;
     } catch (error) {
@@ -66,6 +64,27 @@ const TherapistService = {
       throw error;
     }
   },
+
+  updateUsersPassword: (update) =>
+    axios
+      .put(`${REACT_APP_BASE_URL}/user/updatePassword`, update)
+      .then((response) => response.data),
+
+  loginUser: async (userLogin) => {
+    try {
+      const response = await axios.post(`${REACT_APP_BASE_URL}/user/login`, userLogin);
+      const { message, user } = response.data;
+      if (message === "User exists") {
+        // Handle the user details as needed
+        console.log("User details:", user);
+      }
+      return response.data; // Return the entire response if needed
+    } catch (error) {
+      // Handle errors
+      console.error("Login error:", error);
+      throw error;
+    }
+  },
 };
 
-export default TherapistService;
+export default UserService;

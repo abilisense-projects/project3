@@ -3,7 +3,7 @@ const validations = {
   email: {
     required: translationService.translate("email is required"),
     pattern: {
-      value: /\S+@\S+\.\S+/,
+      value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
       message: translationService.translate("email is invalid"),
     },
   },
