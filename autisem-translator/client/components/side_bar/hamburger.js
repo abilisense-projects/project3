@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+
 import { View, Pressable, Modal, StyleSheet, Text, AccessibilityInfo } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import BackgroundSelection from './background_selection';
+import HamburgerModal from './hamburgerModal';
 
 const HamburgerModal = ({ modalVisible, closeModal, openBackgroundSelection }) => (
   <Modal
@@ -59,32 +61,6 @@ const styles = StyleSheet.create({
     padding: 20,
     marginRight: 'auto',
   },
-
-  modalBackground: {
-    left: 20, 
-    top: 50,  
-    flex: 1,
-  },
-    
-  modalContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'white',
-    borderRadius: 5,
-    borderWidth: 2,
-    borderColor: 'black',
-    padding: 20,
-    height: 400, 
-    width: 250, 
-  },
-  backgroundButton: {
-    //marginTop: 10,
-    //padding: 10,
-    //borderRadius: 5,
-  },
-
 });
 
 export default Hamburger;
-
-

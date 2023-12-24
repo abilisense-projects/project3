@@ -20,24 +20,29 @@ const backgroundOptions = [
 const BackgroundSelection = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [confirmedImage, setConfirmedImage] = useState(null);
+  const [confirmed, setConfirmed] = useState(false);
 
   const handleImageSelect = (imageId) => {
     setSelectedImage(imageId);
     AccessibilityInfo.announceForAccessibility(`Image ${imageId} selected`);
   };
+  
 
   const handleConfirm = () => {
     if (selectedImage !== null) {
       const selectedOption = backgroundOptions.find((option) => option.id === selectedImage);
       setConfirmedImage(selectedOption.image);
-      AccessibilityInfo.announceForAccessibility(`Confirmed Image ${selectedImage}`);
-    } else {
+      setConfirmed(true);
+      console.log(`Image ${selectedImage} selected`);
+      AccessibilityInfo.announceForAccessibility(`Confirmed Image ${selectedImage    } else {
       AccessibilityInfo.announceForAccessibility('Please select an image');
     }
   };
+  
 
   const renderItem = (item) => (
     <TouchableOpacity
+
       onPress={() => handleImageSelect(item.id)}
       style={[styles.imageContainer, selectedImage === item.id && styles.selectedImage]}
       accessible
@@ -46,19 +51,23 @@ const BackgroundSelection = () => {
       <Image source={item.image} style={styles.image} />
     </TouchableOpacity>
   );
+  
 
   return (
     <View style={styles.container}>
-      {confirmedImage && <Image source={confirmedImage} style={styles.backgroundImage} />}
+      {confirmed && <Image source={confirmedImage} style={styles.backgroundImage} />}
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {backgroundOptions.map((option) => renderItem(option))}
       </ScrollView>
-      <Button title="Confirm" onPress={handleConfirm} />
+
+      {confirmed ? null : <Button title="Confirm" onPress={handleConfirm} />}
     </View>
   );
+  
 };
 
 const styles = StyleSheet.create({
+
   container: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -71,13 +80,16 @@ const styles = StyleSheet.create({
     left: 0,
     width: '100%',
     height: '100%',
+    //zIndex: 1,//chek that....this on 1
   },
+
   scrollContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
     marginVertical: 12,
   },
+
   imageContainer: {
     margin: 5,
     borderWidth: 2,
@@ -95,3 +107,4 @@ const styles = StyleSheet.create({
 });
 
 export default BackgroundSelection;
+
