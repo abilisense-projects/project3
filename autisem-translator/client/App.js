@@ -23,6 +23,7 @@ export default function App() {
 
   const Stack = createStackNavigator();
   return (
+
     <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ cardStyle: styles.container }}>
