@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, TextInput, View, Pressable, AccessibilityInfo } from 'react-native';
+import { StyleSheet, TextInput, View, Pressable } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const TextInputField = ({ value, onChangeText, placeholder, secure, error }) => {
@@ -7,32 +7,25 @@ const TextInputField = ({ value, onChangeText, placeholder, secure, error }) => 
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
-    // Announce the change of state to screen readers
-    AccessibilityInfo.announceForAccessibility(passwordVisible ? 'Password hidden' : 'Password visible');
   };
 
   const getBorderColor = () => {
-    return error ? 'red' : value && !error ? 'green' : '#ccc';
+    return error ? 'red' :  value && !error ? 'green' : '#ccc';
   }
 
   return (
-    <View style={styles.container} accessible>
+    <View style={styles.container}>
       <TextInput
         style={[styles.input, { borderColor: getBorderColor() }]}
         value={value}
-        onChangeText={onChangeText}
+        onChangeText={(text) => {
+          onChangeText(text);
+        }}
         placeholder={placeholder}
         secureTextEntry={!passwordVisible && secure}
-        accessibilityLabel={placeholder}
-        accessibilityHint={secure ? 'Enter your password' : 'Enter text'}
       />
       {secure && (
-        <Pressable
-          onPress={togglePasswordVisibility}
-          style={styles.eyeIcon}
-          accessibilityLabel={passwordVisible ? 'Hide password' : 'Show password'}
-          accessibilityHint='Tap to toggle password visibility'
-        >
+        <Pressable onPress={togglePasswordVisibility} style={styles.eyeIcon}>
           <MaterialCommunityIcons
             name={passwordVisible ? 'eye-off' : 'eye'}
             size={20}
@@ -46,8 +39,8 @@ const TextInputField = ({ value, onChangeText, placeholder, secure, error }) => 
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 5,
-    position: 'relative',
+     marginBottom: 5,
+     position: 'relative',
   },
   input: {
     height: 50,
@@ -56,7 +49,6 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     borderRadius: 8,
     fontSize: 16,
-    padding: 10, // Ensure padding for better touch target size
   },
   eyeIcon: {
     position: 'absolute',
