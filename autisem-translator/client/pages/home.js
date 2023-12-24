@@ -14,15 +14,15 @@ export default function HomeScreen() {
   };
 
   return (
-    <View>
+    <View accessible={true}>
       <GenericButton
         title={translate('login')}
         onPress={() => navigateToScreen("Login")}
       />
-      {/* <Button
+      <Button
         title="details"
         onPress={() => TherapistService.getTherapistDetails()}
-      /> */}
+      />
       {/* <Button
         title="Record"
         onPress={() => navigateToScreen("Record")}
