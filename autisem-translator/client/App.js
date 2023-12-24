@@ -20,17 +20,17 @@ export default function App() {
 
   const Stack = createStackNavigator();
   return (
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{ cardStyle: styles.container }}>
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="ForgotYourPassword" component={ForgotPassword} />
-        <Stack.Screen name="NewPassword" component={NewPassword} />
-        <Stack.Screen name="CodeFromTheEmail" component={CodeFromTheEmail} />
-        <Stack.Screen name="Registration" component={RegistrationScreen} />
-      </Stack.Navigator>
+    // <NavigationContainer>
+    //   <Stack.Navigator screenOptions={{ cardStyle: styles.container }}>
+    //     <Stack.Screen name="Home" component={HomeScreen} />
+    //     <Stack.Screen name="Login" component={LoginScreen} />
+    //     <Stack.Screen name="ForgotYourPassword" component={ForgotPassword} />
+    //     <Stack.Screen name="NewPassword" component={NewPassword} />
+    //     <Stack.Screen name="CodeFromTheEmail" component={CodeFromTheEmail} />
+    //     <Stack.Screen name="Registration" component={RegistrationScreen} />
+    //   </Stack.Navigator>
       <Hamburger />
-    </NavigationContainer>
+    // </NavigationContainer>
   );
 }
 //name of fanction.
