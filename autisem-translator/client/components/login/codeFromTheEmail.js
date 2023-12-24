@@ -18,6 +18,10 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
     elevation: 3,
   },
+  errorText: {
+    color: "red",
+    marginTop: 10,
+  },
 });
 
 const fields = [
@@ -36,10 +40,10 @@ export default function CodeFromTheEmail(userName) {
   const [error, setError] = useState(null);
 
   const onSubmit = (data) => {
-    Handle(data);
+    HandleVerification(data);
   };
 
-  const Handle = async (data) => {
+  const HandleVerification = async (data) => {
     try {
       console.log(data.Code);
       // Set loading state to true to indicate that the code is being verified
