@@ -1,21 +1,27 @@
-import React, { useState } from "react";
-import { View, StyleSheet, Text } from "react-native";
+import React, { useState, useEffect, useRef } from "react";
+import { View, StyleSheet, Text, AccessibilityInfo, findNodeHandle } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import GenericForm from "../shared/form";
 import validations from "../../config/validations";
 import { translationService } from "../../services/translationService";
 import UserService from "../../services/backendServices/userService";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../redux/actions/userAction";
 
 const translate = translationService.translate;
 
 const styles = StyleSheet.create({
+  container: {
+    padding: 20, // Providing padding for better touch targets
+  },
   errorText: {
     color: "red",
     marginTop: 10,
   },
+  loadingText: {
+    marginTop: 10, // Maintain touch target size
+  },
 });
-import { useDispatch } from "react-redux";
-import { setUser } from "../../redux/actions/userAction";
 
 const fields = [
   {
@@ -23,33 +29,43 @@ const fields = [
     placeholder: translate("email"),
     type: "text",
     rules: validations.email,
+    accessibilityLabel: translate("Email Input"), // Accessibility label
+    accessibilityHint: translate("Enter your email address"), // Accessibility hint
   },
   {
     name: "password",
     placeholder: translate("password"),
-    type: "text",
+    type: "password",
     secureTextEntry: true,
     rules: validations.password,
+    accessibilityLabel: translate("Password Input"),
+    accessibilityHint: translate("Enter your password"),
   },
   {
     name: "forgotPassword",
     type: "link",
     onPress: (navigation) => navigation.navigate("ForgotYourPassword"),
     text: translate("forgot your password"),
+    accessibilityLabel: translate("Forgot Password Link"),
+    accessibilityHint: translate("Navigates to password recovery screen"),
   },
 ];
 
 export default function Login() {
   const dispatch = useDispatch();
-
   const navigation = useNavigation();
   const [errorMessage, setErrorMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const errorRef = useRef(null);
 
-  // const [rememberMe, setRememberMe] = useState(false);
+  useEffect(() => {
+    if (errorMessage && errorRef.current) {
+      const tag = findNodeHandle(errorRef.current);
+      AccessibilityInfo.setAccessibilityFocus(tag);
+    }
+  }, [errorMessage]);
 
   const onSubmit = async (data) => {
-    console.log("Form data:", data);
     try {
       setIsLoading(true);
       const response = await UserService.loginUser(data);
@@ -57,33 +73,35 @@ export default function Login() {
       if (response.message === "User exists") {
         setErrorMessage(null);
       } else {
-        setErrorMessage("The email or password is incorrect, try again.");
+        setErrorMessage(translate("The email or password is incorrect, try again."));
       }
     } catch (error) {
       console.error("Error:", error);
     } finally {
-      // Set loading state to false after the validation is complete
       setIsLoading(false);
     }
-    dispatch(setUser(data)); //This is for the meantime, untill the login request will be perfect.
+    dispatch(setUser(data)); // Temporary until login request is finalized
   };
 
   return (
-    <View>
+    <View style={styles.container}>
       <GenericForm
         fields={fields}
         onSubmit={onSubmit}
-        // submitButton={translate("login")}
         navigation={navigation}
-        submitButton={isLoading ? "Verifying..." : "login"}
+        submitButton={isLoading ? translate("Verifying...") : translate("login")}
         disabled={isLoading}
-      ></GenericForm>
-      <Text style={styles.errorText}>{errorMessage}</Text>
-
-      {/* <View style={{ flexDirection: "row", alignItems: "center" }}>
-        <CheckBox value={rememberMe} onValueChange={setRememberMe} />
-        <Text style={{ marginLeft: 8 }}>{translate('remember me')}</Text>
-      </View> */}
+      />
+      {errorMessage && (
+        <Text 
+          style={styles.errorText}
+          ref={errorRef}
+          accessible
+          accessibilityLabel={translate("Error Message")}
+        >
+          {errorMessage}
+        </Text>
+      )}
     </View>
   );
 }
