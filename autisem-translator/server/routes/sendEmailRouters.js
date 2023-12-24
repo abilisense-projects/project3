@@ -7,8 +7,8 @@ const {
 
 const sendEmailRouters = express.Router();
 
-sendEmailRouters.post("/sendEmail", sendEmail);
+sendEmailRouters.post("/", sendEmail);
 sendEmailRouters.get("/generateRandomNumber", generateRandomNumber);
-sendEmailRouters.post("/verifyCode", verifyCode); // New endpoint for code verification
+sendEmailRouters.post("/verify-code", verifyCode); // New endpoint for code verification
 
 module.exports = sendEmailRouters;

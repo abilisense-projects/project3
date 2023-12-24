@@ -1,74 +1,91 @@
-import React, { useState } from 'react';
-import { View ,StyleSheet, Text} from 'react-native';
-import GenericForm from '../shared/form';
-import validations from '../../config/validations';
-import TherapistService from '../../services/backendServices/therapistService';
-import { translationService } from '../../services/translationService';
-const translate = translationService.translate;
-import PatientService from '../../services/backendServices/patientService';
+import React, { useState, useEffect, useRef } from "react";
+import { View, StyleSheet, Text, AccessibilityInfo, findNodeHandle } from "react-native";
+import GenericForm from "../shared/form";
+import validations from "../../config/validations";
+import { useNavigation } from "@react-navigation/native";
+import PasswordUpdateService from "../../services/backendServices/PasswordUpdateService";
 
-const userTypeOptions = [
-  { name: translate('select user type'), value: '' },
-  { name: translate('therapist'), value: 'therapist' },
-  { name: translate('patient'), value: 'treated' },
+// Assuming translationService is set up for multi-language support
+// const translate = translationService.translate;
 
-];
+const styles = StyleSheet.create({
+  container: {
+    padding: 20, // Adequate padding for touch targets
+  },
+  errorText: {
+    color: "red",
+    marginTop: 10,
+  },
+});
 
 const fields = [
-  { name: 'userName', placeholder:translate('email'),type: 'text',rules: validations.email},
-  { name: 'firstName', placeholder: translate('first name'),type: 'text' ,rules: validations.name},
-  { name: 'lastName', placeholder: translate('last name'),type: 'text' ,rules: validations.name },
-  { name: 'phoneNumber', placeholder: translate('phone number'),type: 'text' ,rules: validations.phoneNumber },
-  { name: 'password', placeholder: translate('password'),type: 'text', secureTextEntry: true,rules: validations.password},
-  { name: 'repeatPassword', placeholder: translate('verify password'),type: 'text', secureTextEntry: true ,rules: validations.repeatPassword},
-  { name: 'type', options: userTypeOptions,type: 'picker', rules: { required: translate('type is required') } },
+  {
+    name: "password",
+    placeholder: "New Password", // Use translate("new password") for multi-language support
+    type: "password",
+    secureTextEntry: true,
+    rules: validations.password,
+    accessibilityLabel: "New Password Input",
+    accessibilityHint: "Enter your new password",
+  },
+  {
+    name: "repeatPassword",
+    placeholder: "Verify Password", // Use translate("verify password") for multi-language support
+    type: "password",
+    secureTextEntry: true,
+    rules: validations.repeatPassword,
+    accessibilityLabel: "Verify Password Input",
+    accessibilityHint: "Re-enter your new password for verification",
+  },
 ];
-//save userName in redux
 
-export default function RegistrationForm() {
+export default function NewPassword({ route }) {
+  const navigation = useNavigation();
+  const [errorMessage, setErrorMessage] = useState(null);
+  const errorRef = useRef(null);
 
-  const [isSuccess, setIsSuccess] = useState(false);
+  useEffect(() => {
+    if (errorMessage && errorRef.current) {
+      const tag = findNodeHandle(errorRef.current);
+      AccessibilityInfo.setAccessibilityFocus(tag);
+    }
+  }, [errorMessage]);
 
   const onSubmit = async (data) => {
     try {
-      if (data.type === 'therapist') {
-        await TherapistService.createTherapist(data);
-      } else if (data.type === 'patient') {
-        await PatientService.createPatient(data);
-      }
-      console.log('User created successfully.');
-      setIsSuccess(true);
+      const { userName } = route.params;
+      const response = await PasswordUpdateService.updatePassword({
+        userName: userName,
+        newPassword: data.repeatPassword,
+      });
+
+      // Navigate or update UI upon successful password update
+      // navigation.navigate("SuccessScreen"); // Example navigation
+
     } catch (error) {
-      console.error('Error creating user:', error.message);
+      console.error("Error updating password:", error);
+      setErrorMessage("Error updating password. Please try again."); // Update error message
     }
   };
 
   return (
-    <View>
-      {/* check if fields & userTypeOptions are not null */}
-      <GenericForm fields={fields} onSubmit={onSubmit} submitButton={translate('registration')}></GenericForm>
-      {isSuccess && (
-        <View style={styles.successBanner}>
-          <Text style={styles.successText}>{translate('created successfully')}</Text>
-        </View>
+    <View style={styles.container} accessible>
+      <GenericForm
+        fields={fields}
+        onSubmit={onSubmit}
+        submitButton="Save"
+        // Add any additional accessibility props to GenericForm if necessary
+      />
+      {errorMessage && (
+        <Text 
+          style={styles.errorText}
+          ref={errorRef}
+          accessible
+          accessibilityLabel="Error Message"
+        >
+          {errorMessage}
+        </Text>
       )}
     </View>
   );
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  successBanner: {
-    backgroundColor: 'green',
-    padding: 10,
-    marginTop: 10,
-    borderRadius: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  successText: {
-    color: 'white',
-    fontWeight: 'bold',
-  },
-});
