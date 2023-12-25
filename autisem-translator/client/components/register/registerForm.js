@@ -73,12 +73,8 @@ export default function RegistrationForm() {
   );
 }
 const styles = StyleSheet.create({
-  container: {
-    padding: 20, // Adequate padding for touch targets
-  },
   errorText: {
     color: "red",
     marginTop: 10,
   },
 });
-
