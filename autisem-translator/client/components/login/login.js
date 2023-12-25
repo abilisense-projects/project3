@@ -54,6 +54,7 @@ export default function Login() {
       setIsLoading(true);
       const response = await UserService.loginUser(data);
       console.log("Response object:", response);
+      console.log('response', response);
       if (response.message === "User exists") {
         setErrorMessage(null);
       } else {
