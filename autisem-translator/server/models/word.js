@@ -6,6 +6,6 @@ const wordSchema = new mongoose.Schema({
   translation:String,
 });
 
-const Word = mongoose.model('Word', wordSchema,'word');
+const Word = mongoose.model('Words', wordSchema,'word');
 
 module.exports = Word;

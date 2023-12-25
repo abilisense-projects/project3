@@ -15,7 +15,7 @@ async function getAllWords(req, res) {
     try {
         const allWords = await wordService.getAllWords();
         if (allWords) {
-            res.status(200).json({ message: 'all words  retrieved successfully' });
+            res.status(200).json({ message: 'all words  retrieved successfully', words:allWords });
         }
     } catch (error) {
         console.error(error);

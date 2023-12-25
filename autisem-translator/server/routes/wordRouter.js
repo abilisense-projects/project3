@@ -1,10 +1,8 @@
-const express = require('express');
-const { registerPatient, getPatientDetailes } = require('../controllers/patientController');
-const authenticateJWT = require('../middlewares/authentication');
+const express = require("express");
+const {getAllWords, createWord} = require('../controllers/wordController')
 
-const patientRouter = express.Router();
+const wordRouter = express.Router();
+wordRouter.post("/word", createWord);
+wordRouter.get("/words", getAllWords);
 
-patientRouter.post('/register', registerPatient);
-//here i use the token
-patientRouter.get('/get',authenticateJWT, getPatientDetailes);
-module.exports = patientRouter;
+module.exports = wordRouter;
