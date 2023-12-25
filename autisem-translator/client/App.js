@@ -14,28 +14,27 @@ import { Provider, useSelector } from "react-redux";
 import store from "./redux/store";
 
 export default function App() {
-  translationService.initializeLanguage();
-  useEffect(() => {
-    if (translationService.getLanguage() === "he") {
-      document.dir = "rtl";
-    }
-  }, []);
+  const [recordedData, setRecordedData] = useState(null);
 
-  const Stack = createStackNavigator();
-  return (
-    <Provider store={store}>
-      <NavigationContainer>
-        <Stack.Navigator screenOptions={{ cardStyle: styles.container }}>
-          <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="ForgotYourPassword" component={ForgotPassword} />
-          <Stack.Screen name="NewPassword" component={NewPassword} />
-          <Stack.Screen name="CodeFromTheEmail" component={CodeFromTheEmail} />
-          <Stack.Screen name="Registration" component={RegistrationScreen} />
-        </Stack.Navigator>
-        <Hamburger />
-      </NavigationContainer>
-    </Provider>
+
+  const uploadToServer = async () => {
+    try {
+      if (recordedData) {
+        const response = await backendService.uploadRecording('patient/uploadRecording', recordedData);
+        console.log('Recording uploaded to server', response);
+      } else {
+        console.warn('No recording data available.');
+      }
+    } catch (error) {
+      console.error('Error uploading recording', error);
+    }
+  };  return (
+    <View style={styles.container}>
+      <Text>Open up App.js to start working on your app!</Text>
+      <RecordAudio setRecordedData = {setRecordedData}>  </RecordAudio>
+      <Button onPress={uploadToServer}>שליחה לשרת</Button>
+      <StatusBar style="auto" />
+    </View>
   );
 }
 //name of fanction.
