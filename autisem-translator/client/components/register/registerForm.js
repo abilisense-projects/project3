@@ -5,7 +5,6 @@ import validations from '../../config/validations';
 import UserService from '../../services/backendServices/userService';
 import { translationService } from '../../services/translationService';
 const translate = translationService.translate;
-import PatientService from '../../services/backendServices/patientService';
 import BannerNotification from '../shared/bannerNotification';
 
 const userTypeOptions = [
@@ -36,7 +35,7 @@ export default function RegistrationForm() {
       if (data.type === 'therapist') {
         await TherapistService.createTherapist(data);
       } else if (data.type === 'patient') {
-        await PatientService.createPatient(data);
+        await UserService.createUser(data);
       }
       setNotification({ message: translate('created successfully'), severity: 'success' });
     } catch (error) {

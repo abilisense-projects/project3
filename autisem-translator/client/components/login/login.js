@@ -58,12 +58,12 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const errorRef = useRef(null);
 
-  useEffect(() => {
-    if (errorMessage && errorRef.current) {
-      const tag = findNodeHandle(errorRef.current);
-      AccessibilityInfo.setAccessibilityFocus(tag);
-    }
-  }, [errorMessage]);
+  // useEffect(() => {
+  //   if (errorMessage && errorRef.current) {
+  //     const tag = findNodeHandle(errorRef.current);
+  //     AccessibilityInfo.setAccessibilityFocus(tag);
+  //   }
+  // }, [errorMessage]);
 
   const onSubmit = async (data) => {
     try {
