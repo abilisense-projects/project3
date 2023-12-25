@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, Pressable } from "react-native";
 import Login from "../components/login/login";
-import { translationService } from "../services/translationService";
+import {translationService} from '../services/translationService'
 const translate = translationService.translate;
 
 export default function LoginScreen({ navigation }) {

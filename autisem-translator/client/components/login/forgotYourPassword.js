@@ -3,7 +3,7 @@ import { View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import GenericForm from "../shared/form";
 import validations from "../../config/validations";
-import SendTheEmailService from "../../services/backendServices/SendTheEmailService";
+import SendTheEmailService from "../../services/backendServices/sendTheEmailService";
 
 // import { translationService } from "../../services/translationService";
 

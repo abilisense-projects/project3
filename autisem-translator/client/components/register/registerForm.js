@@ -7,15 +7,11 @@ import { translationService } from '../../services/translationService';
 const translate = translationService.translate;
 import BannerNotification from '../shared/bannerNotification';
 
-const styles = StyleSheet.create({
-  container: {
-    padding: 20, // Adequate padding for touch targets
-  },
-  errorText: {
-    color: "red",
-    marginTop: 10,
-  },
-});
+const userTypeOptions = [
+  { name: translate('select user type'), value: '' },
+  { name: translate('therapist'), value: 'therapist' },
+  { name: translate('patient'), value: 'treated' },
+];
 
 const fields = [
   { name: 'userName', placeholder: translate('email'), type: 'text', rules: validations.email },
@@ -36,7 +32,7 @@ export default function RegistrationForm() {
   const onSubmit = async (data) => {
     try {
       if (data.type === 'therapist') {
-        await TherapistService.createTherapist(data);
+        await UserService.createUser(data);
       } else if (data.type === 'patient') {
         await UserService.createUser(data);
       }
@@ -73,6 +69,9 @@ export default function RegistrationForm() {
   );
 }
 const styles = StyleSheet.create({
+  container: {
+    padding: 20, // Adequate padding for touch targets
+  },
   errorText: {
     color: "red",
     marginTop: 10,

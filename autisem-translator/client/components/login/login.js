@@ -4,8 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import GenericForm from "../shared/form";
 import validations from "../../config/validations";
 import { translationService } from "../../services/translationService";
-// import UserService from "../../services/backendServices/userService";
-import LoginService from "../../services/backendServices/loginService";
+import UserService from "../../services/backendServices/userService";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../redux/actions/userAction";
 
@@ -17,8 +16,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
 });
-import { useDispatch } from "react-redux";
-import { setUser } from "../../redux/actions/userAction";
 
 const fields = [
   {
@@ -55,7 +52,7 @@ export default function Login() {
     console.log("Form data:", data);
     try {
       setIsLoading(true);
-      const response = await LoginService.createLogin(data);
+      const response = await UserService.createUser(data);
       if (response.message === "User exists") {
         setErrorMessage(null);
       } else {

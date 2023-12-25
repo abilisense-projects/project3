@@ -54,7 +54,7 @@ const BackgroundSelection = () => {
     </View>
   );
   
-}};
+};
 
 const styles = StyleSheet.create({
   container: {

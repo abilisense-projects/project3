@@ -78,13 +78,14 @@ async function createUser(req, res) {
     const { userName, firstName, lastName, phoneNumber, password, type } = req.body;
     // Check if the username already exists
     const userNameExists = await userService.doesUserNameExist(userName);
-    if (userNameExists.success && userNameExists.exists) {
+    if (userNameExists) {
       return res.status(409).json({ message: 'Username already exists' });
     }
-    await userService.createUser(userName, firstName, lastName, phoneNumber, password, type);
+    const createUserResult=await userService.createUser(userName, firstName, lastName, phoneNumber, password, type);
+    const { userId } = createUserResult;
     //after 1 hour refresh for another hour
     const token = jwt.sign({ userName }, SECRET_KEY, { expiresIn: '2m' });
-    res.status(201).json({ message: 'User registered successfully', token });
+    res.status(201).json({ message: 'User registered successfully',userId, token });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal server error' });
