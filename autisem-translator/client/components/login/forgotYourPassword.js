@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, AccessibilityInfo, findNodeHandle } from "react
 import { useNavigation } from "@react-navigation/native";
 import GenericForm from "../shared/form";
 import validations from "../../config/validations";
-import SendTheEmailService from "../../services/backendServices/sendTheEmailService";
+import SendTheEmailService from "../../services/backendServices/SendTheEmailService";
 
 // Assuming GenericForm and its fields are already designed with accessibility in mind
 

@@ -7,12 +7,15 @@ import { translationService } from '../../services/translationService';
 const translate = translationService.translate;
 import BannerNotification from '../shared/bannerNotification';
 
-const userTypeOptions = [
-  { name: translate('select user type'), value: '' },
-  { name: translate('therapist'), value: 'therapist' },
-  { name: translate('patient'), value: 'treated' },
-
-];
+const styles = StyleSheet.create({
+  container: {
+    padding: 20, // Adequate padding for touch targets
+  },
+  errorText: {
+    color: "red",
+    marginTop: 10,
+  },
+});
 
 const fields = [
   { name: 'userName', placeholder: translate('email'), type: 'text', rules: validations.email },
@@ -70,8 +73,12 @@ export default function RegistrationForm() {
   );
 }
 const styles = StyleSheet.create({
+  container: {
+    padding: 20, // Adequate padding for touch targets
+  },
   errorText: {
     color: "red",
     marginTop: 10,
   },
 });
+

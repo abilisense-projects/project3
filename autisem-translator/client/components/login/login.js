@@ -4,7 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import GenericForm from "../shared/form";
 import validations from "../../config/validations";
 import { translationService } from "../../services/translationService";
-import UserService from "../../services/backendServices/userService";
+import LoginService from "../../services/backendServices/loginService";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../redux/actions/userAction";
 
@@ -68,8 +68,7 @@ export default function Login() {
   const onSubmit = async (data) => {
     try {
       setIsLoading(true);
-      const response = await UserService.loginUser(data);
-      console.log("Response object:", response);
+      const response = await LoginService.createLogin(data);
       if (response.message === "User exists") {
         setErrorMessage(null);
       } else {
