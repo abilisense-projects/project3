@@ -4,19 +4,20 @@ import { useNavigation } from "@react-navigation/native";
 import GenericForm from "../shared/form";
 import validations from "../../config/validations";
 import { translationService } from "../../services/translationService";
-import LoginService from "../../services/backendServices/loginService";
+import UserService from "../../services/backendServices/userService";
 
+// Translation function alias for shorter usage
 const translate = translationService.translate;
 
+// StyleSheet for styling components
 const styles = StyleSheet.create({
   errorText: {
     color: "red",
     marginTop: 10,
   },
 });
-import { useDispatch } from "react-redux";
-import { setUser } from "../../redux/actions/userAction";
 
+// Form fields configuration
 const fields = [
   {
     name: "userName",
@@ -39,24 +40,33 @@ const fields = [
   },
 ];
 
+// Component function for handling user login
 export default function Login() {
-  const dispatch = useDispatch();
-
+  // Navigation hook for navigation functions
   const navigation = useNavigation();
+
+  // State variables for managing component state
   const [errorMessage, setErrorMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
   // const [rememberMe, setRememberMe] = useState(false);
 
+  // Form submission handler
   const onSubmit = async (data) => {
     console.log("Form data:", data);
     try {
+      // Set loading state to true to indicate that the login is in progress
       setIsLoading(true);
-      const response = await LoginService.createLogin(data);
+
+      // Send login request to the server
+      const response = await UserService.loginUser(data);
       console.log("Response object:", response);
+
       if (response.message === "User exists") {
+        // Clear error message if the user exists
         setErrorMessage(null);
       } else {
+        // Set error message if the login credentials are incorrect
         setErrorMessage("The email or password is incorrect, try again.");
       }
     } catch (error) {
@@ -65,11 +75,12 @@ export default function Login() {
       // Set loading state to false after the validation is complete
       setIsLoading(false);
     }
-    dispatch(setUser(data)); //This is for the meantime, untill the login request will be perfect.
   };
 
+  // Render the component
   return (
     <View>
+      {/* GenericForm component for entering login credentials */}
       <GenericForm
         fields={fields}
         onSubmit={onSubmit}
@@ -78,6 +89,8 @@ export default function Login() {
         submitButton={isLoading ? "Verifying..." : "login"}
         disabledButton={isLoading}
       ></GenericForm>
+
+      {/* Display error message if there is an error during login */}
       <Text style={styles.errorText}>{errorMessage}</Text>
 
       {/* <View style={{ flexDirection: "row", alignItems: "center" }}>

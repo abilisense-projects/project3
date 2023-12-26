@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Image, TouchableOpacity, StyleSheet, Button, ScrollView, AccessibilityInfo } from 'react-native';
+import { View, Image, TouchableOpacity, StyleSheet, Button, ScrollView } from 'react-native';
 
 import option1 from './background_options/115.jpg';
 import option2 from './background_options/113.jpg';
@@ -23,26 +23,22 @@ const BackgroundSelection = () => {
 
   const handleImageSelect = (imageId) => {
     setSelectedImage(imageId);
-    AccessibilityInfo.announceForAccessibility(`Image ${imageId} selected`);
   };
 
   const handleConfirm = () => {
     if (selectedImage !== null) {
       const selectedOption = backgroundOptions.find((option) => option.id === selectedImage);
       setConfirmedImage(selectedOption.image);
-      AccessibilityInfo.announceForAccessibility(`Confirmed Image ${selectedImage}`);
+      console.log(`Image ${selectedImage} selected`);
     } else {
-      AccessibilityInfo.announceForAccessibility('Please select an image');
+      console.log('Please select an image');
     }
   };
 
   const renderItem = (item) => (
     <TouchableOpacity
       onPress={() => handleImageSelect(item.id)}
-      style={[styles.imageContainer, selectedImage === item.id && styles.selectedImage]}
-      accessible
-      accessibilityLabel={`Background option ${item.id}`}
-      accessibilityHint="Double tap to select this background">
+      style={[styles.imageContainer, selectedImage === item.id && styles.selectedImage]}>
       <Image source={item.image} style={styles.image} />
     </TouchableOpacity>
   );
@@ -51,7 +47,7 @@ const BackgroundSelection = () => {
     <View style={styles.container}>
       {confirmedImage && <Image source={confirmedImage} style={styles.backgroundImage} />}
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        {backgroundOptions.map((option) => renderItem(option))}
+        {backgroundOptions.map(({ id, image }) => renderItem({ id, image, key: id }))}
       </ScrollView>
       <Button title="Confirm" onPress={handleConfirm} />
     </View>
@@ -95,3 +91,4 @@ const styles = StyleSheet.create({
 });
 
 export default BackgroundSelection;
+

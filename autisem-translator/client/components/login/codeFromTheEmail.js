@@ -3,10 +3,13 @@ import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import GenericForm from "../shared/form";
 import validations from "../../config/validations";
 import { useNavigation } from "@react-navigation/native";
-import CodeFromTheEmailService from "../../services/backendServices/codeFromTheEmailService";
+import sendTheEmailService from "../../services/backendServices/sendTheEmailService";
 import { translationService } from "../../services/translationService";
+
+// Translation function alias for shorter usage
 const translate = translationService.translate;
 
+// StyleSheet for styling components
 const styles = StyleSheet.create({
   modalContent: {
     backgroundColor: "white",
@@ -26,6 +29,7 @@ const styles = StyleSheet.create({
   },
 });
 
+// Form fields configuration
 const fields = [
   {
     name: "Code",
@@ -36,19 +40,26 @@ const fields = [
   },
 ];
 
+// Component function to handle verification code from email
 export default function CodeFromTheEmail(userName) {
+  // Navigation hook for navigation functions
   const navigation = useNavigation();
+
+  // State variables for managing component state
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  // State variables for handling button disablement and timer
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [disableUntil, setDisableUntil] = useState(0);
   const [remainingTime, setRemainingTime] = useState(0);
 
+  // Form submission handler
   const onSubmit = (data) => {
     HandleVerification(data);
   };
 
+  // Effect hook for managing button disablement and timer updates
   useEffect(() => {
     if (disableUntil > 0) {
       setIsButtonDisabled(true);
@@ -77,19 +88,23 @@ export default function CodeFromTheEmail(userName) {
     }
   }, [disableUntil]);
 
+  // Verification code handling function
   const HandleVerification = async (data) => {
     try {
       console.log(data.Code);
       // Set loading state to true to indicate that the code is being verified
       setIsLoading(true);
+
       // Send the verification code to the server for validation
-      const response = await CodeFromTheEmailService.createCodeFromEmail({
+      const response = await sendTheEmailService.createCodeFromEmail({
         code: data.Code,
       });
       console.log(response);
 
+      // Validate the server response
       const validationResult = validations.code.server.validate(response);
       console.log(validationResult);
+
       if (validationResult !== true) {
         // Set the error state with the validation message
         setError(validationResult);
@@ -112,13 +127,17 @@ export default function CodeFromTheEmail(userName) {
     }
   };
 
+  // Navigation function for handling "Forgot Password" press
   const handleForgotPasswordPress = () => {
     navigation.navigate("ForgotYourPassword");
   };
 
+  // Render the component
   return (
     <View>
       {console.log("isButtonDisabled:", isButtonDisabled)}
+
+      {/* GenericForm component for entering verification code */}
       <GenericForm
         fields={fields}
         onSubmit={onSubmit}
@@ -131,10 +150,16 @@ export default function CodeFromTheEmail(userName) {
         }
         disabledButton={isLoading || isButtonDisabled}
       ></GenericForm>
+
+      {/* Link to navigate to the "Forgot Password" screen */}
       <TouchableOpacity onPress={handleForgotPasswordPress}>
         <Text style={{ color: "blue" }}>No email sent?</Text>
       </TouchableOpacity>
+
+      {/* Display error message if there is an error */}
       {error && <Text style={styles.errorText}>{error}</Text>}
+
+      {/* Display remaining time if the button is disabled */}
       {disableUntil > 0 && (
         <Text style={{ marginTop: 10 }}>
           Time remaining: {Math.floor(remainingTime / 60000)} minutes and{" "}

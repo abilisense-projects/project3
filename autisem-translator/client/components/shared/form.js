@@ -18,31 +18,23 @@ const GenericForm = ({
     setValue,
     formState: { errors },
   } = useForm({ mode: "onChange" });
-
   const handleInputChange = async (field, text) => {
     setValue(field, text);
     await trigger(field);
   };
-
   const handlePickerChange = async (field, text) => {
     setValue(field, text);
     await trigger(field);
   };
-
   const handleLinkPress = (onPress) => {
     if (onPress) {
       onPress(navigation);
     }
   };
-
   return (
     <View style={styles.container}>
       {fields.map((field) => (
-        <View
-          key={field.name}
-          accessible
-          accessibilityLabel={field.placeholder}
-        >
+        <View key={field.name}>
           {field.type === "text" && (
             <Controller
               control={control}
@@ -53,7 +45,7 @@ const GenericForm = ({
                   placeholder={field.placeholder}
                   secure={field.secureTextEntry}
                   error={errors[field.name]}
-                />
+                ></TextInputField>
               )}
               name={field.name}
               rules={field.rules}
@@ -69,7 +61,6 @@ const GenericForm = ({
                   onValueChange={(itemValue) =>
                     handlePickerChange(field.name, itemValue)
                   }
-                  accessibilityLabel={field.placeholder}
                 >
                   {field.options.map((option) => (
                     <Picker.Item
@@ -86,10 +77,7 @@ const GenericForm = ({
             />
           )}
           {field.type === "link" && (
-            <Pressable
-              onPress={() => handleLinkPress(field.onPress)}
-              accessibilityRole="link"
-            >
+            <Pressable onPress={() => handleLinkPress(field.onPress)}>
               <Text style={styles.link}>{field.text}</Text>
             </Pressable>
           )}
@@ -98,16 +86,14 @@ const GenericForm = ({
           )}
         </View>
       ))}
-      {/* <GenericButton onPress={handleSubmit(onSubmit)} title={submitButton} /> */}
       <GenericButton
         onPress={handleSubmit(onSubmit)}
         title={submitButton}
         isDisabled={disabledButton}
-      />
+      ></GenericButton>
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -122,7 +108,7 @@ const styles = StyleSheet.create({
   link: {
     color: "blue",
     // textDecorationLine: "underline",
+    textDecorationLine: "none",
   },
 });
-
 export default GenericForm;
