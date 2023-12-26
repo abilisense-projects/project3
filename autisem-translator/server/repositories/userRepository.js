@@ -20,26 +20,32 @@ async function updateNew(userName, newPassword) {
   }
 }
 
-async function createUser(userName, firstName, lastName, phoneNumber, password,type) {
-  if(type=='therapist'){
-    const newTherapist = new Therapist({
-      userName,
-      firstName,
-      lastName,
-      phoneNumber,
-      password,
-  });
-  return newTherapist.save();
-  }
-  else if(type=='patient'){
-    const newPatient = new Patient({
-      userName,
-      firstName,
-      lastName,
-      phoneNumber,
-      password,
-  })
-  return newPatient.save();
+async function createUser(userName, firstName, lastName, phoneNumber, password, type) {
+  try {
+    let newUser;
+    if (type === 'therapist') {
+      newUser = new Therapist({
+        userName,
+        firstName,
+        lastName,
+        phoneNumber,
+        password,
+      });
+    } else if (type === 'patient') {
+      newUser = new Patient({
+        userName,
+        firstName,
+        lastName,
+        phoneNumber,
+        password,
+      });
+    }
+
+    const savedUser = await newUser.save();
+    return { success: true, userId: savedUser._id };
+  } catch (error) {
+    console.error(error);
+    return { success: false, message: 'Error creating user' };
   }
 }
 
@@ -62,12 +68,21 @@ async function loginUser(userName, password) {
   try {
     let therapist = await Therapist.findOne({ userName, password });
     let patient = await Patient.findOne({ userName, password });
-    return { user: therapist || patient };
+    
+    if (therapist) {
+      return { user: { ...therapist.toObject(), type: 'therapist' } };
+    } else if (patient) {
+      return { user: { ...patient.toObject(), type: 'patient' } };
+    } else {
+      return null;
+    }
   } catch (error) {
     console.error(error);
     throw new Error("Error logging in");
   }
 }
+
+
 
 // Check if a username already exists (for new user registration)
 async function doesUserNameExist(userName) {

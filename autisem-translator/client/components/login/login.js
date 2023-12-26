@@ -5,7 +5,8 @@ import GenericForm from "../shared/form";
 import validations from "../../config/validations";
 import { translationService } from "../../services/translationService";
 import UserService from "../../services/backendServices/userService";
-
+import { useDispatch } from "react-redux";
+import { setUser } from '../../redux/actions/userAction';
 // Translation function alias for shorter usage
 const translate = translationService.translate;
 
@@ -42,6 +43,7 @@ const fields = [
 
 // Component function for handling user login
 export default function Login() {
+  const dispatch = useDispatch();
   // Navigation hook for navigation functions
   const navigation = useNavigation();
 
@@ -60,9 +62,13 @@ export default function Login() {
 
       // Send login request to the server
       const response = await UserService.loginUser(data);
-      console.log("Response object:", response);
-
+      //dispatch(setUser(response.user));
+      dispatch(setUser({ ...response.user.user, _id: response.user.user._id }));
+      console.log("login",response.user.user)
       if (response.message === "User exists") {
+        if(response.user.user.type=="therapist"){
+          navigation.navigate("Therapist")
+        }
         // Clear error message if the user exists
         setErrorMessage(null);
       } else {
@@ -75,6 +81,7 @@ export default function Login() {
       // Set loading state to false after the validation is complete
       setIsLoading(false);
     }
+    
   };
 
   // Render the component

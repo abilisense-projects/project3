@@ -7,6 +7,7 @@ async function userLogin(req, res) {
   try {
     const { userName, password } = req.body;
     // Check if the required fields are provided
+    //i think you can remove this because we have validation on client side
     if (!userName || !password) {
       return res
         .status(200)
@@ -78,24 +79,14 @@ async function createUser(req, res) {
       req.body;
     // Check if the username already exists
     const userNameExists = await userService.doesUserNameExist(userName);
-
     if (userNameExists) {
-      return res.status(409).json({ message: "Username already exists" });
+      return res.status(409).json({ message: 'Username already exists' });
     }
-    const createUserResult = await userService.createUser(
-      userName,
-      firstName,
-      lastName,
-      phoneNumber,
-      password,
-      type
-    );
+    const createUserResult=await userService.createUser(userName, firstName, lastName, phoneNumber, password, type);
     const { userId } = createUserResult;
     //after 1 hour refresh for another hour
-    const token = jwt.sign({ userName }, SECRET_KEY, { expiresIn: "2m" });
-    res
-      .status(201)
-      .json({ message: "User registered successfully", userId, token });
+    const token = jwt.sign({ userName }, SECRET_KEY, { expiresIn: '2m' });
+    res.status(201).json({ message: 'User registered successfully',userId, token });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
