@@ -4,8 +4,8 @@ import GenericForm from '../shared/form';
 import validations from '../../config/validations';
 import UserService from '../../services/backendServices/userService';
 import { translationService } from '../../services/translationService';
-import BannerNotification from '../shared/bannerNotification';
 const translate = translationService.translate;
+import BannerNotification from '../shared/bannerNotification';
 
 const userTypeOptions = [
   { name: translate('select user type'), value: '' },
@@ -31,7 +31,11 @@ export default function RegistrationForm() {
 
   const onSubmit = async (data) => {
     try {
-      await UserService.createUser(data);
+      if (data.type === 'therapist') {
+        await UserService.createUser(data);
+      } else if (data.type === 'patient') {
+        await UserService.createUser(data);
+      }
       setNotification({ message: translate('created successfully'), severity: 'success' });
     } catch (error) {
       if (error.message === "Username conflict") {
@@ -65,6 +69,9 @@ export default function RegistrationForm() {
   );
 }
 const styles = StyleSheet.create({
+  container: {
+    padding: 20, // Adequate padding for touch targets
+  },
   errorText: {
     color: "red",
     marginTop: 10,

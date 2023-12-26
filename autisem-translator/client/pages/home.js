@@ -2,8 +2,8 @@ import React from "react";
 import { View, Button } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import GenericButton from "../components/shared/button";
-import UserService from "../services/backendServices/userService";
 import { translationService } from "../services/translationService";
+import UserService from "../services/backendServices/userService";
 const translate = translationService.translate;
 export default function HomeScreen() {
   const navigation = useNavigation();
