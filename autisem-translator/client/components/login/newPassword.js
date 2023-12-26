@@ -64,7 +64,7 @@ export default function NewPassword({ route }) {
       <GenericForm
         fields={fields}
         onSubmit={onSubmit}
-        submitButton="Save"
+        submitButton={translate("save")}
       ></GenericForm>
       <Text style={styles.errorText}>{message}</Text>
     </View>

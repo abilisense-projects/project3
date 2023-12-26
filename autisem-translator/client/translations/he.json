@@ -1,6 +1,5 @@
 {
     "greeting": "שלום",
-    "reset password": "איפוס סיסמא",
     "email": "דואר אלקטרוני",
     "first name": "שם פרטי",
     "last name": "שם משפחה",
@@ -38,5 +37,22 @@
     "created successfully": "נוצר בהצלחה",
     "don't have an account": "אין לך חשבון?",
     "register here": "הירשם כאן",
-    "username exists": "משתמש זה כבר קיים"
+    "username exists": "משתמש זה כבר קיים",
+    "enter your email": "הכנס דואר אלקטרוני",
+    "sending": "...שליחה",
+    "reset password": "איפוס סיסמה",
+    "enter your code": "הכנס קוד",
+    "try later": "...נסה מאוחר יותר",
+    "verifying": "...מאמת",
+    "next": "הבא",
+    "no email sent": "לא קבלת מייל?",
+    "save": "שמור",
+    "password changed": "הסיסמה שונתה!"
+
+
+
+
+
+
+
 }

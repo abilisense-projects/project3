@@ -4,6 +4,8 @@ import GenericForm from "../shared/form";
 import validations from "../../config/validations";
 import { useNavigation } from "@react-navigation/native";
 import CodeFromTheEmailService from "../../services/backendServices/codeFromTheEmailService";
+import { translationService } from "../../services/translationService";
+const translate = translationService.translate;
 
 const styles = StyleSheet.create({
   modalContent: {
@@ -28,11 +30,9 @@ const fields = [
   {
     name: "Code",
     state: "code",
-    placeholder: "Enter your code",
+    placeholder: translate("enter your code"),
     type: "text",
     rules: validations.code.client,
-    accessibilityLabel: "Verification Code Input", // Accessibility label for the input field
-    accessibilityHint: "Enter the code you received in your email", // Hint for screen readers
   },
 ];
 
@@ -63,10 +63,6 @@ export default function CodeFromTheEmail(userName) {
       }, 1000);
 
       // Set a timeout to enable the button when the timer expires
-      // const timeoutId = setTimeout(() => {
-      //   setIsButtonDisabled(false);
-      //   setDisableUntil(0);
-      // }, remainingTime);
       const enableTimeoutId = setTimeout(() => {
         setIsButtonDisabled(false);
         setDisableUntil(0);
@@ -74,8 +70,10 @@ export default function CodeFromTheEmail(userName) {
       }, remainingTime);
 
       // Clear the timeout when the component is unmounted
-      return () => clearTimeout(timeoutId);
-      clearTimeout(enableTimeoutId);
+      return () => {
+        clearTimeout(timeoutId);
+        clearTimeout(enableTimeoutId);
+      };
     }
   }, [disableUntil]);
 
@@ -126,11 +124,10 @@ export default function CodeFromTheEmail(userName) {
         onSubmit={onSubmit}
         submitButton={
           disableUntil
-            ? // ? `Disabled for ${Math.ceil(remainingTime / 1000)}s`
-              "try later"
+            ? translate("try later")
             : isLoading
-            ? "Verifying..."
-            : "Next"
+            ? translate("verifying")
+            : translate("next")
         }
         disabledButton={isLoading || isButtonDisabled}
       ></GenericForm>
@@ -140,7 +137,6 @@ export default function CodeFromTheEmail(userName) {
       {error && <Text style={styles.errorText}>{error}</Text>}
       {disableUntil > 0 && (
         <Text style={{ marginTop: 10 }}>
-          {/* Time remaining: {Math.ceil(remainingTime / 1000)} seconds */}
           Time remaining: {Math.floor(remainingTime / 60000)} minutes and{" "}
           {Math.ceil((remainingTime % 60000) / 1000)} seconds
         </Text>

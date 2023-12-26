@@ -4,10 +4,8 @@ import { useNavigation } from "@react-navigation/native";
 import GenericForm from "../shared/form";
 import validations from "../../config/validations";
 import SendTheEmailService from "../../services/backendServices/SendTheEmailService";
-
-// import { translationService } from "../../services/translationService";
-
-// const translate = translationService.translate;
+import { translationService } from "../../services/translationService";
+const translate = translationService.translate;
 
 const styles = StyleSheet.create({
   errorText: {
@@ -18,10 +16,8 @@ const styles = StyleSheet.create({
 
 const fields = [
   {
-    // name: "UserName",
     name: "userName",
-    // placeholder: translate("email"),
-    placeholder: "Enter your email",
+    placeholder: translate("enter your email"),
     type: "text",
     rules: validations.email,
   },
@@ -39,7 +35,6 @@ export default function ForgotYourPassword() {
       console.log(data.userName);
 
       const response = await SendTheEmailService.createSendTheEmail({
-        // to: data.userName,
         userName: data.userName,
       });
 
@@ -68,12 +63,12 @@ export default function ForgotYourPassword() {
       <GenericForm
         fields={fields}
         onSubmit={onSubmit}
-        // submitButton="Reset Password"
-        submitButton={isLoading ? "sending..." : "Reset Password"}
+        submitButton={
+          isLoading ? translate("sending") : translate("reset password")
+        }
         disabledButton={isLoading}
       ></GenericForm>
       <Text style={styles.errorText}>{errorMessage}</Text>
-      {/* <GenericForm fields={fields} onSubmit={onSubmit} submitButton={translate('reset password')}></GenericForm> */}
     </View>
   );
 }
