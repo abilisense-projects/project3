@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import GenericForm from "../shared/form";
 import validations from "../../config/validations";
@@ -8,6 +8,14 @@ import SendTheEmailService from "../../services/backendServices/SendTheEmailServ
 // import { translationService } from "../../services/translationService";
 
 // const translate = translationService.translate;
+
+const styles = StyleSheet.create({
+  errorText: {
+    color: "red",
+    marginTop: 10,
+  },
+});
+
 const fields = [
   {
     // name: "UserName",
@@ -22,6 +30,7 @@ const fields = [
 export default function ForgotYourPassword() {
   const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const onSubmit = async (data) => {
     try {
@@ -30,13 +39,19 @@ export default function ForgotYourPassword() {
       console.log(data.userName);
 
       const response = await SendTheEmailService.createSendTheEmail({
-        to: data.userName,
+        // to: data.userName,
+        userName: data.userName,
       });
 
       // Check the response from the server
       console.log(response);
-      navigation.navigate("CodeFromTheEmail", { userName: data.userName }); //send userName
-      console.log("Email sent successfully!");
+      if (response.message === "User exists") {
+        setErrorMessage(null);
+        navigation.navigate("CodeFromTheEmail", { userName: data.userName }); //send userName
+        console.log("Email sent successfully!");
+      } else {
+        setErrorMessage("User does not exist.");
+      }
     } catch (error) {
       console.error(
         "Error sending email:",
@@ -54,9 +69,10 @@ export default function ForgotYourPassword() {
         fields={fields}
         onSubmit={onSubmit}
         // submitButton="Reset Password"
-        submitButton={isLoading ? "sender..." : "Reset Password"}
-        disabled={isLoading}
+        submitButton={isLoading ? "sending..." : "Reset Password"}
+        disabledButton={isLoading}
       ></GenericForm>
+      <Text style={styles.errorText}>{errorMessage}</Text>
       {/* <GenericForm fields={fields} onSubmit={onSubmit} submitButton={translate('reset password')}></GenericForm> */}
     </View>
   );

@@ -1,5 +1,6 @@
 const therapistService = require("../services/therapistService");
 const jwt = require("jsonwebtoken");
+const { checkUserExists } = require("../services/userService");
 require("dotenv").config();
 const { SECRET_KEY } = process.env;
 
@@ -13,6 +14,12 @@ async function registerTherapist(req, res) {
       password,
       listOfPatients,
     } = req.body;
+    // Check if the username already exists
+    const userNameExists = await therapistService.checkUserNameExists(userName);
+    console.log(userNameExists);
+    if (userNameExists.success && userNameExists.exists) {
+      return res.status(409).json({ message: "Username already exists" });
+    }
     await therapistService.createTherapist(
       userName,
       firstName,
@@ -23,7 +30,6 @@ async function registerTherapist(req, res) {
     );
     //after 1 hour refresh for another hour
     const token = jwt.sign({ userName }, SECRET_KEY, { expiresIn: "2m" });
-    console.log(token);
     res
       .status(201)
       .json({ message: "Therapist registered successfully", token });

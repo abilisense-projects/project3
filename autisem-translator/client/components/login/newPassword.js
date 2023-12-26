@@ -1,22 +1,30 @@
-import React from "react";
-import { View } from "react-native";
+import React, { useState } from "react";
+import { View, StyleSheet, Text } from "react-native";
 import GenericForm from "../shared/form";
 import validations from "../../config/validations";
 import { useNavigation } from "@react-navigation/native";
 import PasswordUpdateService from "../../services/backendServices/PasswordUpdateService";
-// import { translationService } from "../../services/translationService";
-// const translate = translationService.translate;
+import { translationService } from "../../services/translationService";
+const translate = translationService.translate;
+
+const styles = StyleSheet.create({
+  errorText: {
+    // color: "red",
+    marginTop: 10,
+  },
+});
+
 const fields = [
   {
     name: "password",
-    // placeholder: translate("new password"),
+    placeholder: translate("new password"),
     type: "text",
     secureTextEntry: true,
     rules: validations.password,
   },
   {
     name: "repeatPassword",
-    // placeholder: translate("verify password"),
+    placeholder: translate("verify password"),
     type: "text",
     secureTextEntry: true,
     rules: validations.repeatPassword,
@@ -25,6 +33,7 @@ const fields = [
 
 export default function NewPassword({ route }) {
   const navigation = useNavigation();
+  const [message, setMessage] = useState(null);
 
   const onSubmit = async (data) => {
     try {
@@ -39,6 +48,11 @@ export default function NewPassword({ route }) {
       console.log("Form Data:", data, route);
 
       console.log(response);
+      console.log("response.Message", response.message);
+
+      if (response.message === "Success update") {
+        setMessage("Password Changed!");
+      }
     } catch (error) {
       console.error("Error updating password:", error);
       // Handle error, e.g., display an error message to the user
@@ -52,6 +66,7 @@ export default function NewPassword({ route }) {
         onSubmit={onSubmit}
         submitButton="Save"
       ></GenericForm>
+      <Text style={styles.errorText}>{message}</Text>
     </View>
   );
 }

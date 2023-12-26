@@ -26,14 +26,19 @@ export default function App() {
     <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ cardStyle: styles.container }}>
-          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen
+            name="Home"
+            component={HomeScreen}
+            accessibilityLabel="This is Home Page"
+          />
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="ForgotYourPassword" component={ForgotPassword} />
           <Stack.Screen name="NewPassword" component={NewPassword} />
           <Stack.Screen name="CodeFromTheEmail" component={CodeFromTheEmail} />
           <Stack.Screen name="Registration" component={RegistrationScreen} />
         </Stack.Navigator>
-        <Hamburger />
+        {/* <Hamburger accessible={true}
+          accessibilityLabel="Open navigation menu" /> */}
       </NavigationContainer>
     </Provider>
   );

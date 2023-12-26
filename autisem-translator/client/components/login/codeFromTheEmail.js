@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { View, StyleSheet, Text } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import GenericForm from "../shared/form";
 import validations from "../../config/validations";
 import { useNavigation } from "@react-navigation/native";
@@ -31,6 +31,8 @@ const fields = [
     placeholder: "Enter your code",
     type: "text",
     rules: validations.code.client,
+    accessibilityLabel: "Verification Code Input", // Accessibility label for the input field
+    accessibilityHint: "Enter the code you received in your email", // Hint for screen readers
   },
 ];
 
@@ -39,9 +41,43 @@ export default function CodeFromTheEmail(userName) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [disableUntil, setDisableUntil] = useState(0);
+  const [remainingTime, setRemainingTime] = useState(0);
+
   const onSubmit = (data) => {
     HandleVerification(data);
   };
+
+  useEffect(() => {
+    if (disableUntil > 0) {
+      setIsButtonDisabled(true);
+
+      // Calculate the remaining time until the button is enabled
+      const remainingTime = disableUntil - new Date().getTime();
+      setRemainingTime(remainingTime);
+
+      // Set a timeout to update the remaining time
+      const timeoutId = setInterval(() => {
+        setRemainingTime((prevTime) => prevTime - 1000);
+      }, 1000);
+
+      // Set a timeout to enable the button when the timer expires
+      // const timeoutId = setTimeout(() => {
+      //   setIsButtonDisabled(false);
+      //   setDisableUntil(0);
+      // }, remainingTime);
+      const enableTimeoutId = setTimeout(() => {
+        setIsButtonDisabled(false);
+        setDisableUntil(0);
+        clearInterval(timeoutId); // Clear the countdown interval
+      }, remainingTime);
+
+      // Clear the timeout when the component is unmounted
+      return () => clearTimeout(timeoutId);
+      clearTimeout(enableTimeoutId);
+    }
+  }, [disableUntil]);
 
   const HandleVerification = async (data) => {
     try {
@@ -52,13 +88,18 @@ export default function CodeFromTheEmail(userName) {
       const response = await CodeFromTheEmailService.createCodeFromEmail({
         code: data.Code,
       });
-
       console.log(response);
+
       const validationResult = validations.code.server.validate(response);
       console.log(validationResult);
       if (validationResult !== true) {
         // Set the error state with the validation message
         setError(validationResult);
+
+        if (response.disableUntil) {
+          // Update the state to disable the button and set the disableUntil time
+          setDisableUntil(response.disableUntil);
+        }
       } else {
         // Reset the error state if the validation passes
         setError(null);
@@ -73,15 +114,37 @@ export default function CodeFromTheEmail(userName) {
     }
   };
 
+  const handleForgotPasswordPress = () => {
+    navigation.navigate("ForgotYourPassword");
+  };
+
   return (
-    <View style={styles.modalContent}>
+    <View>
+      {console.log("isButtonDisabled:", isButtonDisabled)}
       <GenericForm
         fields={fields}
         onSubmit={onSubmit}
-        submitButton={isLoading ? "Verifying..." : "Next"}
-        disabled={isLoading}
+        submitButton={
+          disableUntil
+            ? // ? `Disabled for ${Math.ceil(remainingTime / 1000)}s`
+              "try later"
+            : isLoading
+            ? "Verifying..."
+            : "Next"
+        }
+        disabledButton={isLoading || isButtonDisabled}
       ></GenericForm>
+      <TouchableOpacity onPress={handleForgotPasswordPress}>
+        <Text style={{ color: "blue" }}>No email sent?</Text>
+      </TouchableOpacity>
       {error && <Text style={styles.errorText}>{error}</Text>}
+      {disableUntil > 0 && (
+        <Text style={{ marginTop: 10 }}>
+          {/* Time remaining: {Math.ceil(remainingTime / 1000)} seconds */}
+          Time remaining: {Math.floor(remainingTime / 60000)} minutes and{" "}
+          {Math.ceil((remainingTime % 60000) / 1000)} seconds
+        </Text>
+      )}
     </View>
   );
 }

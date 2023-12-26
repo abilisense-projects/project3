@@ -76,7 +76,7 @@ export default function Login() {
         // submitButton={translate("login")}
         navigation={navigation}
         submitButton={isLoading ? "Verifying..." : "login"}
-        disabled={isLoading}
+        disabledButton={isLoading}
       ></GenericForm>
       <Text style={styles.errorText}>{errorMessage}</Text>
 
