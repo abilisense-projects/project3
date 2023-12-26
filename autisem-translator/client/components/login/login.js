@@ -53,8 +53,13 @@ export default function Login() {
     try {
       setIsLoading(true);
       const response = await UserService.loginUser(data);
-      console.log("Response object:", response);
+      //dispatch(setUser(response.user));
+      dispatch(setUser({ ...response.user.user, _id: response.user.user._id }));
+      console.log("login",response.user.user)
       if (response.message === "User exists") {
+        if(response.user.user.type=="therapist"){
+          navigation.navigate("Therapist")
+        }
         setErrorMessage(null);
       } else {
         setErrorMessage("The email or password is incorrect, try again.");
@@ -65,7 +70,7 @@ export default function Login() {
       // Set loading state to false after the validation is complete
       setIsLoading(false);
     }
-    dispatch(setUser(data)); //This is for the meantime, untill the login request will be perfect.
+    
   };
 
   return (
