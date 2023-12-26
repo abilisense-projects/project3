@@ -9,7 +9,6 @@ import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../../redux/actions/userAction';
 const translate = translationService.translate;
-import BannerNotification from '../shared/bannerNotification';
 
 const userTypeOptions = [
   { name: translate('select user type'), value: '' },
