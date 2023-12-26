@@ -1,11 +1,14 @@
+// Import the nodemailer library for sending emails and the userService for user-related operations
 const nodemailer = require("nodemailer");
-// require("dotenv").config();
+const userService = require("../services/userService");
 
-// const port = 3001; // or any other port you prefer
+// Declare global variables for verification code and attempts
+let verificationCode;
+let verificationAttempts = 0;
 
+// Function to generate a random 6-digit number
 const generateRandomNumber = () => {
   let newNumbers = "";
-  // Generate 6 random numbers
   while (newNumbers.length < 6) {
     const randomNumber = Math.floor(Math.random() * 9) + 1;
     newNumbers = newNumbers + randomNumber;
@@ -13,50 +16,106 @@ const generateRandomNumber = () => {
   return newNumbers;
 };
 
-let verificationCode;
+// Function to send a verification email
+const sendEmail = async (req, res) => {
+  // Reset verification attempts counter
+  verificationAttempts = 0;
 
-const sendEmail = (req, res) => {
-  console.log(req.body);
-  const { to } = req.body;
-  console.log(to);
-  verificationCode = generateRandomNumber();
+  // Extract username from the request body
+  const { userName } = req.body;
+  console.log(userName);
 
-  // Create a Nodemailer transporter
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: "glowing123456@gmail.com",
-      pass: process.env.PASSWORD,
-    },
-  });
+  //  Check if the required fields are provided
+  if (!userName) {
+    return (
+      res
+        .status(200)
+        //400
+        .json({ message: "Username are required" })
+    );
+  }
 
-  const mailOptions = {
-    from: "glowing123456@gmail.com",
-    to,
-    subject: "Verification Code",
-    text: `Your verification code is: ${verificationCode}`,
-  };
+  // Check if the username already exists in the userService
+  const userNameExist = await userService.doesUserNameExist(userName);
+  if (userNameExist) {
+    // User exists, return the user details
+    res.status(200).json({ message: "User exists", userNameExist });
 
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.error("Error sending email:", error);
-      return res.status(500).json({ error: error.toString() });
-    }
+    console.log(req.body);
 
-    // You can optionally save the verification code in your database for later verification
-    // ...
+    // Extract email address (username) from the request body
+    let to = userName;
+    console.log(to);
+    verificationCode = generateRandomNumber();
 
-    res.status(200).json("Email sent: " + info.response);
-  });
+    // Create a Nodemailer transporter using Gmail credentials
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "glowing123456@gmail.com",
+        // user: "doNotReplay@gmail.com",
+        pass: process.env.PASSWORD,
+      },
+    });
+
+    // Configure email options
+    const mailOptions = {
+      from: "glowing123456@gmail.com",
+      to,
+      // userName,
+      subject: "Verification Code",
+      text: `Your verification code is: ${verificationCode}`,
+    };
+
+    // Send the email
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error("Error sending email:", error);
+        return res.status(500).json({ error: error.toString() });
+      }
+
+      // Email sent successfully
+      res.status(200).json("Email sent: " + info.response);
+    });
+  } else {
+    // User does not exist, return a message to register
+    res.status(200).json({ message: "User does not exist. Please register." });
+  }
 };
 
+// Define constants for maximum verification attempts and disable duration
+const maxAttempts = 10;
+const disableDuration = 2 * 60 * 1000; // 30 minutes in milliseconds
+
+// Function to verify the received verification code
 const verifyCode = (req, res) => {
+  // Increment verification attempts counter
+  verificationAttempts = verificationAttempts + 1;
+  console.log("attempts: ", verificationAttempts);
+
+  // Check if the maximum attempts have been reached
+  if (verificationAttempts >= maxAttempts) {
+    verificationAttempts = 0;
+    const currentTime = new Date().getTime();
+    console.log("time:", currentTime);
+    const disableUntil = currentTime + disableDuration;
+    console.log("disableUntil: ", disableUntil);
+
+    // Return a message indicating the maximum attempts reached and the time until reactivation
+    return res.status(200).json({
+      message: "Maximum attempts reached. Please try again later.",
+      disableUntil,
+    });
+  }
+
+  // Extract the verification code from the request body
   const { code } = req.body;
 
   console.log("Received code:", code);
   console.log("Stored verificationCode:", verificationCode);
-  const storedCode = verificationCode; // Replace with actual retrieval logic
 
+  const storedCode = verificationCode;
+  // Compare the received code with the stored verificationCode
   if (code === storedCode) {
     res.status(200).json("Code is valid");
   } else {
@@ -66,4 +125,5 @@ const verifyCode = (req, res) => {
   }
 };
 
+// Export the functions for use in other modules
 module.exports = { sendEmail, generateRandomNumber, verifyCode };

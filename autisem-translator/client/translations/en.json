@@ -1,6 +1,5 @@
 {
   "greeting": "Hello",
-  "reset password": "reset password",
   "email": "email",
   "first name": "first name",
   "last name": "last name",
@@ -38,5 +37,17 @@
   "created successfully": "created successfully",
   "don't have an account": "Don't have an account?",
   "register here": "Register here",
-  "username exists": "Username already exists"
+  "username exists": "Username already exists",
+  "enter your email": "Enter your email",
+  "sending": "Sending...",
+  "reset password": "Reset password",
+  "enter your code": "Enter your code",
+  "try later": "Try later...",
+  "verifying": "Verifying...",
+  "next": "Next",
+  "no email sent": "No email sent?",
+  "save": "Save",
+  "password changed": "Password Changed!"
+
+
 }

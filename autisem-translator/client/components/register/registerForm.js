@@ -9,6 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../../redux/actions/userAction';
 const translate = translationService.translate;
+import BannerNotification from '../shared/bannerNotification';
 
 const userTypeOptions = [
   { name: translate('select user type'), value: '' },
@@ -78,6 +79,9 @@ export default function RegistrationForm() {
   );
 }
 const styles = StyleSheet.create({
+  container: {
+    padding: 20, // Adequate padding for touch targets
+  },
   errorText: {
     color: "red",
     marginTop: 10,
