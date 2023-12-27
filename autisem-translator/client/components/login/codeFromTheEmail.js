@@ -22,6 +22,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowRadius: 2,
     elevation: 3,
+    marginTop: 40, // Adjust this value as needed
   },
   errorText: {
     color: "red",
@@ -134,7 +135,7 @@ export default function CodeFromTheEmail(userName) {
 
   // Render the component
   return (
-    <View>
+    <View style={styles.modalContent}>
       {console.log("isButtonDisabled:", isButtonDisabled)}
 
       {/* GenericForm component for entering verification code */}
