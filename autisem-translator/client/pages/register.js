@@ -4,7 +4,7 @@ import RegistrationForm from '../components/register/registerForm';
 
 export default function RegistrationScreen() {
     return (
-        <View>
+        <View accessible={true}>
             <RegistrationForm></RegistrationForm>
         </View>
     );
