@@ -26,21 +26,26 @@ export default function App() {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <Stack.Navigator screenOptions={{ cardStyle: styles.container }}>
+        <Stack.Navigator
+          screenOptions={{
+            cardStyle: styles.container,
+            gestureEnabled: false, // Disable gestures to prevent navigation by swiping
+            headerShown: false, // Hide the header for all screens
+          }}
+        >
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="ForgotYourPassword" component={ForgotPassword} />
           <Stack.Screen name="NewPassword" component={NewPassword} />
           <Stack.Screen name="CodeFromTheEmail" component={CodeFromTheEmail} />
           <Stack.Screen name="Registration" component={RegistrationScreen} />
+          <Stack.Screen name="Hamburger" component={Hamburger} />
           <Stack.Screen name="Therapist" component={TherapistScreen} />
         </Stack.Navigator>
-        <Hamburger />
       </NavigationContainer>
     </Provider>
   );
 }
-//name of fanction.
 
 const styles = StyleSheet.create({
   container: {

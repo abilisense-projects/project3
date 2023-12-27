@@ -1,3 +1,4 @@
+const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const userService = require("../services/userService");
 require("dotenv").config();
@@ -77,16 +78,30 @@ async function createUser(req, res) {
   try {
     const { userName, firstName, lastName, phoneNumber, password, type } =
       req.body;
+
+    // Hash the password before storing it
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     // Check if the username already exists
     const userNameExists = await userService.doesUserNameExist(userName);
     if (userNameExists) {
-      return res.status(409).json({ message: 'Username already exists' });
+      return res.status(409).json({ message: "Username already exists" });
     }
-    const createUserResult=await userService.createUser(userName, firstName, lastName, phoneNumber, password, type);
+    const createUserResult = await userService.createUser(
+      userName,
+      firstName,
+      lastName,
+      phoneNumber,
+      hashedPassword, // Store the hashed password
+      // password,
+      type
+    );
     const { userId } = createUserResult;
     //after 1 hour refresh for another hour
-    const token = jwt.sign({ userName }, SECRET_KEY, { expiresIn: '2m' });
-    res.status(201).json({ message: 'User registered successfully',userId, token });
+    const token = jwt.sign({ userName }, SECRET_KEY, { expiresIn: "2m" });
+    res
+      .status(201)
+      .json({ message: "User registered successfully", userId, token });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });

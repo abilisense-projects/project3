@@ -60,11 +60,13 @@ const sendEmail = async (req, res) => {
 
     // Configure email options
     const mailOptions = {
-      from: "glowing123456@gmail.com",
+      // from: "glowing123456@gmail.com",
+      from: "Abilisense <no-reply@abilisense.com>", // Set your no-reply email address here
       to,
       // userName,
       subject: "Verification Code",
       text: `Your verification code is: ${verificationCode}`,
+      // replyTo: "glowing123456@gmail.com", // Set a different email for replies, if needed
     };
 
     // Send the email
