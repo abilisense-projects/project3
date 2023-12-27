@@ -15,6 +15,8 @@ import store from "./redux/store";
 import TherapistScreen from "./pages/therapist";
 
 export default function App() {
+  const Stack = createStackNavigator();
+
   return (
     <Provider store={store}>
       <NavigationContainer>
