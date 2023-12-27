@@ -1,12 +1,8 @@
 const express = require('express');
-const { registerTherapist, getTherapistDetailes } = require('../controllers/therapistController') ;
-const authenticateJWT = require('../middlewares/authentication');
+const { getTherapistPatients} = require('../controllers/therapistController') ;
 
 const therapistRouter = express.Router();
 
-//here i get the token
-therapistRouter.post('/register', registerTherapist);
-//here i use the token
-therapistRouter.get('/get',authenticateJWT, getTherapistDetailes);
+therapistRouter.get('/:therapistId/patients', getTherapistPatients);
 
 module.exports = therapistRouter;

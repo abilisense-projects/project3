@@ -31,29 +31,35 @@ async function createUser(
   password,
   type
 ) {
-  // Hash the password before storing it
-  const hashedPassword = await bcrypt.hash(password, 10);
+  try {
+    // Hash the password before storing it
+    const hashedPassword = await bcrypt.hash(password, 10);
+    let newUser;
+    if (type === "therapist") {
+      newUser = new Therapist({
+        userName,
+        firstName,
+        lastName,
+        phoneNumber,
+        password: hashedPassword, // Store the hashed password
+        // password,
+      });
+    } else if (type === "patient") {
+      newUser = new Patient({
+        userName,
+        firstName,
+        lastName,
+        phoneNumber,
+        password: hashedPassword, // Store the hashed password
+        // password,
+      });
+    }
 
-  if (type == "therapist") {
-    const newTherapist = new Therapist({
-      userName,
-      firstName,
-      lastName,
-      phoneNumber,
-      password: hashedPassword, // Store the hashed password
-      // password,
-    });
-    return newTherapist.save();
-  } else if (type == "patient") {
-    const newPatient = new Patient({
-      userName,
-      firstName,
-      lastName,
-      phoneNumber,
-      password: hashedPassword, // Store the hashed password
-      // password,
-    });
-    return newPatient.save();
+    const savedUser = await newUser.save();
+    return { success: true, userId: savedUser._id };
+  } catch (error) {
+    console.error(error);
+    return { success: false, message: "Error creating user" };
   }
 }
 
@@ -74,37 +80,34 @@ async function getUser(userName) {
 
 async function loginUser(userName, password) {
   try {
-    // let therapist = await Therapist.findOne({ userName, password });
-    // let patient = await Patient.findOne({ userName, password });
-    // return { user: therapist || patient };
     let therapist = await Therapist.findOne({ userName });
     let patient = await Patient.findOne({ userName });
-    console.log("userName:", userName);
+
     if (!therapist && !patient) {
       return { user: null, message: "User not found" };
     }
     const user = therapist || patient;
-    console.log("User:", user);
-    console.log("UserPassword:", user.password);
 
-    if (!user.password) {
-      return { user: null, message: "User password not found" };
-    }
-
-    // Compare the entered password with the hashed password stored in the database using bcrypt
-    const passwordMatch = await bcrypt.compare(password, user.password);
-
-    console.log("Password match:", passwordMatch);
-
-    if (passwordMatch) {
-      return { user };
-    } else {
-      return { user: null, message: "Incorrect password" };
+    if (user) {
+      if (comparePassword(password, user.password)) {
+        if (therapist) {
+          return { user: { ...therapist.toObject(), type: "therapist" } };
+        } else if (patient) {
+          return { user: { ...patient.toObject(), type: "patient" } };
+        }
+      }
     }
   } catch (error) {
     console.error(error);
     throw new Error("Error logging in");
   }
+}
+
+async function comparePassword(password, hashedPassword) {
+  // Compare the entered password with the hashed password stored in the database using bcrypt
+  const passwordMatch = await bcrypt.compare(password, hashedPassword);
+  console.log("Password match:", passwordMatch);
+  return passwordMatch;
 }
 
 // Check if a username already exists (for new user registration)

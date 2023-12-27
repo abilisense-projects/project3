@@ -6,7 +6,8 @@ const therapistSchema = new mongoose.Schema({
   lastName:String,
   phoneNumber:String,
   password: String,
-  listOfPatients:[String],
+  // listOfPatients:[String],
+  listOfPatients: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Patient' }],
 });
 
 const Therapist = mongoose.model('Therapist', therapistSchema,'therapists');

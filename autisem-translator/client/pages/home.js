@@ -22,7 +22,10 @@ export default function HomeScreen() {
         title={translate("login")}
         onPress={() => navigateToScreen("Login")}
       />
-      <Button title="details" onPress={() => UserService.getUserDetails()} />
+      {/* <Button
+        title="details"
+        onPress={() => UserService.getUserDetails()}
+      /> */}
       {/* <Button
         title="Record"
         onPress={() => navigateToScreen("Record")}

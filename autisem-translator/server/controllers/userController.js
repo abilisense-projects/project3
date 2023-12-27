@@ -8,6 +8,7 @@ async function userLogin(req, res) {
   try {
     const { userName, password } = req.body;
     // Check if the required fields are provided
+    //i think you can remove this because we have validation on client side
     if (!userName || !password) {
       return res
         .status(200)
@@ -83,7 +84,6 @@ async function createUser(req, res) {
 
     // Check if the username already exists
     const userNameExists = await userService.doesUserNameExist(userName);
-
     if (userNameExists) {
       return res.status(409).json({ message: "Username already exists" });
     }
