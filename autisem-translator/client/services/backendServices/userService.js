@@ -45,7 +45,7 @@ const UserService = {
       const newToken = response.headers["x-new-token"];
       //only if diffrent from old token
       if (newToken && newToken !== storedToken) {
-        console.log("new token", newToken)
+        console.log("new token", newToken);
         storage.set("token", newToken);
         storedToken = storage.getString("token");
         console.log("storedTokennnnnnnn", storedToken);
@@ -72,7 +72,10 @@ const UserService = {
 
   loginUser: async (userLogin) => {
     try {
-      const response = await axios.post(`${REACT_APP_BASE_URL}/user/login`, userLogin);
+      const response = await axios.post(
+        `${REACT_APP_BASE_URL}/user/login`,
+        userLogin
+      );
       const { message, user } = response.data;
       if (message === "User exists") {
         // Handle the user details as needed
