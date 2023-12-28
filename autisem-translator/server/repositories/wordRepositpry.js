@@ -5,7 +5,7 @@ const Recording = require('../services/recordingService');
 async function createWord(recording, patientID, translation,) {
     try {
         const recordingLink = Recording.uploadAudio('recording', recording);
-        console.log(recordingLink);
+        console.log('recordingLink',recordingLink);
         const newWord = new Word({
             recordingLink,
             patientID,
@@ -18,7 +18,6 @@ async function createWord(recording, patientID, translation,) {
     }
 
 }
-
 
 async function getAllWords() {
     try {
