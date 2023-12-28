@@ -15,8 +15,12 @@ import store from "./redux/store";
 import TherapistScreen from "./pages/therapist";
 
 export default function App() {
-  const [recordedData, setRecordedData] = useState(null);
-
+  translationService.initializeLanguage();
+  useEffect(() => {
+    if (translationService.getLanguage() === "he") {
+      document.dir = "rtl";
+    }
+  }, []);
   const Stack = createStackNavigator();
   return (
     <Provider store={store}>
