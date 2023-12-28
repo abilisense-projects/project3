@@ -1,11 +1,11 @@
-import React from 'react';
-import { View } from 'react-native';
-import RegistrationForm from '../components/register/registerForm';
+import React from "react";
+import { View } from "react-native";
+import RegistrationForm from "../components/register/registerForm";
 
 export default function RegistrationScreen() {
-    return (
-        <View accessible={true}>
-            <RegistrationForm></RegistrationForm>
-        </View>
-    );
+  return (
+    <View accessible={true}>
+      <RegistrationForm></RegistrationForm>
+    </View>
+  );
 }

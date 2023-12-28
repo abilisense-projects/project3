@@ -34,6 +34,7 @@ const BackgroundSelection = () => {
       console.log('Please select an image');
     }
   };
+  
 
   const renderItem = (item) => (
     <TouchableOpacity
@@ -52,6 +53,7 @@ const BackgroundSelection = () => {
       <Button title="Confirm" onPress={handleConfirm} />
     </View>
   );
+  
 };
 
 const styles = StyleSheet.create({
@@ -92,3 +94,4 @@ const styles = StyleSheet.create({
 
 export default BackgroundSelection;
 
+  

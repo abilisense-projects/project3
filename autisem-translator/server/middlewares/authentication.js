@@ -17,6 +17,7 @@ function authenticateJWT(req, res, next) {
       if (err.name === 'TokenExpiredError') {
         // Token is expired, issue a new one
         const newToken = jwt.sign({userName}, SECRET_KEY, { expiresIn: '2m' });
+        console.log("newToken",newToken)
         res.setHeader('X-New-Token', newToken);
         req.user = { userName }; 
         return next();

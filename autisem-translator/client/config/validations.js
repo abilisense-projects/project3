@@ -3,7 +3,7 @@ const validations = {
   email: {
     required: translationService.translate("email is required"),
     pattern: {
-      value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+      value: /\S+@\S+\.\S+/,
       message: translationService.translate("email is invalid"),
     },
   },
@@ -79,6 +79,7 @@ const validations = {
         message: "Code number must not exceed 6 digits.",
       },
     },
+
     server: {
       validate: (value) => {
         // Assume 'value' is the response from the server
