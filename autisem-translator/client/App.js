@@ -15,7 +15,6 @@ import store from "./redux/store";
 import TherapistScreen from "./pages/therapist";
 
 export default function App() {
-  const [recordedData, setRecordedData] = useState(null);
 
   const Stack = createStackNavigator();
   return (
