@@ -77,7 +77,9 @@ export default function NewPassword({ route }) {
       // Check the response from the server
       if (response.message === "Success update") {
         // Set a success message to be displayed
-        setMessage("Password Changed!");
+        navigation.navigate("Login");
+      } else {
+        setMessage("Update password failed");
       }
     } catch (error) {
       // Log and handle errors, e.g., display an error message to the user
