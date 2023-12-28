@@ -79,6 +79,7 @@ export default function Login() {
       //dispatch(setUser(response.user));
       dispatch(setUser({ ...response.user.user, _id: response.user.user._id }));
       console.log("login",response.user.user)
+
       if (response.message === "User exists") {
         if(response.user.user.type=="therapist"){
           navigation.navigate("Therapist")
