@@ -17,26 +17,12 @@ import { useState } from "react";
 import RecordAudio from "./components/recording/recording";
 import { Button } from "react-native";
 export default function App() {
-  const Stack = createStackNavigator();
-  const [recordedData, setRecordedData] = useState(null);
+const Stack = createStackNavigator();
 
-
-  const uploadToServer = async () => {
-    try {
-      if (recordedData) {
-        const response = await backendService.uploadRecording('patient/uploadRecording', recordedData);
-        console.log('Recording uploaded to server', response);
-      } else {
-        console.warn('No recording data available.');
-      }
-    } catch (error) {
-      console.error('Error uploading recording', error);
-    }
-  }
 
   return (
     <Provider store={store}>
-      {/* <NavigationContainer>
+      { <NavigationContainer>
         <Stack.Navigator
           screenOptions={{
             cardStyle: styles.container,
@@ -54,9 +40,8 @@ export default function App() {
           <Stack.Screen name="Therapist" component={TherapistScreen} />
 
         </Stack.Navigator>
-      </NavigationContainer> */}
-      <RecordAudio setRecordedData={setRecordedData}>  </RecordAudio>
-      <Button onPress={uploadToServer}>שליחה לשרת</Button>
+      </NavigationContainer> }
+
 
     </Provider>
   )

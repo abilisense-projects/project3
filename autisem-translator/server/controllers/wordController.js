@@ -5,7 +5,6 @@ async function createWord(req, res) {
         const patientID = req.body.patientID; 
         const recording = req.files.recording ? req.files.recording[0] : null; 
         const translation = req.body.translation;  
-        console.log(translation);
         await wordService.createWord(patientID, recording, translation);
         res.status(201).json({ message: 'word added saccesfully to the dictionary' });
     } catch (error) {

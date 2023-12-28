@@ -19,10 +19,13 @@ async function createWord(recording, patientID, translation,) {
 
 }
 
+
+
+
 async function getAllWords() {
     try {
         const words = await Word.find({});
-        return { success: true, words: words };
+        return { success: true, words:words};
     } catch (error) {
         console.error(error);
         return { success: false, message: 'Internal server error' };
