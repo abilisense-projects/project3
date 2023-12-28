@@ -77,6 +77,7 @@ export default function Login() {
       // Send login request to the server
       const response = await UserService.loginUser(data);
       dispatch(setUser({ ...response.user.user, _id: response.user.user._id }));
+
       if (response.message === "User exists") {
         if(response.user.user.type=="therapist"){
           navigation.navigate("Therapist")

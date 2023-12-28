@@ -1,4 +1,3 @@
-// therapistService.js
 
 const wordRepository = require('../repositories/wordRepositpry');
 

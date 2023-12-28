@@ -13,13 +13,16 @@ import Hamburger from "./components/side_bar/hamburger";
 import { Provider, useSelector } from "react-redux";
 import store from "./redux/store";
 import TherapistScreen from "./pages/therapist";
-
+import { useState } from "react";
+import RecordAudio from "./components/recording/recording";
+import { Button } from "react-native";
 export default function App() {
+const Stack = createStackNavigator();
 
-  const Stack = createStackNavigator();
+
   return (
     <Provider store={store}>
-      <NavigationContainer>
+      { <NavigationContainer>
         <Stack.Navigator
           screenOptions={{
             cardStyle: styles.container,
@@ -35,12 +38,14 @@ export default function App() {
           <Stack.Screen name="Registration" component={RegistrationScreen} />
           <Stack.Screen name="Hamburger" component={Hamburger} />
           <Stack.Screen name="Therapist" component={TherapistScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </Provider>
-  );
-}
 
+        </Stack.Navigator>
+      </NavigationContainer> }
+
+
+    </Provider>
+  )
+}
 const styles = StyleSheet.create({
   container: {
     flex: 1,
