@@ -13,6 +13,7 @@ import Hamburger from "./components/side_bar/hamburger";
 import { Provider, useSelector } from "react-redux";
 import store from "./redux/store";
 import TherapistScreen from "./pages/therapist";
+import PatientPage from "./pages/patientPage";
 
 export default function App() {
 
@@ -35,6 +36,7 @@ export default function App() {
           <Stack.Screen name="Registration" component={RegistrationScreen} />
           <Stack.Screen name="Hamburger" component={Hamburger} />
           <Stack.Screen name="Therapist" component={TherapistScreen} />
+          <Stack.Screen name="Patient" component={PatientPage} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

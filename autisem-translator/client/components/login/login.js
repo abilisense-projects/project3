@@ -81,6 +81,9 @@ export default function Login() {
         if(response.user.user.type=="therapist"){
           navigation.navigate("Therapist")
         }
+        else {
+          navigation.navigate("Patient");
+        }
         // Clear error message if the user exists
         setErrorMessage(null);
       } else {
