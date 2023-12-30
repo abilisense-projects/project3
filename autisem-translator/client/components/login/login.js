@@ -1,106 +1,122 @@
-import React, { useState, useEffect, useRef } from "react";
-import { View, StyleSheet, Text, AccessibilityInfo, findNodeHandle } from "react-native";
+import React, { useState } from "react";
+import { View, StyleSheet, Text } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import GenericForm from "../shared/form";
 import validations from "../../config/validations";
 import { translationService } from "../../services/translationService";
-import LoginService from "../../services/backendServices/loginService";
+import UserService from "../../services/backendServices/userService";
 import { useDispatch } from "react-redux";
-import { setUser } from "../../redux/actions/userAction";
-
+import { setUser } from '../../redux/actions/userAction';
+// Translation function alias for shorter usage
 const translate = translationService.translate;
 
+// StyleSheet for styling components
 const styles = StyleSheet.create({
-  container: {
-    padding: 20, // Providing padding for better touch targets
-  },
   errorText: {
     color: "red",
     marginTop: 10,
   },
-  loadingText: {
-    marginTop: 10, // Maintain touch target size
-  },
+  // modalContent: {
+  //   backgroundColor: "white",
+  //   padding: 20,
+  //   borderRadius: 10,
+  //   borderWidth: 1,
+  //   borderColor: "#ccc",
+  //   shadowColor: "#000",
+  //   shadowOffset: { width: 0, height: 2 },
+  //   shadowOpacity: 0.5,
+  //   shadowRadius: 2,
+  //   elevation: 3,
+  // marginTop: 40, // Adjust this value as needed
+
+  // },
 });
 
+// Form fields configuration
 const fields = [
   {
     name: "userName",
     placeholder: translate("email"),
     type: "text",
     rules: validations.email,
-    accessibilityLabel: translate("Email Input"), // Accessibility label
-    accessibilityHint: translate("Enter your email address"), // Accessibility hint
   },
   {
     name: "password",
     placeholder: translate("password"),
-    type: "password",
+    type: "text",
     secureTextEntry: true,
     rules: validations.password,
-    accessibilityLabel: translate("Password Input"),
-    accessibilityHint: translate("Enter your password"),
   },
   {
     name: "forgotPassword",
     type: "link",
     onPress: (navigation) => navigation.navigate("ForgotYourPassword"),
     text: translate("forgot your password"),
-    accessibilityLabel: translate("Forgot Password Link"),
-    accessibilityHint: translate("Navigates to password recovery screen"),
   },
 ];
 
+// Component function for handling user login
 export default function Login() {
   const dispatch = useDispatch();
+  // Navigation hook for navigation functions
   const navigation = useNavigation();
+
+  // State variables for managing component state
   const [errorMessage, setErrorMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const errorRef = useRef(null);
 
-  useEffect(() => {
-    if (errorMessage && errorRef.current) {
-      const tag = findNodeHandle(errorRef.current);
-      AccessibilityInfo.setAccessibilityFocus(tag);
-    }
-  }, [errorMessage]);
+  // const [rememberMe, setRememberMe] = useState(false);
 
+  // Form submission handler
   const onSubmit = async (data) => {
+    console.log("Form data:", data);
     try {
+      // Set loading state to true to indicate that the login is in progress
       setIsLoading(true);
-      const response = await LoginService.createLogin(data);
+
+      // Send login request to the server
+      const response = await UserService.loginUser(data);
+      dispatch(setUser({ ...response.user.user, _id: response.user.user._id }));
+
       if (response.message === "User exists") {
+        if(response.user.user.type=="therapist"){
+          navigation.navigate("Therapist")
+        }
+        // Clear error message if the user exists
         setErrorMessage(null);
       } else {
-        setErrorMessage(translate("The email or password is incorrect, try again."));
+        // Set error message if the login credentials are incorrect
+        setErrorMessage("The email or password is incorrect, try again.");
       }
     } catch (error) {
       console.error("Error:", error);
     } finally {
+      // Set loading state to false after the validation is complete
       setIsLoading(false);
     }
-    dispatch(setUser(data)); // Temporary until login request is finalized
+    
   };
 
+  // Render the component
   return (
-    <View style={styles.container}>
+    <View>
+      {/* GenericForm component for entering login credentials */}
       <GenericForm
         fields={fields}
         onSubmit={onSubmit}
+        // submitButton={translate("login")}
         navigation={navigation}
-        submitButton={isLoading ? translate("Verifying...") : translate("login")}
-        disabled={isLoading}
-      />
-      {errorMessage && (
-        <Text 
-          style={styles.errorText}
-          ref={errorRef}
-          accessible
-          accessibilityLabel={translate("Error Message")}
-        >
-          {errorMessage}
-        </Text>
-      )}
+        submitButton={isLoading ? "Verifying..." : "login"}
+        disabledButton={isLoading}
+      ></GenericForm>
+
+      {/* Display error message if there is an error during login */}
+      <Text style={styles.errorText}>{errorMessage}</Text>
+
+      {/* <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <CheckBox value={rememberMe} onValueChange={setRememberMe} />
+        <Text style={{ marginLeft: 8 }}>{translate('remember me')}</Text>
+      </View> */}
     </View>
   );
 }

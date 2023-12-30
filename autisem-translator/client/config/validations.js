@@ -79,6 +79,7 @@ const validations = {
         message: "Code number must not exceed 6 digits.",
       },
     },
+
     server: {
       validate: (value) => {
         // Assume 'value' is the response from the server

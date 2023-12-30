@@ -3,6 +3,7 @@ const therapistRouter = require("../routes/therapistRoutes");
 const sendEmailRouter = require("../routes/sendEmailRouters");
 const patientRouter = require("../routes/patientRouter");
 const userRouter = require("../routes/userRouter");
+const wordRouter = require("../routes/wordRouter");
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -29,7 +30,7 @@ app.use("/therapist", therapistRouter);
 app.use("/patient", patientRouter);
 app.use("/sendEmail", sendEmailRouter);
 app.use("/user", userRouter);
-
+app.use("/word", wordRouter);
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });

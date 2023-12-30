@@ -16,7 +16,7 @@ async loginUser(userName, password) {
   try {
     const userExists = await userRepository.loginUser(userName, password);
     console.log("user service",userExists)
-    return userExists.user;
+    return userExists;
   } catch (error) {
     console.error(error);
     throw new Error("Error checking user login");

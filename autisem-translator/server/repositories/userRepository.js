@@ -1,10 +1,13 @@
+// const bcrypt = require("bcrypt");
 const Therapist = require("../models/therapist");
 const Patient = require("../models/patient");
 
 async function updateNew(userName, newPassword) {
   try {
     const filter = { userName };
-    const update = { password: newPassword };
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    const update = { password: hashedPassword };
+    // const update = { password: newPassword };
 
     const therapistUpdate = await Therapist.findOneAndUpdate(filter, update);
     const patientUpdate = await Patient.findOneAndUpdate(filter, update);
@@ -12,7 +15,7 @@ async function updateNew(userName, newPassword) {
     if (therapistUpdate || patientUpdate) {
       return { success: true };
     } else {
-      return { success: false, message: 'User not found' };
+      return { success: false, message: "User not found" };
     }
   } catch (error) {
     console.error(error);
@@ -20,26 +23,43 @@ async function updateNew(userName, newPassword) {
   }
 }
 
-async function createUser(userName, firstName, lastName, phoneNumber, password,type) {
-  if(type=='therapist'){
-    const newTherapist = new Therapist({
-      userName,
-      firstName,
-      lastName,
-      phoneNumber,
-      password,
-  });
-  return newTherapist.save();
-  }
-  else if(type=='patient'){
-    const newPatient = new Patient({
-      userName,
-      firstName,
-      lastName,
-      phoneNumber,
-      password,
-  })
-  return newPatient.save();
+async function createUser(
+  userName,
+  firstName,
+  lastName,
+  phoneNumber,
+  password,
+  type
+) {
+  try {
+    // Hash the password before storing it
+    const hashedPassword = await bcrypt.hash(password, 10);
+    let newUser;
+    if (type === "therapist") {
+      newUser = new Therapist({
+        userName,
+        firstName,
+        lastName,
+        phoneNumber,
+        password: hashedPassword, // Store the hashed password
+        // password,
+      });
+    } else if (type === "patient") {
+      newUser = new Patient({
+        userName,
+        firstName,
+        lastName,
+        phoneNumber,
+        password: hashedPassword, // Store the hashed password
+        // password,
+      });
+    }
+
+    const savedUser = await newUser.save();
+    return { success: true, userId: savedUser._id };
+  } catch (error) {
+    console.error(error);
+    return { success: false, message: "Error creating user" };
   }
 }
 
@@ -49,24 +69,45 @@ async function getUser(userName) {
     const therapist = await Therapist.findOne({ userName });
     const patient = await Patient.findOne({ userName });
     if (!therapist && !patient) {
-      return { success: false, message: 'User not found' };
+      return { success: false, message: "User not found" };
     }
     return { success: true, user: therapist || patient };
   } catch (error) {
     console.error(error);
-    return { success: false, message: 'Internal server error' };
+    return { success: false, message: "Internal server error" };
   }
 }
 
 async function loginUser(userName, password) {
   try {
-    let therapist = await Therapist.findOne({ userName, password });
-    let patient = await Patient.findOne({ userName, password });
-    return { user: therapist || patient };
+    let therapist = await Therapist.findOne({ userName });
+    let patient = await Patient.findOne({ userName });
+
+    if (!therapist && !patient) {
+      return { user: null, message: "User not found" };
+    }
+    const user = therapist || patient;
+
+    if (user) {
+      if (comparePassword(password, user.password)) {
+        if (therapist) {
+          return { user: { ...therapist.toObject(), type: "therapist" } };
+        } else if (patient) {
+          return { user: { ...patient.toObject(), type: "patient" } };
+        }
+      }
+    }
   } catch (error) {
     console.error(error);
     throw new Error("Error logging in");
   }
+}
+
+async function comparePassword(password, hashedPassword) {
+  // Compare the entered password with the hashed password stored in the database using bcrypt
+  const passwordMatch = await bcrypt.compare(password, hashedPassword);
+  console.log("Password match:", passwordMatch);
+  return passwordMatch;
 }
 
 // Check if a username already exists (for new user registration)
@@ -81,12 +122,10 @@ async function doesUserNameExist(userName) {
   }
 }
 
-
-
 module.exports = {
   updateNew,
   createUser,
   getUser,
   loginUser,
-  doesUserNameExist
+  doesUserNameExist,
 };

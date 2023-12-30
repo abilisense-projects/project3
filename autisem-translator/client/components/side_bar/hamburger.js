@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { View, Pressable, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import BackgroundSelection from './background_selection';
-import HamburgerModal from './hamburgerModal';
-
 
 
 const Hamburger = () => {
@@ -44,7 +42,7 @@ const Hamburger = () => {
       <Pressable onPress={toggleModal} style={modalVisible ? styles.iconBackground : null}>
         <Icon name="navicon" size={25} color="black" />
       </Pressable>
-      <HamburgerModal modalVisible={modalVisible} closeModal={closeModal} openBackgroundSelection={openBackgroundSelection} />
+      <HamburgerModal modalVisible={modalVisible} closeModal={closeModal} openBackgroundSelection={openBackgroundSelection}/>
       {backgroundSelectionVisible && <BackgroundSelection onClose={closeBackgroundSelection} />}
     </View>
   );

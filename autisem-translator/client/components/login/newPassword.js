@@ -1,91 +1,104 @@
-import React, { useState, useEffect, useRef } from "react";
-import { View, StyleSheet, Text, AccessibilityInfo, findNodeHandle } from "react-native";
+import React, { useState } from "react";
+import { View, StyleSheet, Text } from "react-native";
 import GenericForm from "../shared/form";
 import validations from "../../config/validations";
 import { useNavigation } from "@react-navigation/native";
-import PasswordUpdateService from "../../services/backendServices/PasswordUpdateService";
+import UserService from "../../services/backendServices/userService";
+import { translationService } from "../../services/translationService";
 
-// Assuming translationService is set up for multi-language support
-// const translate = translationService.translate;
+// Translation function alias for shorter usage
+const translate = translationService.translate;
 
+// StyleSheet for styling components
 const styles = StyleSheet.create({
-  container: {
-    padding: 20, // Adequate padding for touch targets
-  },
   errorText: {
-    color: "red",
+    // color: "red",
     marginTop: 10,
+  },
+  modalContent: {
+    backgroundColor: "white",
+    padding: 20,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#ccc",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.5,
+    shadowRadius: 2,
+    elevation: 3,
+    marginTop: 40, // Adjust this value as needed
   },
 });
 
+// Form fields configuration for new password entry
 const fields = [
   {
     name: "password",
-    placeholder: "New Password", // Use translate("new password") for multi-language support
-    type: "password",
+    placeholder: translate("new password"),
+    type: "text",
     secureTextEntry: true,
     rules: validations.password,
-    accessibilityLabel: "New Password Input",
-    accessibilityHint: "Enter your new password",
   },
   {
     name: "repeatPassword",
-    placeholder: "Verify Password", // Use translate("verify password") for multi-language support
-    type: "password",
+    placeholder: translate("verify password"),
+    type: "text",
     secureTextEntry: true,
     rules: validations.repeatPassword,
-    accessibilityLabel: "Verify Password Input",
-    accessibilityHint: "Re-enter your new password for verification",
   },
 ];
 
+// Component function for handling password update
 export default function NewPassword({ route }) {
+  // Navigation hook for navigation functions
   const navigation = useNavigation();
-  const [errorMessage, setErrorMessage] = useState(null);
-  const errorRef = useRef(null);
 
-  useEffect(() => {
-    if (errorMessage && errorRef.current) {
-      const tag = findNodeHandle(errorRef.current);
-      AccessibilityInfo.setAccessibilityFocus(tag);
-    }
-  }, [errorMessage]);
+  // State variable for displaying success message
+  const [message, setMessage] = useState(null);
 
+  // Form submission handler for updating the password
   const onSubmit = async (data) => {
     try {
+      // Extract the userName from the route parameters
       const { userName } = route.params;
-      const response = await PasswordUpdateService.updatePassword({
-        userName: userName,
+      console.log(userName);
+
+      // Call the backend service to update the user's password
+      const response = await UserService.updateUsersPassword({
+        userName: userName.route.params.userName,
         newPassword: data.repeatPassword,
       });
+      // Log relevant information for debugging
+      console.log(userName.route.params.userName);
+      console.log("Form Data:", data, route);
+      console.log(response);
+      console.log("response.Message", response.message);
 
-      // Navigate or update UI upon successful password update
-      // navigation.navigate("SuccessScreen"); // Example navigation
-
+      // Check the response from the server
+      if (response.message === "Success update") {
+        // Set a success message to be displayed
+        navigation.navigate("Login");
+      } else {
+        setMessage("Update password failed");
+      }
     } catch (error) {
+      // Log and handle errors, e.g., display an error message to the user
       console.error("Error updating password:", error);
-      setErrorMessage("Error updating password. Please try again."); // Update error message
     }
   };
 
+  // Render the component
   return (
-    <View style={styles.container} accessible>
+    <View style={styles.modalContent}>
+      {/* GenericForm component for entering and verifying the new password */}
       <GenericForm
         fields={fields}
         onSubmit={onSubmit}
-        submitButton="Save"
-        // Add any additional accessibility props to GenericForm if necessary
-      />
-      {errorMessage && (
-        <Text 
-          style={styles.errorText}
-          ref={errorRef}
-          accessible
-          accessibilityLabel="Error Message"
-        >
-          {errorMessage}
-        </Text>
-      )}
+        submitButton={translate("save")}
+      ></GenericForm>
+
+      {/* Display success message if the password is updated successfully */}
+      <Text style={styles.errorText}>{message}</Text>
     </View>
   );
 }
