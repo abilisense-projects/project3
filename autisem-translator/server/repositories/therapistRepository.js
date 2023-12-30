@@ -1,8 +1,8 @@
+// therapistRepository.js
+
 const Therapist = require('../models/therapist');
 
 async function createTherapist(userName, firstName, lastName, phoneNumber, password, listOfPatients) {
-    //const hashedPassword = await bcrypt.hash(password, 10);
-
     const newTherapist = new Therapist({
         userName,
         firstName,
@@ -10,7 +10,7 @@ async function createTherapist(userName, firstName, lastName, phoneNumber, passw
         phoneNumber,
         password,
         listOfPatients,
-    })
+    });
     return newTherapist.save();
 }
 
@@ -27,8 +27,18 @@ async function getTherapist(userName) {
     }
 }
 
+async function checkUserNameExists(userName) {
+    try {
+        const therapist = await Therapist.findOne({ userName });
+        return { success: true, exists: therapist !== null };
+    } catch (error) {
+        console.error(error);
+        return { success: false, message: 'Internal server error' };
+    }
+}
 
 module.exports = {
     createTherapist,
-    getTherapist
+    getTherapist,
+    checkUserNameExists,
 };

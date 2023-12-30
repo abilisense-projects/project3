@@ -9,8 +9,6 @@ i18n.translations = {
     en: enTranslations,
     he: heTranslations,
 }
-i18n.locale = 'he';  //It's for the meantime. The language depence on the user selection.
-
 
 export const translationService = {
     getLanguage: () => {
@@ -23,12 +21,21 @@ export const translationService = {
             console.log(e);
         }
     },
-    getLanguagehFromStorage: async () => {
+    getLanguageFromStorage: async () => {
         try {
             const language = await AsyncStorage.getItem('language');
-            //not perfect!!!
+            return language;
         } catch (e) {
             console.log(e);
+        }
+    },
+    initializeLanguage: async () => {
+        try {
+            const storedLanguage = await translationService.getLanguageFromStorage();
+            i18n.locale = storedLanguage || 'en';
+        } catch (error) {
+            console.error('Error setting language:', error);
+            i18n.locale = 'en'; // default to English if there's an error
         }
     },
     translate: (word) => {
@@ -39,5 +46,6 @@ export const translationService = {
         }
     }
 }
+
 
 

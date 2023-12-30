@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Image, TouchableOpacity, StyleSheet, Button, ScrollView } from 'react-native';
+import { View, Image, TouchableOpacity, StyleSheet, Button, ScrollView, AccessibilityInfo } from 'react-native';
 
 import option1 from './background_options/115.jpg';
 import option2 from './background_options/113.jpg';
@@ -25,8 +25,9 @@ const BackgroundSelection = () => {
 
   const handleImageSelect = (image) => {
     setSelectedImage(image.id);
+
   };
-  
+
 
   const handleConfirm = () => {
     if (selectedImage !== null) {
@@ -34,32 +35,34 @@ const BackgroundSelection = () => {
       setConfirmedImage(selectedOption.image);
       setConfirmed(true);
       console.log(`Image ${selectedImage} selected`);
+
     } else {
-      console.log('Please select an image');
+      AccessibilityInfo.announceForAccessibility('Please select an image');
     }
   };
-  
+
 
   const renderItem = (item) => (
     <TouchableOpacity
       onPress={() => handleImageSelect(item)}
       style={[styles.imageContainer, selectedImage === item.id && styles.selectedImage]}>
       {confirmed ? null : <Image source={item.image} style={styles.image} />}
+
     </TouchableOpacity>
   );
-  
+
 
   return (
     <View style={styles.container}>
       {confirmed && <Image source={confirmedImage} style={styles.backgroundImage} />}
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        {backgroundOptions.map(({ id, image }) => renderItem({ id, image, key: id }))}
+        {backgroundOptions.map((option) => renderItem(option))}
       </ScrollView>
 
       {confirmed ? null : <Button title="Confirm" onPress={handleConfirm} />}
     </View>
   );
-  
+
 };
 
 const styles = StyleSheet.create({
@@ -76,7 +79,7 @@ const styles = StyleSheet.create({
     left: 0,
     width: '100%',
     height: '100%',
-    //zIndex: 1,//chek that....this on 1
+    zIndex: 1,//chek that....this on 1
   },
 
   scrollContainer: {
@@ -103,3 +106,4 @@ const styles = StyleSheet.create({
 });
 
 export default BackgroundSelection;
+

@@ -15,13 +15,13 @@ const HamburgerModal = ({ modalVisible, closeModal, openBackgroundSelection }) =
     setShowLanguageList(false);
     closeModal();
   };
- 
+
 
   return (
-    <Modal transparent visible={modalVisible} onRequestClose={closeModal}>
-      <Pressable style={styles.modalBackground} onPress={closeModal}>
+    <Modal transparent visible={modalVisible}>
+      <Pressable style={styles.modalBackground}>
         <View style={styles.modalContainer}>
-          <Pressable style={styles.languageButton} onPress={() => setShowLanguageList(!showLanguageList)}>
+          <Pressable style={styles.modalButton} onPress={() => setShowLanguageList(!showLanguageList)}>
             <Text>Language</Text>
           </Pressable>
           {showLanguageList && (
@@ -33,9 +33,13 @@ const HamburgerModal = ({ modalVisible, closeModal, openBackgroundSelection }) =
               <Picker.Item label="Hebrew" value="Hebrew" />
             </Picker>
           )}
-          <Pressable style={styles.backgroundButton} onPress={openBackgroundSelection}>
-            <Text>Open Background Selection</Text>
+          <Pressable style={styles.modalButton} onPress={openBackgroundSelection}>
+            <Text>Background Selection</Text>
           </Pressable>
+          <Pressable style={styles.modalButton} onPress={closeModal}>
+            <Text>Close</Text>
+          </Pressable>
+
         </View>
       </Pressable>
     </Modal>
@@ -44,53 +48,41 @@ const HamburgerModal = ({ modalVisible, closeModal, openBackgroundSelection }) =
 
 const styles = StyleSheet.create({
 
-    modalBackground: {
-      position: 'absolute',
-      left: 20,
-      top: 50,
-      flex: 1,
-      justifyContent: 'flex-end', // Align modal to the bottom
-      alignItems: 'center',
-    },
-  
-    modalContainer: {
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: 'white',
-      borderRadius: 5,
-      borderWidth: 2,
-      borderColor: 'black',
-      padding: 20,
-      height: 400,
-      width: 250,
-    },
-  
-    backgroundButton: {
-      marginTop: 10,
-      padding: 10,
-      borderRadius: 5,
-      backgroundColor: 'lightgray',
-    },
-  
-    languageButton: {
-      marginTop: 10,
-      padding: 10,
-      borderRadius: 5,
-      backgroundColor: 'lightgray',
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-    },
-  
-    languagePicker: {
-      height: 40,
-      width: 100,
-    },
-  });
+  modalBackground: {
+    position: 'absolute',
+    left: 20,
+    top: 58,
+    flex: 1,
+    justifyContent: 'flex-end', // Align modal to the bottom
+  },
+
+  modalContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white',
+    borderRadius: 5,
+    borderWidth: 2,
+    borderColor: 'black',
+    padding: 20,
+    height: 300,
+    width: 250,
+  },
+
+  modalButton: {
+    width: 220,
+    height: 40,
+    marginTop: 10,
+    padding: 10,
+    borderRadius: 5,
+    backgroundColor: 'lightgray',
+  },
+
+  languagePicker: {
+    height: 40,
+    width: 100,
+  },
+
+
+});
 
 export default HamburgerModal;
-
-
-
-
-
