@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Image, TouchableOpacity, StyleSheet, Button, ScrollView } from 'react-native';
+import { View, Image, TouchableOpacity, StyleSheet, Button, ScrollView, AccessibilityInfo } from 'react-native';
 
 import option1 from './background_options/115.jpg';
 import option2 from './background_options/113.jpg';
@@ -20,6 +20,7 @@ const backgroundOptions = [
 const BackgroundSelection = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [confirmedImage, setConfirmedImage] = useState(null);
+  const [confirmed, setConfirmed] = useState(false);
 
 
   const handleImageSelect = (image) => {
@@ -36,7 +37,7 @@ const BackgroundSelection = () => {
       console.log(`Image ${selectedImage} selected`);
 
     } else {
-      console.log('Please select an image');
+      AccessibilityInfo.announceForAccessibility('Please select an image');
     }
   };
 
@@ -53,17 +54,19 @@ const BackgroundSelection = () => {
 
   return (
     <View style={styles.container}>
-      {confirmedImage && <Image source={confirmedImage} style={styles.backgroundImage} />}
+      {confirmed && <Image source={confirmedImage} style={styles.backgroundImage} />}
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        {backgroundOptions.map(({ id, image }) => renderItem({ id, image, key: id }))}
+        {backgroundOptions.map((option) => renderItem(option))}
       </ScrollView>
-      <Button title="Confirm" onPress={handleConfirm} />
+
+      {confirmed ? null : <Button title="Confirm" onPress={handleConfirm} />}
     </View>
   );
 
 };
 
 const styles = StyleSheet.create({
+
   container: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -78,12 +81,14 @@ const styles = StyleSheet.create({
     height: '100%',
     zIndex: 1,//chek that....this on 1
   },
+
   scrollContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
     marginVertical: 12,
   },
+
   imageContainer: {
     margin: 5,
     borderWidth: 2,
@@ -101,4 +106,5 @@ const styles = StyleSheet.create({
 });
 
 export default BackgroundSelection;
+
 

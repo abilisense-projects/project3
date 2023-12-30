@@ -14,7 +14,7 @@ import { Provider, useSelector } from "react-redux";
 import store from "./redux/store";
 import TherapistScreen from "./pages/therapist";
 import { useState } from "react";
-import RecordAudio from "./components/recording/recording";
+//import RecordAudio from "./components/recording/recording";
 import { Button } from "react-native";
 export default function App() {
 const Stack = createStackNavigator();
@@ -44,6 +44,8 @@ const Stack = createStackNavigator();
 
 
     </Provider>
+
+    
   )
 }
 const styles = StyleSheet.create({

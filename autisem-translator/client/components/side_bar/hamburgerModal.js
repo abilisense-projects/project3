@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Pressable, Modal, StyleSheet, Text, Picker } from 'react-native';
 
+
 const HamburgerModal = ({ modalVisible, closeModal, openBackgroundSelection }) => {
   const [selectedLanguage, setSelectedLanguage] = useState('English');
   const [showLanguageList, setShowLanguageList] = useState(false);
