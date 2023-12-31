@@ -39,7 +39,7 @@ const Hamburger = () => {
 
 
   return (
-    <View style={styles.pageContainer}>
+    <View style={styles.pageContainer} accessible accessibilityLabel='menu'>
       <Pressable onPress={toggleModal} style={modalVisible ? styles.iconBackground : null}>
         <Icon name="navicon" size={25} color="black" />
       </Pressable>

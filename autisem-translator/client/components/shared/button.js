@@ -3,7 +3,7 @@ import { Pressable, Text, StyleSheet } from 'react-native';
 
 const GenericButton = ({ onPress, title, isDisabled }) => {
   return (
-    <Pressable
+    <Pressable accessible accessibilityLabel={title}
       style={[styles.button, { opacity: isDisabled ? 0.5 : 1 }]}
     //   disabled={isDisabled}
       onPress={onPress}

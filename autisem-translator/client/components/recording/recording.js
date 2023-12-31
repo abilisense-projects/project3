@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 import { View, TouchableOpacity, Text, StyleSheet} from 'react-native';
 import { Audio } from 'expo-av';
-
+import { translationService } from '../../services/translationService';
 export default function RecordAudio(props) {
   const [recording, setRecording] = useState(null);
   const [isRecording, setIsRecording] = useState(false);
 
-
+const translate = translationService.translate;
   const startRecording = async () => {
     try {
-      console.log('Recording started');
       const recording = new Audio.Recording();
       await recording.prepareToRecordAsync(Audio.RECORDING_OPTIONS_PRESET_HIGH_QUALITY);
       await recording.startAsync();
@@ -24,7 +23,6 @@ export default function RecordAudio(props) {
     if (!recording) return;
     console.log('recording', recording);
     try {
-      console.log('Recording stopped');
       await recording.stopAndUnloadAsync();
       setIsRecording(false);
       props.setRecordedData(recording.getURI());
@@ -57,13 +55,13 @@ export default function RecordAudio(props) {
   const buttonColor = isRecording ? 'green' : 'red';
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} accessible accessibilityLabel='recording'>
       <TouchableOpacity
         style={[styles.recordButton, { backgroundColor: buttonColor }]}
         onPress={handleButtonPress}
       >
-        <Text style={styles.buttonText}>
-          {isRecording ? 'Stop Recording' : 'Start Recording'}
+        <Text style={styles.buttonText} accessible >
+          {isRecording ? translate('stop recording') : translate('start recording')}
         </Text>
       </TouchableOpacity>
          </View>
