@@ -6,7 +6,7 @@ import validations from "../../config/validations";
 import { translationService } from "../../services/translationService";
 import UserService from "../../services/backendServices/userService";
 import { useDispatch } from "react-redux";
-import { setUser } from '../../redux/actions/userAction';
+import { setUser } from "../../redux/actions/userAction";
 // Translation function alias for shorter usage
 const translate = translationService.translate;
 
@@ -76,10 +76,13 @@ export default function Login() {
 
       // Send login request to the server
       const response = await UserService.loginUser(data);
+      console.log(response);
       dispatch(setUser({ ...response.user.user, _id: response.user.user._id }));
       if (response.message === "User exists") {
-        if(response.user.user.type=="therapist"){
-          navigation.navigate("Therapist")
+        if (response.user.user.type == "therapist") {
+          navigation.navigate("Therapist");
+        } else {
+          navigation.navigate("Patient");
         }
         // Clear error message if the user exists
         setErrorMessage(null);
@@ -93,7 +96,6 @@ export default function Login() {
       // Set loading state to false after the validation is complete
       setIsLoading(false);
     }
-    
   };
 
   // Render the component
