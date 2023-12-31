@@ -2,7 +2,9 @@ const wordService = require("../services/wordService");
 
 async function createWord(req, res) {
     try {
-        const { patientID, recording, translation } = req.body;
+        const patientID = req.body.patientID; 
+        const recording = req.files.recording ? req.files.recording[0] : null; 
+        const translation = req.body.translation;  
         await wordService.createWord(patientID, recording, translation);
         res.status(201).json({ message: 'word added saccesfully to the dictionary' });
     } catch (error) {
