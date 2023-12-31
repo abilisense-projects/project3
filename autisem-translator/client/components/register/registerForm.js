@@ -13,7 +13,7 @@ const translate = translationService.translate;
 const userTypeOptions = [
   { name: translate("select user type"), value: "" },
   { name: translate("therapist"), value: "therapist" },
-  { name: translate("patient"), value: "treated" },
+  { name: translate("patient"), value: "patient" },
 ];
 
 const fields = [

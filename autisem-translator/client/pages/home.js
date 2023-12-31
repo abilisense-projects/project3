@@ -5,6 +5,7 @@ import GenericButton from "../components/shared/button";
 import { translationService } from "../services/translationService";
 import UserService from "../services/backendServices/userService";
 import Hamburger from "../components/side_bar/hamburger";
+import PatientScreen from "./patient";
 
 const translate = translationService.translate;
 export default function HomeScreen() {
@@ -17,12 +18,10 @@ export default function HomeScreen() {
   return (
     <View accessible={true} style={styles.modalContent}>
       <Hamburger />
-
       <GenericButton
         title={translate("login")}
         onPress={() => navigateToScreen("Login")}
       />
- 
     </View>
   );
 }

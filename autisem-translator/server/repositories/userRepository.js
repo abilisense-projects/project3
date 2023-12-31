@@ -1,4 +1,4 @@
-// const bcrypt = require("bcrypt");
+const bcrypt = require("bcrypt");
 const Therapist = require("../models/therapist");
 const Patient = require("../models/patient");
 
@@ -82,7 +82,7 @@ async function loginUser(userName, password) {
   try {
     let therapist = await Therapist.findOne({ userName });
     let patient = await Patient.findOne({ userName });
-
+    console.log("patient:", patient);
     if (!therapist && !patient) {
       return { user: null, message: "User not found" };
     }
