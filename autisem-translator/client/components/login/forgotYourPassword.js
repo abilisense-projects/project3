@@ -38,6 +38,8 @@ const fields = [
     placeholder: translate("enter your email"),
     type: "text",
     rules: validations.email,
+    accesabilityLabel: "email input",
+    accesabilityHint: "enter your email",
   },
 ];
 
@@ -87,7 +89,7 @@ export default function ForgotYourPassword() {
 
   // Render the component
   return (
-    <View style={styles.modalContent}>
+    <View style={styles.modalContent} accessible accessibilityLabel="forgot your password screen">
       {/* GenericForm component for entering email address for password reset */}
       <GenericForm
         fields={fields}
@@ -98,7 +100,7 @@ export default function ForgotYourPassword() {
         disabledButton={isLoading}
       ></GenericForm>
       {/* Display error message if there is an error during the password reset request */}
-      <Text style={styles.errorText}>{errorMessage}</Text>
+      <Text style={styles.errorText} accessible accessibilityLabel="Sending email">{errorMessage}</Text>
     </View>
   );
 }

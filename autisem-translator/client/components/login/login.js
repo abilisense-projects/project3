@@ -39,6 +39,8 @@ const fields = [
     placeholder: translate("email"),
     type: "text",
     rules: validations.email,
+    accesabilityLabel: "username input",
+    accesabilityHint: "enter your username",
   },
   {
     name: "password",
@@ -46,12 +48,16 @@ const fields = [
     type: "text",
     secureTextEntry: true,
     rules: validations.password,
+    accesabilityLabel: "password input",
+    accesabilityHint: "enter your password",
   },
   {
     name: "forgotPassword",
     type: "link",
     onPress: (navigation) => navigation.navigate("ForgotYourPassword"),
     text: translate("forgot your password"),
+    accesabilityLabel: "forgot password link",
+    accesabilityHint: "press to reset your password",
   },
 ];
 
@@ -79,7 +85,7 @@ export default function Login() {
       dispatch(setUser({ ...response.user.user, _id: response.user.user._id }));
 
       if (response.message === "User exists") {
-        if(response.user.user.type=="therapist"){
+        if (response.user.user.type == "therapist") {
           navigation.navigate("Therapist")
         }
         // Clear error message if the user exists
@@ -94,24 +100,26 @@ export default function Login() {
       // Set loading state to false after the validation is complete
       setIsLoading(false);
     }
-    
+
   };
 
   // Render the component
   return (
-    <View>
+    <View accessible accessibilityLabel="login screen">
       {/* GenericForm component for entering login credentials */}
       <GenericForm
+        accessible={true}
         fields={fields}
         onSubmit={onSubmit}
         // submitButton={translate("login")}
         navigation={navigation}
         submitButton={isLoading ? "Verifying..." : "login"}
         disabledButton={isLoading}
+        accesabilityLabel="login button"
       ></GenericForm>
 
       {/* Display error message if there is an error during login */}
-      <Text style={styles.errorText}>{errorMessage}</Text>
+      <Text style={styles.errorText} accessible>{errorMessage}</Text>
 
       {/* <View style={{ flexDirection: "row", alignItems: "center" }}>
         <CheckBox value={rememberMe} onValueChange={setRememberMe} />
