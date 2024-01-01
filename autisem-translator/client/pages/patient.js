@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Button, Text } from "react-native";
 import { useSelector } from "react-redux";
+import { useNavigation } from "@react-navigation/native"; // Import useNavigation hook
 
 // const user = useSelector((state) => state.userReucer);
 const PatientScreen = () => {

@@ -14,11 +14,11 @@ import { Provider, useSelector } from "react-redux";
 import store from "./redux/store";
 import TherapistScreen from "./pages/therapist";
 import PatientScreen from "./pages/patient";
-//import RecordAudio from "./components/recording/recording";
+// import RecordAudio from "./components/recording/recording";
+
+const Stack = createStackNavigator();
 
 export default function App() {
-  const Stack = createStackNavigator();
-
   return (
     <Provider store={store}>
       {
