@@ -37,7 +37,7 @@ export default function App() {
           <Stack.Screen name="Registration" component={RegistrationScreen} />
           <Stack.Screen name="Hamburger" component={Hamburger} />
           <Stack.Screen name="Therapist" component={TherapistScreen} />
-          <Stack.Screen name="Patient" component={PatientPage} />
+          <Stack.Screen name="Patient" component={PatientScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

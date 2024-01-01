@@ -91,9 +91,6 @@ export default function Login() {
         } else {
           navigation.navigate("Patient");
         }
-        else {
-          navigation.navigate("Patient");
-        }
         // Clear error message if the user exists
         setErrorMessage(null);
       } else {
