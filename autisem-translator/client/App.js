@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { StyleSheet } from "react-native";
+import { StyleSheet, Button } from "react-native";
 import HomeScreen from "./pages/home";
 import RegistrationScreen from "./pages/register";
 import LoginScreen from "./pages/login";
@@ -13,11 +13,12 @@ import Hamburger from "./components/side_bar/hamburger";
 import { Provider, useSelector } from "react-redux";
 import store from "./redux/store";
 import TherapistScreen from "./pages/therapist";
-import PatientPage from "./pages/patientPage";
+import PatientScreen from "./pages/patient";
+//import RecordAudio from "./components/recording/recording";
 
 export default function App() {
-
   const Stack = createStackNavigator();
+
   return (
     <Provider store={store}>
       <NavigationContainer>
@@ -42,7 +43,6 @@ export default function App() {
     </Provider>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,

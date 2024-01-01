@@ -14,7 +14,7 @@ const TextInputField = ({ value, onChangeText, placeholder, secure, error }) => 
   }
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} accessible >
       <TextInput
         style={[styles.input, { borderColor: getBorderColor() }]}
         value={value}

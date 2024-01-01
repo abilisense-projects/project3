@@ -32,7 +32,7 @@ const GenericForm = ({
     }
   };
   return (
-    <View style={styles.container}>
+    <View style={styles.container} accessibilityLabel="form" accessible>
       {fields.map((field) => (
         <View key={field.name}>
           {field.type === "text" && (
