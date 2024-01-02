@@ -26,12 +26,14 @@ const BannerNotification = ({ message, severity, onClose }) => {
 
   return (
     <Modal
+      accessible
+      accessibilityLabel='banner notification'
       isVisible={isModalVisible}
       animationIn="slideInUp"
       animationOut="slideOutDown"
       backdropOpacity={0.5}
     >
-      <View style={[styles.container, { width: halfScreenWidth}]}>
+      <View style={[styles.container, { width: halfScreenWidth }]} accessible>
         <Text style={[styles.message, { color: 'white', backgroundColor: severity === 'error' ? 'red' : 'green' }]}>
           {message}
         </Text>

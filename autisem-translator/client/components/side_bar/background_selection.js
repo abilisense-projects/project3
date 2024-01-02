@@ -45,6 +45,8 @@ const BackgroundSelection = () => {
 
   const renderItem = (item) => (
     <TouchableOpacity
+      accessible
+      accessibilityLabel='background image'
       onPress={() => handleImageSelect(item)}
       style={[styles.imageContainer, selectedImage === item.id && styles.selectedImage]}>
       {confirmed ? null : <Image source={item.image} style={styles.image} />}
@@ -54,7 +56,7 @@ const BackgroundSelection = () => {
 
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} accessible accessibilityLabel='background image selection'>
       {confirmed && <Image source={confirmedImage} style={styles.backgroundImage} />}
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {backgroundOptions.map((option) => renderItem(option))}

@@ -38,6 +38,8 @@ const fields = [
     type: "text",
     secureTextEntry: true,
     rules: validations.password,
+    accesabilityLabel: "password input",
+    accesabilityHint: "enter your password",
   },
   {
     name: "repeatPassword",
@@ -45,6 +47,8 @@ const fields = [
     type: "text",
     secureTextEntry: true,
     rules: validations.repeatPassword,
+    accesabilityLabel: "password verification input",
+    accesabilityHint: "verify your password",
   },
 ];
 
@@ -89,16 +93,18 @@ export default function NewPassword({ route }) {
 
   // Render the component
   return (
-    <View style={styles.modalContent}>
+    <View style={styles.modalContent} accessible accesabilityLabel='new password screen'>
       {/* GenericForm component for entering and verifying the new password */}
       <GenericForm
+        accessible={true}
+        accesabilityLabel="new password screen"
         fields={fields}
         onSubmit={onSubmit}
         submitButton={translate("save")}
       ></GenericForm>
 
       {/* Display success message if the password is updated successfully */}
-      <Text style={styles.errorText}>{message}</Text>
+      <Text style={styles.errorText} accessible accessibilityLabel="reset password">{message}</Text>
     </View>
   );
 }

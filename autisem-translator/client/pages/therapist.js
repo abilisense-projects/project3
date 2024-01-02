@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity, TextInput, Alert, Image } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Image } from 'react-native';
 import therapistService from '../services/backendServices/therapistService';
 import GenericButton from '../components/shared/button';
-import Modal from 'react-native-modal';
 import { useSelector } from 'react-redux';
 import NoPatientsImage from '../assets/images/therapist room.jpg'
+import AssociatePatient from '../components/therapist/associatePatient';
 
 const TherapistScreen = () => {
   const [patients, setPatients] = useState([]);
-  const [isModalVisible, setModalVisible] = useState(false);
-  const [newPatientUsername, setNewPatientUsername] = useState('');
+  const [isAssociatePatientModalVisible, setAssociatePatientModalVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const therapistId = useSelector((state) => state.user.user.userData._id);
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,33 +21,24 @@ const TherapistScreen = () => {
         console.error('Error fetching data:', error);
       }
       finally {
-        setIsLoading(false); // Set loading to false regardless of success or failure
+        setIsLoading(false);
       }
     };
     fetchData();
   }, [therapistId]);
 
-  const handleAddPatient = async () => {
-    setModalVisible(true);
+  const handleAddPatient = () => {
+    setAssociatePatientModalVisible(true);
   };
 
-  const handleModalOk = () => {
-    if (newPatientUsername.trim() !== '') {
-      // You can implement logic to add a new patient here
-      // For simplicity, let's show an alert for demonstration
-      console.log("add", newPatientUsername)
-      //   Alert.alert('Add Patient', `Patient ${newPatientUsername} added.`);
-      setNewPatientUsername('');
-      setModalVisible(false);
-    } else {
-      console.log('Invalid Username', 'Please enter a valid username.')
-      //Alert.alert('Invalid Username', 'Please enter a valid username.');
-    }
+  const handleAssociatePatientConfirm = (patientUsername) => {
+    // send notification to patient
+    console.log("Associate Patient", patientUsername);
+    setAssociatePatientModalVisible(false);
   };
 
-  const handleModalCancel = () => {
-    setNewPatientUsername('');
-    setModalVisible(false);
+  const handleAssociatePatientCancel = () => {
+    setAssociatePatientModalVisible(false);
   };
 
   return (
@@ -61,7 +50,6 @@ const TherapistScreen = () => {
           {patients.length > 0 && (
             <Text style={styles.header}>My Patients</Text>
           )}
-          {/* this is showing for a second when there are patients why? */}
           {patients.length === 0 ? (
             <View style={styles.noPatientsContainer}>
               <Text style={styles.noPatientsText}>No patients yet</Text>
@@ -79,25 +67,11 @@ const TherapistScreen = () => {
             />
           )}
           <GenericButton style={styles.addButton} onPress={handleAddPatient} title="Add Patient" />
-
-          <Modal isVisible={isModalVisible}>
-            <View style={styles.modalContainer}>
-              <TextInput
-                style={styles.input}
-                placeholder="Enter patient username"
-                value={newPatientUsername}
-                onChangeText={(text) => setNewPatientUsername(text)}
-              />
-              <View style={styles.modalButtonsContainer}>
-                <TouchableOpacity style={styles.modalButton} onPress={handleModalOk}>
-                  <Text style={styles.modalButtonText}>OK</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.modalButton} onPress={handleModalCancel}>
-                  <Text style={styles.modalButtonText}>Cancel</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </Modal>
+          <AssociatePatient
+            isVisible={isAssociatePatientModalVisible}
+            onConfirm={handleAssociatePatientConfirm}
+            onCancel={handleAssociatePatientCancel}
+          />
         </>
       )}
     </View>

@@ -4,7 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import GenericButton from "../components/shared/button";
 import { translationService } from "../services/translationService";
 import UserService from "../services/backendServices/userService";
-import Hamburger from "../components/side_bar/hamburger";
+import PatientScreen from "./patient";
 
 const translate = translationService.translate;
 export default function HomeScreen() {
@@ -16,31 +16,28 @@ export default function HomeScreen() {
 
   return (
     <View accessible={true} style={styles.modalContent}>
-      {/* <Hamburger /> */}
-
       <GenericButton
         title={translate("login")}
         onPress={() => navigateToScreen("Login")}
       />
- 
     </View>
   );
 }
 
 // StyleSheet for styling components
 const styles = StyleSheet.create({
-  modalContent: {
-    backgroundColor: "white",
-    marginTop: 60, // עדכני זאת לפי הצורך
-    padding: 20,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.5,
-    shadowRadius: 2,
-    elevation: 3,
-    marginTop: 40, // Adjust this value as needed
-  },
+  // modalContent: {
+  //   backgroundColor: "white",
+  //   marginTop: 60, // עדכני זאת לפי הצורך
+  //   padding: 20,
+  //   borderRadius: 10,
+  //   borderWidth: 1,
+  //   borderColor: "#ccc",
+  //   shadowColor: "#000",
+  //   shadowOffset: { width: 0, height: 2 },
+  //   shadowOpacity: 0.5,
+  //   shadowRadius: 2,
+  //   elevation: 3,
+  //   marginTop: 40, // Adjust this value as needed
+  // },
 });

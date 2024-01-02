@@ -13,7 +13,7 @@ const translate = translationService.translate;
 const userTypeOptions = [
   { name: translate("select user type"), value: "" },
   { name: translate("therapist"), value: "therapist" },
-  { name: translate("patient"), value: "treated" },
+  { name: translate("patient"), value: "patient" },
 ];
 
 const fields = [
@@ -22,24 +22,32 @@ const fields = [
     placeholder: translate("email"),
     type: "text",
     rules: validations.email,
+    accesabilityLabel: "username input",
+    accesabilityHint: "enter your username",
   },
   {
     name: "firstName",
     placeholder: translate("first name"),
     type: "text",
     rules: validations.name,
+    accesabilityLabel: "first name input",
+    accesabilityHint: "enter your first name",
   },
   {
     name: "lastName",
     placeholder: translate("last name"),
     type: "text",
     rules: validations.name,
+    accesabilityLabel: "last name input",
+    accesabilityHint: "enter your last name",
   },
   {
     name: "phoneNumber",
     placeholder: translate("phone number"),
     type: "text",
     rules: validations.phoneNumber,
+    accesabilityLabel: "phone number input",
+    accesabilityHint: "enter your phone number",
   },
   {
     name: "password",
@@ -47,6 +55,8 @@ const fields = [
     type: "text",
     secureTextEntry: true,
     rules: validations.password,
+    accesabilityLabel: "password input",
+    accesabilityHint: "enter your password",
   },
   {
     name: "repeatPassword",
@@ -54,12 +64,16 @@ const fields = [
     type: "text",
     secureTextEntry: true,
     rules: validations.repeatPassword,
+    accesabilityLabel: "password verification input",
+    accesabilityHint: "verify your password",
   },
   {
     name: "type",
     options: userTypeOptions,
     type: "picker",
     rules: { required: translate("type is required") },
+    accesabilityLabel: "user type input",
+    accesabilityHint: "select your user type",
   },
 ];
 //save userName in redux
@@ -95,15 +109,16 @@ export default function RegistrationForm() {
   };
 
   return (
-    <View style={styles.modalContent}>
+    <View style={styles.modalContent} accessible accessibilityLabel="registration screen">
       {/* check if fields & userTypeOptions are not null */}
       <GenericForm
         fields={fields}
         onSubmit={onSubmit}
         submitButton={translate("registration")}
+        
       ></GenericForm>
       {notification && (
-        <View>
+        <View accessible>
           <BannerNotification
             message={notification.message}
             severity={notification.severity}
@@ -112,7 +127,7 @@ export default function RegistrationForm() {
         </View>
       )}
       {errorMessage && (
-        <View>
+        <View accessible>
           <Text style={styles.errorText}>{errorMessage}</Text>
         </View>
       )}

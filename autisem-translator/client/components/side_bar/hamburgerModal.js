@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Pressable, Modal, StyleSheet, Text, Picker } from 'react-native';
-
+import { translationService } from '../../services/translationService';
 
 const HamburgerModal = ({ modalVisible, closeModal, openBackgroundSelection }) => {
   const [selectedLanguage, setSelectedLanguage] = useState('English');
@@ -10,9 +10,14 @@ const HamburgerModal = ({ modalVisible, closeModal, openBackgroundSelection }) =
     setSelectedLanguage(language);
     if (language === 'Hebrew') {
       console.log('נבחר עברית');
+      translationService.storeLanguage('he');
+      
     } else if (language === 'English') {
       console.log('Selected English');
+      translationService.storeLanguage('en');
     }
+    translationService.initializeLanguage();
+
     setShowLanguageList(false);
     closeModal();
   };

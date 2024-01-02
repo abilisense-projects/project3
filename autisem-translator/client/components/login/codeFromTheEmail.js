@@ -38,6 +38,8 @@ const fields = [
     placeholder: translate("enter your code"),
     type: "text",
     rules: validations.code.client,
+    accesabilityLabel: "verification code input",
+    accesabilityHint: "enter the code you received in your email",
   },
 ];
 
@@ -135,11 +137,13 @@ export default function CodeFromTheEmail(userName) {
 
   // Render the component
   return (
-    <View style={styles.modalContent}>
+    <View style={styles.modalContent} accessible accesabilityLabel='verification code screen'>
       {console.log("isButtonDisabled:", isButtonDisabled)}
 
       {/* GenericForm component for entering verification code */}
       <GenericForm
+      accessible={true}
+
         fields={fields}
         onSubmit={onSubmit}
         submitButton={
