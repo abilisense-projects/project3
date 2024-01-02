@@ -29,12 +29,13 @@ const BackgroundSelection = () => {
   };
 
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     if (selectedImage !== null) {
       const selectedOption = backgroundOptions.find((option) => option.id === selectedImage);
       setConfirmedImage(selectedOption.image);
       setConfirmed(true);
       console.log(`Image ${selectedImage} selected`);
+      //const response = await UserService.loginUser(data);
 
     } else {
       AccessibilityInfo.announceForAccessibility('Please select an image');
@@ -69,16 +70,12 @@ const styles = StyleSheet.create({
 
   container: {
     alignItems: 'center',
-    justifyContent: 'center',
     flex: 1,
-    backgroundColor: '#fff',
   },
   backgroundImage: {
     position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
+    width:'100%',
+    height:'100%',
     zIndex: 1,//chek that....this on 1
   },
 

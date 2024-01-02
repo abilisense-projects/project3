@@ -21,7 +21,9 @@ const Stack = createStackNavigator();
 
 
   return (
+    
     <Provider store={store}>
+      <Hamburger/>
       { <NavigationContainer>
         <Stack.Navigator
           screenOptions={{
@@ -34,15 +36,16 @@ const Stack = createStackNavigator();
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="ForgotYourPassword" component={ForgotPassword} />
           <Stack.Screen name="NewPassword" component={NewPassword} />
-          <Stack.Screen name="CodeFromTheEmail" component={CodeFromTheEmail} />
+          <Stack.Screen name="CodeFromTheEma il" component={CodeFromTheEmail} />
           <Stack.Screen name="Registration" component={RegistrationScreen} />
           <Stack.Screen name="Hamburger" component={Hamburger} />
           <Stack.Screen name="Therapist" component={TherapistScreen} />
-
+          
         </Stack.Navigator>
+        
       </NavigationContainer> }
 
-
+     
     </Provider>
 
     

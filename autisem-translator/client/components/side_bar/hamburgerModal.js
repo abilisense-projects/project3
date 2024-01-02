@@ -57,6 +57,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end', // Align modal to the bottom
   },
 
+
   modalContainer: {
     justifyContent: 'center',
     alignItems: 'center',

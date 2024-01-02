@@ -16,7 +16,7 @@ export default function HomeScreen() {
 
   return (
     <View accessible={true} style={styles.modalContent}>
-      <Hamburger />
+      {/* <Hamburger /> */}
 
       <GenericButton
         title={translate("login")}
@@ -31,6 +31,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   modalContent: {
     backgroundColor: "white",
+    marginTop: 60, // עדכני זאת לפי הצורך
     padding: 20,
     borderRadius: 10,
     borderWidth: 1,

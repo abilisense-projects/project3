@@ -5,6 +5,7 @@ import BackgroundSelection from './background_selection';
 import HamburgerModal from './hamburgerModal';
 
 
+
 const Hamburger = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [backgroundSelectionVisible, setBackgroundSelectionVisible] = useState(false);
@@ -18,20 +19,6 @@ const Hamburger = () => {
 
   const closeBackgroundSelection = () => setBackgroundSelectionVisible(false);
 
-  // const toggleModal = () => {
-  //   modalVisible ? closeModal() : setModalVisible(true);
-  // };
-
-//   const toggleModal = () => {
-//     if (modalVisible || backgroundSelectionVisible) {
-//       console.log("לחצת וזה פתוח")
-//       setModalVisible(false);
-//       setBackgroundSelectionVisible(false);
-//     } else {
-//       setModalVisible(true);
-//       console.log("לחצת וזה היה סגור")
-//     }
-//   };
 
   const toggleModal = () => {
     setModalVisible(!modalVisible);
@@ -43,7 +30,7 @@ const Hamburger = () => {
       <Pressable onPress={toggleModal} style={modalVisible ? styles.iconBackground : null}>
         <Icon name="navicon" size={25} color="black" />
       </Pressable>
-      <HamburgerModal modalVisible={modalVisible} closeModal={closeModal} openBackgroundSelection={openBackgroundSelection}/>
+      <HamburgerModal modalVisible={modalVisible} closeModal={closeModal} openBackgroundSelection={openBackgroundSelection} />
       {backgroundSelectionVisible && <BackgroundSelection onClose={closeBackgroundSelection} />}
     </View>
   );
@@ -53,21 +40,19 @@ const styles = StyleSheet.create({
   pageContainer: {
     flex: 1,
     padding: 20,
-    marginRight: 'auto',
+    //justifyContent: 'flex-start',
   },
 
   iconBackground: {
     backgroundColor: 'lightgray',
-    padding: 4,
     paddingTop: 2,
     paddingBottom: 2,
     paddingHorizontal: 5,
     borderRadius: 3,
-    justifyContent: 'center',
-    alignItems: 'center',
     alignSelf: 'flex-start',
   },
 });
 
 export default Hamburger;
+
 
