@@ -31,4 +31,4 @@ async function getListOfPatientsByTherapistID(therapistID) {
 //   }
 // }
 
-module.exports = {createAssociation,getListOfPatientsByTherapistID,sendNotificationToPatient};
+module.exports = {createAssociation,getListOfPatientsByTherapistID};
