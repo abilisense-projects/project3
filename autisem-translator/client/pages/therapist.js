@@ -5,21 +5,28 @@ import GenericButton from "../components/shared/button";
 import { useSelector } from "react-redux";
 import NoPatientsImage from "../assets/images/therapist room.jpg";
 import AssociatePatient from "../components/therapist/associatePatient";
+import BannerNotification from "../components/shared/bannerNotification";
 
 const TherapistScreen = () => {
   const [patients, setPatients] = useState([]);
   const [isAssociatePatientModalVisible, setAssociatePatientModalVisible] =
     useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [bannerMessage, setBannerMessage] = useState(null);
   const therapistId = useSelector((state) => state.user.user.userData._id);
 
+  //gets patients list by therapist id
   useEffect(() => {
     const fetchData = async () => {
       try {
         const patientsData = await therapistService.getTherapistPatients(
           therapistId
         );
-        setPatients(patientsData);
+        if (!patientsData || patientsData.length <= 0) {
+          setPatients([]);
+        } else {
+          setPatients(patientsData);
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -29,13 +36,23 @@ const TherapistScreen = () => {
     fetchData();
   }, [therapistId]);
 
+  //set opem modal true for entering patient's name
   const handleAddPatient = () => {
     setAssociatePatientModalVisible(true);
   };
 
-  const handleAssociatePatientConfirm = (patientUsername) => {
-    // send notification to patient
-    console.log("Associate Patient", patientUsername);
+  const handleAssociatePatientConfirm = async (patientUsername) => {
+    try {
+      //send notification to patient
+      await therapistService.sendNotificationToPatient(
+        therapistId,
+        patientUsername
+      );
+      setBannerMessage(`Notification sent to ${patientUsername}`);
+    } catch (error) {
+      setBannerMessage("Failed to send notification. Please try again.");
+    }
+    //close modal
     setAssociatePatientModalVisible(false);
   };
 
@@ -60,12 +77,12 @@ const TherapistScreen = () => {
           ) : (
             <FlatList
               data={patients}
-              keyExtractor={(item) => item._id}
+              keyExtractor={(item) => item.patientDetails._id}
               renderItem={({ item }) => (
                 <View style={styles.patientContainer}>
                   <Text
                     style={styles.patientName}
-                  >{`${item.firstName} ${item.lastName}`}</Text>
+                  >{`${item.patientDetails.firstName} ${item.patientDetails.lastName}`}</Text>
                 </View>
               )}
             />
@@ -80,6 +97,13 @@ const TherapistScreen = () => {
             onConfirm={handleAssociatePatientConfirm}
             onCancel={handleAssociatePatientCancel}
           />
+          {bannerMessage && (
+            <BannerNotification
+              message={bannerMessage}
+              severity={bannerMessage.includes("Failed") ? "error" : "success"}
+              onClose={() => setBannerMessage(null)}
+            />
+          )}
         </>
       )}
     </View>

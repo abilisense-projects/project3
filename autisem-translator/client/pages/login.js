@@ -6,8 +6,6 @@ import { translationService } from "../services/translationService";
 const translate = translationService.translate;
 
 export default function LoginScreen({ navigation }) {
-  const route = useRoute();
-
   const handleRegisterNowPress = () => {
     navigation.navigate("Registration");
   };

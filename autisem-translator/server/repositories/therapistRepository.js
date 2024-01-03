@@ -1,9 +1,11 @@
 const Therapist = require('../models/therapist');
 
-async function getTherapistPPatientsById(therapistId) {
+//didnt use this...
+async function sendNotificationToPatient(therapistId,patientUserName) {
+  //how do i send notification
   return Therapist.findById(therapistId).populate('listOfPatients');
 }
 
 module.exports = {
-  getTherapistPPatientsById,
+  sendNotificationToPatient
 };

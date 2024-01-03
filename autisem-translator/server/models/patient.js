@@ -6,7 +6,6 @@ const patientSchema = new mongoose.Schema({
   lastName:String,
   phoneNumber:String,
   password: String,
-  listOfTherapists:[String],
   wordDictionary: {
     type: Map,
     of: String,
