@@ -113,6 +113,7 @@ async function comparePassword(password, hashedPassword) {
 // Check if a username already exists (for new user registration)
 async function doesUserNameExist(userName) {
   try {
+    //save the type for notifications
     let therapist = await Therapist.findOne({ userName });
     let patient = await Patient.findOne({ userName });
     return { exists: therapist || patient };
