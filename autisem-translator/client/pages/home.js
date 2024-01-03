@@ -3,8 +3,6 @@ import { View, Button, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import GenericButton from "../components/shared/button";
 import { translationService } from "../services/translationService";
-import UserService from "../services/backendServices/userService";
-import Hamburger from "../components/side_bar/hamburger";
 
 const translate = translationService.translate;
 export default function HomeScreen() {
@@ -16,10 +14,10 @@ export default function HomeScreen() {
 
   return (
     <View accessible={true} style={styles.modalContent}>
-      <Hamburger />
       <GenericButton
         title={translate("login")}
         onPress={() => navigateToScreen("Login")}
+        buttonWidth={80}
       />
     </View>
   );
