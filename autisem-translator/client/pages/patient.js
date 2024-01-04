@@ -7,9 +7,11 @@ import RecordAudio from "../components/recording/recording";
 import { Ionicons } from "@expo/vector-icons";
 import patientService from "../services/backendServices/patientService";
 
-const PatientScreen = () => {
+const PatientScreen = (countChange) => {
   const navigation = useNavigation();
   const [countNotifications, setCountNotifications] = useState(" ");
+
+  // const { countChange } = route.params;
 
   const receiverId = useSelector((state) => state.user.user.userData._id);
 
@@ -50,6 +52,16 @@ const PatientScreen = () => {
     return user.listOfWords; // update in DB
   };
 
+  // const countEqual = () => {
+  //   if (countNotifications > countChange) {
+  //     console.log("countChange: ", countChange);
+  //     count = countChange;
+  //   } else {
+  //     count = countNotifications;
+  //   }
+  //   console.log("count: ", count);
+  // };
+
   return (
     <View accessible={true}>
       <Text style={styles.label}>hello {name}</Text>
@@ -61,7 +73,7 @@ const PatientScreen = () => {
           color={"black"}
           onPress={handleAssociateTherapist}
         />
-
+        {/* onPress={countEqual} */}
         {countNotifications ? (
           <View style={styles.notificationBadgeContainer}>
             <Text style={styles.notificationText}>{countNotifications}</Text>

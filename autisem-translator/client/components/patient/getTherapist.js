@@ -63,6 +63,8 @@ export default function GetTherapst() {
       //   userName: therapistData.userName,
       // });
       // console.log("Response:", response);
+      const countChange = countNotifications - 1;
+      // navigation.navigate("associateTherapist", { countChange });
       navigation.navigate("AccessOption", { therapist: therapistData });
       console.log(therapistData);
     }
