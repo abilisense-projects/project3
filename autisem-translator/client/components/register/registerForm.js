@@ -8,6 +8,8 @@ import BannerNotification from "../shared/bannerNotification";
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../redux/actions/userAction";
+import { globalStyles } from '../../styles';
+
 const translate = translationService.translate;
 
 const userTypeOptions = [
@@ -109,7 +111,7 @@ export default function RegistrationForm() {
   };
 
   return (
-    <View style={styles.modalContent} accessible accessibilityLabel="registration screen">
+    <View style={globalStyles.whitePaper} accessible accessibilityLabel="registration screen">
       {/* check if fields & userTypeOptions are not null */}
       <GenericForm
         fields={fields}
@@ -135,24 +137,8 @@ export default function RegistrationForm() {
   );
 }
 const styles = StyleSheet.create({
-  container: {
-    padding: 20, // Adequate padding for touch targets
-  },
   errorText: {
     color: "red",
     marginTop: 10,
-  },
-  modalContent: {
-    backgroundColor: "white",
-    padding: 20,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.5,
-    shadowRadius: 2,
-    elevation: 3,
-    marginTop: 40, // Adjust this value as needed
   },
 });

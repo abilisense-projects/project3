@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import NoPatientsImage from '../assets/images/therapist room.jpg'
 import AssociatePatient from '../components/therapist/associatePatient';
 import BannerNotification from '../components/shared/bannerNotification';
+import { globalStyles } from '../styles';
 
 const TherapistScreen = () => {
   const [patients, setPatients] = useState([]);
@@ -39,7 +40,6 @@ const TherapistScreen = () => {
     setAssociatePatientModalVisible(true);
   };
 
-
   const handleAssociatePatientConfirm = async (patientUsername) => {
     try {
       //send notification to patient
@@ -57,7 +57,7 @@ const TherapistScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={globalStyles.whitePaper}>
       {isLoading ? (
         <Text>Loading...</Text>
       ) : (
@@ -101,10 +101,6 @@ const TherapistScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-  },
   header: {
     fontSize: 24,
     fontWeight: 'bold',
@@ -130,11 +126,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignItems: 'center',
     marginTop: 16,
-  },
-  modalContainer: {
-    backgroundColor: 'white',
-    padding: 16,
-    borderRadius: 8,
   },
   input: {
     borderWidth: 1,
@@ -169,8 +160,8 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   noPatientsImage: {
-    width: 400,
-    height: 200,
+    width: 200,
+    height: 100,
   },
 });
 
