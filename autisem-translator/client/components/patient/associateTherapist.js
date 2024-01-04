@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import GenericButton from "../shared/button";
 import { useNavigation } from "@react-navigation/native";
-
+import { useSelector } from "react-redux";
 import validations from "../../config/validations";
-
+import UserService from "../../services/backendServices/userService";
 import { translationService } from "../../services/translationService";
 import TextInputField from "../shared/textInputField";
+import GenericForm from "../shared/form";
 
 const translate = translationService.translate;
 
@@ -25,23 +26,57 @@ const fields = [
 
 export default function AssociateTherapist() {
   const navigation = useNavigation();
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleGet = () => {
-    navigation.navigate("GetTherapst");
+  const userName = useSelector((state) => state.user.user.userData.userName);
+  console.log("userName ", userName);
+
+  const onGet = async (data) => {
+    try {
+      // Set loading state to true to indicate that the login is in progress
+      setIsLoading(true);
+      const response = await UserService.loginUser({
+        userName: userName,
+        password: data.password,
+      });
+      console.log("response ", response);
+
+      if (response.message === "User exists") {
+        navigation.navigate("GetTherapst");
+        // Clear error message if the user exists
+        setErrorMessage(null);
+      } else {
+        // Set error message if the login credentials are incorrect
+        setErrorMessage("The password is incorrect, try again.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+      // Set loading state to false after the validation is complete
+      setIsLoading(false);
+    }
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.modalContainer}>
-        <Text style={styles.label}>Get Therapist</Text>
+        <Text style={styles.label}>Get Therapist </Text>
         <Text style={styles.labels}>Get your therapist to Abilisense.</Text>
         <Text style={styles.labels}>It's very easy to get started.</Text>
 
-        <TextInputField
+        <GenericForm
+          accessible={true}
           fields={fields}
-          placeholder={translate("password")}
-        ></TextInputField>
-        <GenericButton onPress={handleGet} title="Get" />
+          onSubmit={onGet}
+          navigation={navigation}
+          submitButton={isLoading ? "Verifying..." : "Get"}
+          disabledButton={isLoading}
+        ></GenericForm>
+
+        <Text style={styles.errorText} accessible>
+          {errorMessage}
+        </Text>
       </View>
     </View>
   );

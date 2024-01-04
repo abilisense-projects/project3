@@ -27,17 +27,27 @@ export default function AccessOption() {
         {therapist && (
           <>
             <Text style={styles.label}>
-              {therapist.name} wants to access your Abilisense account
+              <Text style={{ color: "green" }}>
+                {`${therapist.firstName} ${therapist.lastName} `}
+              </Text>
+              wants to access your Abilisense account
             </Text>
             <Text>
-              This will allow {therapist.name} to perform operations on your
-              Abilisense account
+              This will allow
+              <Text style={{ color: "green" }}>
+                {` ${therapist.firstName} ${therapist.lastName} `}
+              </Text>
+              to perform operations on your Abilisense account
             </Text>
             <Text>
               It is possible that your sensitive information will be shared with
               the
-              {therapist.name}. You can always add or remove access.
+              <Text style={{ color: "green" }}>
+                {` ${therapist.firstName} ${therapist.lastName}`}
+              </Text>
+              .
             </Text>
+            <Text>You can always add or remove access.</Text>
           </>
         )}
         <View style={styles.buttonContainer}>
