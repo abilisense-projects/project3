@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import Icon from "react-native-vector-icons/FontAwesome";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useSelector } from "react-redux";
 import { useFocusEffect } from '@react-navigation/native';
+import UploadImage from "../shared/uploadImage";
 
 const SideNavigator = ({ navigation, shouldDisplaySideNavigator }) => {
   const [page, setPage] = useState('');
@@ -30,11 +30,7 @@ const SideNavigator = ({ navigation, shouldDisplaySideNavigator }) => {
   return (
     <View style={styles.drawerContent}>
       <View style={styles.userContainer}>
-        <Icon
-          name="user-circle"
-          size={30}
-          style={styles.userIcon}
-        />
+        <UploadImage/>
         {user && <Text style={styles.userName}>{user.userData.firstName}</Text>}
       </View>
       <View style={styles.separator} />
