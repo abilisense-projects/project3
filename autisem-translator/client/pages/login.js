@@ -1,7 +1,8 @@
 import React from "react";
-import { View, Text, Pressable, StyleSheet } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import Login from "../components/login/login";
 import { translationService } from "../services/translationService";
+import { globalStyles } from '../styles';
 const translate = translationService.translate;
 
 export default function LoginScreen({ navigation }) {
@@ -11,7 +12,7 @@ export default function LoginScreen({ navigation }) {
   };
 
   return (
-    <View style={styles.modalContent}>
+    <View style={globalStyles.whitePaper}>
       <Login />
       <View style={{ alignItems: 'center', marginTop: 20 }}>
         <Text style={{ color: 'black' }}>
@@ -26,20 +27,3 @@ export default function LoginScreen({ navigation }) {
     </View>
   );
 }
-
-// StyleSheet for styling components
-const styles = StyleSheet.create({
-  modalContent: {
-    backgroundColor: "white",
-    padding: 20,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.5,
-    shadowRadius: 2,
-    elevation: 3,
-    marginTop: 40, // Adjust this value as needed
-  },
-});

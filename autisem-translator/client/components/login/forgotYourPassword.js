@@ -5,6 +5,8 @@ import GenericForm from "../shared/form";
 import validations from "../../config/validations";
 import SendTheEmailService from "../../services/backendServices/sendTheEmailService";
 import { translationService } from "../../services/translationService";
+import { globalStyles } from '../../styles';
+
 
 // Translation function alias for shorter usage
 const translate = translationService.translate;
@@ -14,19 +16,6 @@ const styles = StyleSheet.create({
   errorText: {
     color: "red",
     marginTop: 10,
-  },
-  modalContent: {
-    backgroundColor: "white",
-    padding: 20,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.5,
-    shadowRadius: 2,
-    elevation: 3,
-    marginTop: 40, // Adjust this value as needed
   },
 });
 
@@ -89,7 +78,7 @@ export default function ForgotYourPassword() {
 
   // Render the component
   return (
-    <View style={styles.modalContent} accessible accessibilityLabel="forgot your password screen">
+    <View style={globalStyles.whitePaper} accessible accessibilityLabel="forgot your password screen">
       {/* GenericForm component for entering email address for password reset */}
       <GenericForm
         fields={fields}
