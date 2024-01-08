@@ -35,4 +35,27 @@ async function getListOfPatientsByTherapistID(therapistID) {
   }
 }
 
-module.exports = { createAssociation, getListOfPatientsByTherapistID };
+async function markNotificationAsConfirmed(id, receiverID) {
+  try {
+    const updatedAssociations = await Associations.findOneAndUpdate(
+      {
+        therapistId: id,
+        patientId: receiverID,
+      },
+      { status: "Confirmed" },
+      { new: true }
+    );
+    console.log("updatedAssociations", updatedAssociations);
+
+    return true;
+  } catch (error) {
+    console.error("Error in getSenderIdByUsernameAndReceiverID:", error);
+    return null;
+  }
+}
+
+module.exports = {
+  createAssociation,
+  getListOfPatientsByTherapistID,
+  markNotificationAsConfirmed,
+};

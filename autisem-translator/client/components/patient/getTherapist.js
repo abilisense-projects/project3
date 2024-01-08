@@ -29,7 +29,6 @@ export default function GetTherapst() {
   const countNotifications = useSelector((state) => state.patient.num);
   // const countNotifications = useSelector((state) => state.patient.num?.numOfUnread);
 
-
   console.log("countNotifications:", countNotifications);
 
   const receiverId = useSelector((state) => state.user.user.userData._id);
@@ -65,10 +64,10 @@ export default function GetTherapst() {
 
   const handleDone = async () => {
     if (selectedTherapist) {
-      const { userName, firstName, lastName } = selectedTherapist;
-      const therapistData = { userName, firstName, lastName };
+      const { userName, firstName, lastName, id } = selectedTherapist;
+      const therapistData = { userName, firstName, lastName, id};
       const responseChange = await patientService.statusChange({
-        userName: userName,
+        id: id,
         receiverID: receiverId,
       });
 
@@ -100,7 +99,9 @@ export default function GetTherapst() {
         <Text style={styles.label}>Look for therapists you know</Text>
         {countNotifications === "0" ? (
           <View style={styles.noPatientsContainer}>
-            <Text style={styles.noPatientsText}>There are no new therapists</Text>
+            <Text style={styles.noPatientsText}>
+              There are no new therapists
+            </Text>
           </View>
         ) : (
           <View>

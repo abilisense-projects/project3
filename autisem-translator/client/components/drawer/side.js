@@ -116,6 +116,7 @@ const styles = StyleSheet.create({
     height: 11,
     justifyContent: "center",
     alignItems: "center",
+    border: "1px solid white",
   },
 
   notificationText: {

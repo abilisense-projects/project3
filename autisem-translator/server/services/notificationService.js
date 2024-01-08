@@ -14,18 +14,13 @@ const notificationService = {
     return NotificationRepository.getUnreadNotificationsForPatient(patientId);
   },
 
-  async markNotificationAsRead(userName, receiverID) {
-    return NotificationRepository.markNotificationAsRead(userName, receiverID);
+  async markNotificationAsRead(id, receiverID) {
+    return NotificationRepository.markNotificationAsRead(id, receiverID);
   },
   async getListOfTherapistsByReceiverID(receiverId) {
     return NotificationRepository.getListOfTherapistsByReceiverID(receiverId);
   },
-  // async getTheChangeInTheCaregiverStatus(receiverId, userName) {
-  //   return NotificationRepository.getTheChangeInTheCaregiverStatus(
-  //     receiverId,
-  //     userName
-  //   );
-  // },
+ 
 };
 
 module.exports = notificationService;

@@ -47,20 +47,21 @@ const patientService = {
     }
   },
 
-  // getStatusChange: async (change) => {
-  //   try {
-  //     const response = await axios.get(
-  //       `${REACT_APP_BASE_URL}/patient/change`,
-  //       change
-  //     );
-  //     console.log("receiverId 1:", change);
-  //     console.log("response", response);
+  statusChangeToConfirmed: async (associationsId) => {
+    console.log(" associationsId:", associationsId);
+    try {
+      const response = await axios.put(
+        `${REACT_APP_BASE_URL}/patient/changeAssociations`, associationsId);
+      console.log("associationsId:", associationsId);
+      console.log("response associationsId", response);
 
-  //     return response.data;
-  //   } catch (error) {
-  //     console.error("Error fetching therapist patients:", error);
-  //     throw new Error("Error fetching therapist patients");
-  //   }
-  // },
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching therapist patients:", error);
+      throw new Error("Error fetching therapist patients");
+    }
+  },
+
+  
 };
 export default patientService;

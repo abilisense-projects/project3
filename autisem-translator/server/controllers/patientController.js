@@ -32,10 +32,10 @@ async function unreadNotifications(req, res) {
 
 async function statusChange(req, res) {
   try {
-    const { userName, receiverID } = req.body;
-    console.log("userName, receiverID ", userName, receiverID);
+    const { id, receiverID } = req.body;
+    console.log("ud, receiverID ", id, receiverID);
     const change = await notificationService.markNotificationAsRead(
-      userName,
+      id,
       receiverID
     );
     res.json(change);

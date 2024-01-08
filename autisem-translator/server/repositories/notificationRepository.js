@@ -23,20 +23,8 @@ async function getUnreadNotificationsForPatient(receiverID) {
   return count;
 }
 
-async function markNotificationAsRead(userName, receiverID) {
+async function markNotificationAsRead(id, receiverID) {
   try {
-    const therapistDetails = await Therapist.find({
-      userName: userName,
-    });
-    // .populate("_id");
-    // console.log("_id", _id);
-    console.log("therapistDetails", therapistDetails);
-
-    console.log("therapistDetails._id", therapistDetails[0]._id);
-
-    const id = therapistDetails[0]._id;
-    console.log("id", id);
-
     const updatedNotification = await Notification.findOneAndUpdate(
       {
         senderId: id,
@@ -75,8 +63,9 @@ async function getListOfTherapistsByReceiverID(receiverID) {
           });
 
           console.log("therapistDetails", therapistDetails);
-
+          console.log("therapistDetails._id", therapistDetails._id);
           return {
+            id: therapistDetails._id,
             userName: therapistDetails.userName,
             firstName: therapistDetails.firstName,
             lastName: therapistDetails.lastName,

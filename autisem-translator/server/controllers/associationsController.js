@@ -11,7 +11,23 @@ async function create(req, res) {
   }
 };
 
+async function statusChangeToConfirmed(req, res) {
+  try {
+    const { id, receiverID } = req.body;
+    console.log("id, receiverID ", id, receiverID);
+    const change = await AssociationService.markNotificationAsConfirmed(
+      id,
+      receiverID
+    );
+    res.json(change);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
 
 module.exports = {
   create,
+  statusChangeToConfirmed
 };

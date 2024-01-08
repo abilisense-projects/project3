@@ -2,9 +2,12 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import GenericButton from "../shared/button";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import { useSelector } from "react-redux";
+import patientService from "../../services/backendServices/patientService";
 
 export default function AccessOption() {
   const navigation = useNavigation();
+  const receiverId = useSelector((state) => state.user.user.userData._id);
 
   const route = useRoute();
   const { therapist } = route.params || {};
@@ -13,12 +16,12 @@ export default function AccessOption() {
     navigation.navigate("GetTherapst");
   };
 
-  const handleModalOk = () => {
-    // Perform the action to add the therapist to the patient's database
-    // You may call an API or dispatch an action to update the state
-    // Example: dispatch(addTherapistToPatient(therapist));
-    // Then navigate back to the previous screen
-    // navigation.navigate("GetTherapst");
+  const handleModalOk = async () => {
+    const response = await patientService.statusChangeToConfirmed({
+      id: therapist.id,
+      receiverID: receiverId,
+    });
+    console.log("response", response);
   };
 
   return (
@@ -58,7 +61,7 @@ export default function AccessOption() {
           />
           <View style={styles.buttonSpacer} />
           <GenericButton
-            //   onPress={handleModalOk}
+            onPress={handleModalOk}
             title="Allow"
             buttonWidth={80}
           />
