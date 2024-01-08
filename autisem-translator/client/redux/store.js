@@ -1,8 +1,10 @@
-import { createStore, combineReducers } from 'redux';
-import userReducer from './reducers/userReducer';
+import { createStore, combineReducers } from "redux";
+import userReducer from "./reducers/userReducer";
+import patientReducer from "./reducers/patientReducer";
 
 const rootReducer = combineReducers({
-  user: userReducer
+  user: userReducer,
+  patient: patientReducer,
 });
 
 const store = createStore(rootReducer);

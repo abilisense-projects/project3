@@ -19,6 +19,7 @@ export default function LandingScreen() {
       <GenericButton
         title={translate("login")}
         onPress={() => navigateToScreen("Login")}
+        buttonWidth={80}
       />
     </View>
   );
