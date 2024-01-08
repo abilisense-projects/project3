@@ -22,6 +22,7 @@ export default function AccessOption() {
       receiverID: receiverId,
     });
     console.log("response", response);
+    navigation.navigate("Patient");
   };
 
   return (

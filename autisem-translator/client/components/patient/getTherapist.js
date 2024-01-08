@@ -65,7 +65,7 @@ export default function GetTherapst() {
   const handleDone = async () => {
     if (selectedTherapist) {
       const { userName, firstName, lastName, id } = selectedTherapist;
-      const therapistData = { userName, firstName, lastName, id};
+      const therapistData = { userName, firstName, lastName, id };
       const responseChange = await patientService.statusChange({
         id: id,
         receiverID: receiverId,
@@ -77,8 +77,6 @@ export default function GetTherapst() {
       if (countNotifications.numOfUnread > 0) {
         dispatch(setUnreadNotification(countNotifications.numOfUnread - 1));
 
-        navigation.navigate("AccessOption", { therapist: therapistData });
-      } else {
         navigation.navigate("AccessOption", { therapist: therapistData });
       }
     }

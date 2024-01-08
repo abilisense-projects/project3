@@ -8,6 +8,7 @@ import { Ionicons } from "@expo/vector-icons";
 import patientService from "../services/backendServices/patientService";
 import SideNavigator from "../components/drawer/side";
 import { setUnreadNotification } from "../redux/actions/patientAction";
+import { globalStyles } from "../styles";
 
 const PatientScreen = () => {
   const dispatch = useDispatch();
@@ -42,10 +43,6 @@ const PatientScreen = () => {
   const name = useSelector((state) => state.user.user.userData.firstName);
   console.log("firstName ", name);
 
-  const handleAssociateTherapist = () => {
-    navigation.navigate("AssociateTherapist");
-  };
-
   // Move the useSelector inside the component
   const user = useSelector((state) => state.userReucer);
 
@@ -54,32 +51,12 @@ const PatientScreen = () => {
   };
 
   return (
-    <View accessible={true}>
-      <Text style={styles.label}>hello {name}</Text>
-
-      {/* <SideNavigator
-        navigation={navigation}
-        countNotifications={countNotifications}  // Pass countNotifications as a prop
-      />  */}
-
-      {/* <View style={styles.iconContainer}>
-        <Ionicons
-          name="notifications"
-          size={30}
-          color={"black"}
-          onPress={handleAssociateTherapist}
-        />
-        
-        {countNotifications ? (
-          <View style={styles.notificationBadgeContainer}>
-            <Text style={styles.notificationText}>{countNotifications}</Text>
-          </View>
-        ) : null}
-      </View> */}
+    <View accessible={true} style={globalStyles.whitePaper}>
+      <Text style={styles.label}>Hello {name}</Text>
 
       {/* <Button title="רשימת מילים" onPress={handleWordListPress} /> */}
-      {/* <GenericButton onPress={handleAssociateTherapist} title="message" /> */}
-      {/* <RecordAudio /> */}
+
+      <RecordAudio />
     </View>
   );
 };
@@ -88,7 +65,8 @@ export default PatientScreen;
 
 const styles = StyleSheet.create({
   label: {
-    fontSize: 15,
+    fontSize: 20,
+    // alignSelf: "flex-end",
     marginBottom: 15,
   },
   notificationBadgeContainer: {
