@@ -14,8 +14,8 @@ const notificationService = {
     return NotificationRepository.getUnreadNotificationsForPatient(patientId);
   },
 
-  async markNotificationAsRead(notificationId) {
-    return NotificationRepository.markNotificationAsRead(notificationId);
+  async markNotificationAsRead(userName, receiverID) {
+    return NotificationRepository.markNotificationAsRead(userName, receiverID);
   },
   async getListOfTherapistsByReceiverID(receiverId) {
     return NotificationRepository.getListOfTherapistsByReceiverID(receiverId);

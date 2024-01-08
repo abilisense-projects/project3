@@ -11,16 +11,47 @@ async function createNotification(senderId, receiverId, message) {
   return await newNotification.save();
 }
 
-async function getUnreadNotificationsForPatient(patientId) {
-  return Notification.find({ receiverId: patientId, status: "unread" });
+async function getUnreadNotificationsForPatient(receiverID) {
+  // return Notification.find({ receiverId: patientId, status: "unread" });
+  const notifications = await Notification.find({
+    receiverId: receiverID.toString(),
+    status: "unread",
+  }).populate("senderId");
+  const count = notifications.length;
+  console.log("count: ", count);
+
+  return count;
 }
 
-async function markNotificationAsRead(notificationId) {
-  return Notification.findByIdAndUpdate(
-    notificationId,
-    { status: "read" },
-    { new: true }
-  );
+async function markNotificationAsRead(userName, receiverID) {
+  try {
+    const therapistDetails = await Therapist.find({
+      userName: userName,
+    });
+    // .populate("_id");
+    // console.log("_id", _id);
+    console.log("therapistDetails", therapistDetails);
+
+    console.log("therapistDetails._id", therapistDetails[0]._id);
+
+    const id = therapistDetails[0]._id;
+    console.log("id", id);
+
+    const updatedNotification = await Notification.findOneAndUpdate(
+      {
+        senderId: id,
+        receiverId: receiverID,
+      },
+      { status: "read" },
+      { new: true }
+    );
+    console.log("updatedNotification", updatedNotification);
+
+    return true;
+  } catch (error) {
+    console.error("Error in getSenderIdByUsernameAndReceiverID:", error);
+    return null;
+  }
 }
 
 async function getListOfTherapistsByReceiverID(receiverID) {
@@ -31,8 +62,8 @@ async function getListOfTherapistsByReceiverID(receiverID) {
       status: "unread",
     }).populate("senderId");
 
-    const count = notifications.length;
-    console.log("count: ", count);
+    // const count = notifications.length;
+    // console.log("count: ", count);
 
     const therapists = await Promise.all(
       notifications.map(async (notification) => {
@@ -64,7 +95,7 @@ async function getListOfTherapistsByReceiverID(receiverID) {
     console.log("filteredTherapists", filteredTherapists);
     return {
       therapists: filteredTherapists,
-      count,
+      // count,
     };
   } catch (error) {
     console.error(error);
@@ -74,14 +105,6 @@ async function getListOfTherapistsByReceiverID(receiverID) {
     };
   }
 }
-
-// async function getTheChangeInTheCaregiverStatus(notificationId) {
-//   return Notification.findByIdAndUpdate(
-//     notificationId,
-//     { status: "read" },
-//     { new: true }
-//   );
-// }
 
 module.exports = {
   createNotification,

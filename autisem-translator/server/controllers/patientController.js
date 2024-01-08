@@ -17,14 +17,26 @@ async function getPatientsTherapist(req, res) {
   }
 }
 
-async function getStatusChange(req, res) {
+async function unreadNotifications(req, res) {
   try {
-    const { receiverId, userName } = req.body;
+    const receiverId = req.params.patientId;
+    console.log("receiver Id: ", receiverId);
+    const therapists =
+      await notificationService.getUnreadNotificationsForPatient(receiverId);
+    res.json(therapists);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
 
-    console.log("Receiver Iddddd: ", receiverId, userName);
-    const change = await notificationService.getTheChangeInTheCaregiverStatus(
-      receiverId,
-      userName
+async function statusChange(req, res) {
+  try {
+    const { userName, receiverID } = req.body;
+    console.log("userName, receiverID ", userName, receiverID);
+    const change = await notificationService.markNotificationAsRead(
+      userName,
+      receiverID
     );
     res.json(change);
   } catch (error) {
@@ -33,33 +45,6 @@ async function getStatusChange(req, res) {
   }
 }
 
-async function registerPatient(req, res) {
-  try {
-    console.log(req.body);
-    const {
-      userName,
-      firstName,
-      lastName,
-      phoneNumber,
-      password,
-      listOfTherapists,
-    } = req.body;
-    await patientService.createPatient(
-      userName,
-      firstName,
-      lastName,
-      phoneNumber,
-      password,
-      listOfTherapists
-    );
-    //after 1 hour refresh for another hour
-    const token = jwt.sign({ userName }, SECRET_KEY, { expiresIn: "2m" });
-    res.status(201).json({ message: "Patient registered successfully", token });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Internal server error" });
-  }
-}
 async function getPatientDetailes(req, res) {
   try {
     //after middleware the data is in user
@@ -82,8 +67,8 @@ async function getPatientDetailes(req, res) {
 }
 
 module.exports = {
-  registerPatient,
   getPatientDetailes,
   getPatientsTherapist,
-  getStatusChange,
+  statusChange,
+  unreadNotifications,
 };

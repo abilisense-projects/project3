@@ -8,20 +8,29 @@ import {
 } from "react-native";
 import GenericButton from "../shared/button";
 import { useNavigation } from "@react-navigation/native";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import patientService from "../../services/backendServices/patientService";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { translationService } from "../../services/translationService";
+import { setUnreadNotification } from "../../redux/actions/patientAction";
 
 // Translation function alias for shorter usage
 const translate = translationService.translate;
 
 export default function GetTherapst() {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
   const [selectedTherapist, setSelectedTherapist] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [Therapists, setTherapists] = useState([]);
-  const [countNotifications, setCountNotifications] = useState(" ");
+  // const countNotifications = useSelector(
+  //   (state) => state.patient.num.numOfUnread
+  // );
+  const countNotifications = useSelector((state) => state.patient.num);
+  // const countNotifications = useSelector((state) => state.patient.num?.numOfUnread);
+
+
+  console.log("countNotifications:", countNotifications);
 
   const receiverId = useSelector((state) => state.user.user.userData._id);
 
@@ -35,9 +44,9 @@ export default function GetTherapst() {
         );
         if (responseTherapist && responseTherapist.therapists) {
           setTherapists(responseTherapist.therapists);
-          setCountNotifications(responseTherapist.count);
+          // setCountNotifications(responseTherapist.count);
           console.log("response.therapists ", responseTherapist.therapists);
-          console.log("response.count ", responseTherapist.count);
+          // console.log("response.count ", responseTherapist.count);
         } else {
           console.error("Invalid response data:", responseTherapist);
         }
@@ -58,15 +67,21 @@ export default function GetTherapst() {
     if (selectedTherapist) {
       const { userName, firstName, lastName } = selectedTherapist;
       const therapistData = { userName, firstName, lastName };
-      // const response = await patientService.statusChange({
-      //   receiverId: receiverId,
-      //   userName: therapistData.userName,
-      // });
-      // console.log("Response:", response);
-      const countChange = countNotifications - 1;
-      // navigation.navigate("associateTherapist", { countChange });
-      navigation.navigate("AccessOption", { therapist: therapistData });
-      console.log(therapistData);
+      const responseChange = await patientService.statusChange({
+        userName: userName,
+        receiverID: receiverId,
+      });
+
+      console.log("responseChange", responseChange);
+
+      // if (countNotifications > 0) {
+      if (countNotifications.numOfUnread > 0) {
+        dispatch(setUnreadNotification(countNotifications.numOfUnread - 1));
+
+        navigation.navigate("AccessOption", { therapist: therapistData });
+      } else {
+        navigation.navigate("AccessOption", { therapist: therapistData });
+      }
     }
   };
 
@@ -83,42 +98,54 @@ export default function GetTherapst() {
     <View style={styles.container}>
       <View style={styles.modalContainer}>
         <Text style={styles.label}>Look for therapists you know</Text>
-        {Therapists.map((therapist) => (
-          <TouchableOpacity
-            key={therapist.userName}
-            onPress={() => handleTherapist(therapist)}
-            style={[
-              styles.button,
-              selectedTherapist === therapist && { backgroundColor: "green" },
-            ]}
-          >
-            <View style={styles.IconContainer}>
-              <Icon
-                name="user-md"
-                size={30}
-                color={selectedTherapist === therapist ? "white" : "green"}
-              />
-              <View style={styles.textContainer}>
-                <Text
-                  style={{
-                    color: selectedTherapist === therapist ? "white" : "green",
-                  }}
-                >
-                  {therapist.userName}
-                </Text>
-                <Text
-                  style={{
-                    color: selectedTherapist === therapist ? "white" : "green",
-                  }}
-                >
-                  {therapist.firstName} {therapist.lastName}
-                </Text>
-              </View>
-            </View>
-          </TouchableOpacity>
-        ))}
+        {countNotifications === "0" ? (
+          <View style={styles.noPatientsContainer}>
+            <Text style={styles.noPatientsText}>There are no new therapists</Text>
+          </View>
+        ) : (
+          <View>
+            {Therapists.map((therapist) => (
+              <TouchableOpacity
+                key={therapist.userName}
+                onPress={() => handleTherapist(therapist)}
+                style={[
+                  styles.button,
+                  selectedTherapist === therapist && {
+                    backgroundColor: "green",
+                  },
+                ]}
+              >
+                <View style={styles.IconContainer}>
+                  <Icon
+                    name="user-md"
+                    size={30}
+                    color={selectedTherapist === therapist ? "white" : "green"}
+                  />
+                  <View style={styles.textContainer}>
+                    <Text
+                      style={{
+                        color:
+                          selectedTherapist === therapist ? "white" : "green",
+                      }}
+                    >
+                      {therapist.userName}
+                    </Text>
+                    <Text
+                      style={{
+                        color:
+                          selectedTherapist === therapist ? "white" : "green",
+                      }}
+                    >
+                      {therapist.firstName} {therapist.lastName}
+                    </Text>
+                  </View>
+                </View>
+              </TouchableOpacity>
+            ))}
 
-        <GenericButton onPress={handleDone} title="Done" />
+            <GenericButton onPress={handleDone} title="Done" />
+          </View>
+        )}
       </View>
     </View>
   );
@@ -169,5 +196,14 @@ const styles = StyleSheet.create({
   textContainer: {
     flexDirection: "column",
     marginLeft: 8,
+  },
+  noPatientsText: {
+    fontSize: 18,
+    marginBottom: 16,
+  },
+  noPatientsContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    flex: 1,
   },
 });
