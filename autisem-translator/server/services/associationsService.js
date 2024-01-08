@@ -9,6 +9,9 @@ const associationService = {
   async getListOfPatientsByTherapistID(therapistID) {
     return associationRepository.getListOfPatientsByTherapistID(therapistID);
   },
+  async markNotificationAsConfirmed(id, receiverID) {
+    return associationRepository.markNotificationAsConfirmed(id, receiverID);
+  },
 
 }
 

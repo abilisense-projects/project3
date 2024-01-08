@@ -26,6 +26,6 @@ const therapistService = {
             throw new Error('Error sending notification');
         }
     }
-    
-};
+  }
+  
 export default therapistService;

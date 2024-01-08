@@ -10,7 +10,8 @@ import { globalStyles } from '../styles';
 
 const TherapistScreen = () => {
   const [patients, setPatients] = useState([]);
-  const [isAssociatePatientModalVisible, setAssociatePatientModalVisible] = useState(false);
+  const [isAssociatePatientModalVisible, setAssociatePatientModalVisible] =
+    useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [bannerMessage, setBannerMessage] = useState(null);
   const therapistId = useSelector((state) => state.user.user.userData._id);
@@ -51,7 +52,7 @@ const TherapistScreen = () => {
         setBannerMessage(`Notification sent to ${patientUsername}`);
       }
     } catch (error) {
-      setBannerMessage('Failed to send notification. Please try again.');
+      setBannerMessage("Failed to send notification. Please try again.");
     }
     // close modal
     setAssociatePatientModalVisible(false);
@@ -97,7 +98,11 @@ const TherapistScreen = () => {
               )}
             />
           )}
-          <GenericButton style={styles.addButton} onPress={handleAddPatient} title="Add Patient" />
+          <GenericButton
+            style={styles.addButton}
+            onPress={handleAddPatient}
+            title="Add Patient"
+          />
           <AssociatePatient
             isVisible={isAssociatePatientModalVisible}
             onConfirm={handleAssociatePatientConfirm}
@@ -119,56 +124,56 @@ const TherapistScreen = () => {
 const styles = StyleSheet.create({
   header: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 16,
   },
   patientContainer: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     borderRadius: 8,
     padding: 16,
     marginBottom: 12,
     elevation: 3,
-    shadowColor: 'green',
+    shadowColor: "green",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
   },
   patientName: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   addButton: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: "#4CAF50",
     padding: 12,
     borderRadius: 8,
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 16,
   },
   input: {
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     borderRadius: 4,
     padding: 8,
     marginBottom: 16,
   },
   modalButtonsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
+    flexDirection: "row",
+    justifyContent: "space-around",
   },
   modalButton: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: "#4CAF50",
     padding: 12,
     borderRadius: 8,
-    alignItems: 'center',
+    alignItems: "center",
     flex: 1,
     marginHorizontal: 8,
   },
   modalButtonText: {
-    color: 'white',
-    fontWeight: 'bold',
+    color: "white",
+    fontWeight: "bold",
   },
   noPatientsContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     flex: 1,
   },
   noPatientsText: {

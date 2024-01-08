@@ -2,35 +2,39 @@ import React, { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useSelector } from "react-redux";
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect } from "@react-navigation/native";
 import UploadImage from "../shared/uploadImage";
 
 const SideNavigator = ({ navigation, shouldDisplaySideNavigator }) => {
-  const [page, setPage] = useState('');
-  const pages = ['Notifications', 'Settings', 'Theme', 'Language'];
-  const icons = ['notifications', 'settings', 'color-palette', 'language'];
+  const [page, setPage] = useState("");
+
+  const pages = ["Notifications", "Settings", "Theme", "Language"];
+  const icons = ["notifications", "settings", "color-palette", "language"];
   const user = useSelector((state) => state.user.user);
+  const countNotifications = useSelector((state) => state.patient.num);
 
   useFocusEffect(() => {
-    const currentPage = navigation.getState().routes[navigation.getState().index].name;
+    const currentPage =
+      navigation.getState().routes[navigation.getState().index].name;
     setPage(currentPage);
   });
 
   const goToFirstScreen = (pageName) => {
     navigation.reset({
       index: 0,
-      routes: [{ name: pageName }]
+      routes: [{ name: pageName }],
     });
   };
 
   if (!shouldDisplaySideNavigator) {
     return null;
   }
+  console.log("countNotifications", countNotifications);
 
   return (
     <View style={styles.drawerContent}>
       <View style={styles.userContainer}>
-        <UploadImage/>
+        <UploadImage />
         {user && <Text style={styles.userName}>{user.userData.firstName}</Text>}
       </View>
       <View style={styles.separator} />
@@ -38,19 +42,32 @@ const SideNavigator = ({ navigation, shouldDisplaySideNavigator }) => {
         <TouchableOpacity
           style={styles.drawerItem}
           key={index}
-          onPress={() => { setPage(item);console.log("item",item); goToFirstScreen(item) }}
+          onPress={() => {
+            setPage(item);
+            console.log("item", item);
+            goToFirstScreen(item);
+          }}
         >
-          <View style={styles.iconTextContainer}>
-            <Ionicons
-              name={icons[index]}
-              size={20}
-              color={page === item ? 'green' : 'black'}
-              style={styles.icon}
-            />
-            <Text style={page === item ? { color: 'green' } : { color: 'black' }}>
-              {item}
-            </Text>
-          </View>
+          {/* Conditionally render the badge for the 'notifications' icon */}
+
+          {icons[index] === "notifications" &&
+            countNotifications &&
+            countNotifications.numOfUnread > 0 && (
+              <View style={styles.notificationBadgeContainer}>
+                <Text style={styles.notificationText}>
+                  {countNotifications.numOfUnread}
+                </Text>
+              </View>
+            )}
+          <Ionicons
+            name={icons[index]}
+            size={20}
+            color={page === item ? "green" : "black"}
+            style={styles.icon}
+          />
+          <Text style={page === item ? { color: "green" } : { color: "black" }}>
+            {item}
+          </Text>
         </TouchableOpacity>
       ))}
     </View>
@@ -65,16 +82,17 @@ const styles = StyleSheet.create({
   },
   drawerItem: {
     marginBottom: 20,
+    flexDirection: "row", // Add this line
   },
-  iconTextContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
+  // iconTextContainer: {
+  //   flexDirection: "row",
+  //   alignItems: "center",
+  // },
   icon: {
     marginRight: 8,
   },
   userContainer: {
-    alignItems: 'center',
+    alignItems: "center",
     marginBottom: 10,
   },
   userIcon: {
@@ -82,12 +100,28 @@ const styles = StyleSheet.create({
   },
   userName: {
     fontSize: 16,
-    marginRight: 10
+    marginRight: 10,
   },
   separator: {
     height: 1,
-    backgroundColor: 'black',
+    backgroundColor: "black",
     marginBottom: 10,
+  },
+  notificationBadgeContainer: {
+    position: "absolute",
+    zIndex: 1,
+    backgroundColor: "green",
+    borderRadius: 10,
+    width: 11,
+    height: 11,
+    justifyContent: "center",
+    alignItems: "center",
+    border: "1px solid white",
+  },
+
+  notificationText: {
+    color: "white",
+    fontSize: 8,
   },
 });
 
