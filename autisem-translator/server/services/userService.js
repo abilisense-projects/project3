@@ -30,14 +30,16 @@ const userService = {
     }
   },
 
-  async doesUserNameExist(userName) {
-    try {
-      const userNameExists = await userRepository.doesUserNameExist(userName);
-      return userNameExists.exists;
-    } catch (error) {
-      console.error(error);
-      throw new Error("Error checking username existence");
-    }
-  },
-};
-module.exports = userService;
+async doesUserNameExist(userName) {
+  try {
+    const userNameExists = await userRepository.doesUserNameExist(userName);
+    return userNameExists;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Error checking username existence");
+  }
+}
+
+
+}
+module.exports = userService

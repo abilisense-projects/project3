@@ -1,3 +1,4 @@
+const associationService = require('./associationsService');
 const notificationService = require('./notificationService');
 const userService = require('./userService');
 
@@ -5,13 +6,19 @@ async function sendNotificationToPatient(therapistId, patientUserName) {
   try {
     //first check if there is patient with this userName
     const userNameExists = await userService.doesUserNameExist(patientUserName)
-    if (userNameExists) {
-      const patientId = userNameExists._id;
-      const notification = await notificationService.createNotification(therapistId, patientId, "hi")
-      console.log("notification", notification)
+    if (userNameExists.exists && userNameExists.type=='patient') {
+      const patientId = userNameExists.data._id;
+      //create notification
+      const notification = await notificationService.createNotification(therapistId, patientId, "hi");
+      //create association 
+      const association = await associationService.createAssociation(therapistId,patientId);
+      //check if association returned succesfull
       return notification;
     }
-    return null;
+    else {
+      // Patient not found
+      return "PatientNotFound";
+    }
   } catch (error) {
     throw new Error('Error sending notification');
   }
