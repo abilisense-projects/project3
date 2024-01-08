@@ -37,7 +37,7 @@ const sendEmail = async (req, res) => {
 
   // Check if the username already exists in the userService
   const userNameExist = await userService.doesUserNameExist(userName);
-  if (userNameExist) {
+  if (userNameExist.exists) {
     // User exists, return the user details
     res.status(200).json({ message: "User exists", userNameExist });
 

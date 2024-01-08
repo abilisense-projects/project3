@@ -15,25 +15,26 @@ const TherapistScreen = () => {
   const [bannerMessage, setBannerMessage] = useState(null);
   const therapistId = useSelector((state) => state.user.user.userData._id);
 
-  //gets patients list by therapist id
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const patientsData = await therapistService.getTherapistPatients(therapistId);
-        if (!patientsData || patientsData.length <= 0) {
-          setPatients([]);
-        } else {
-          setPatients(patientsData);
-        }
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-      finally {
-        setIsLoading(false);
-      }
-    };
     fetchData();
   }, [therapistId]);
+
+ //gets patients list by therapist id
+  const fetchData = async () => {
+    try {
+      const patientsData = await therapistService.getTherapistPatients(therapistId);
+      if (!patientsData || patientsData.length <= 0) {
+        setPatients([]);
+      } else {
+        setPatients(patientsData);
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+    finally {
+      setIsLoading(false);
+    }
+  };
 
   //set opem modal true for entering patient's name
   const handleAddPatient = () => {
@@ -42,18 +43,33 @@ const TherapistScreen = () => {
 
   const handleAssociatePatientConfirm = async (patientUsername) => {
     try {
-      //send notification to patient
-      await therapistService.sendNotificationToPatient(therapistId, patientUsername);
-      setBannerMessage(`Notification sent to ${patientUsername}`);
+      // send notification to patient
+      const notificationStatus = await therapistService.sendNotificationToPatient(therapistId, patientUsername);
+      if (notificationStatus === 'no such patient') {
+        setBannerMessage('Failed to send notification. There is no such Patient.');
+      } else {
+        setBannerMessage(`Notification sent to ${patientUsername}`);
+      }
     } catch (error) {
       setBannerMessage('Failed to send notification. Please try again.');
     }
-    //close modal
+    // close modal
     setAssociatePatientModalVisible(false);
   };
 
   const handleAssociatePatientCancel = () => {
     setAssociatePatientModalVisible(false);
+  };
+
+  const getStatusColor = (status) => {
+    switch (status) {
+      case 'Confirmed':
+        return 'white';
+      case 'Pending':
+        return 'rgba(255, 255, 0, 0.2)';
+      default:
+        return 'rgba(255, 0, 0, 0.2)';
+    }
   };
 
   return (
@@ -75,7 +91,7 @@ const TherapistScreen = () => {
               data={patients}
               keyExtractor={(item) => item.patientDetails._id}
               renderItem={({ item }) => (
-                <View style={styles.patientContainer}>
+                <View style={[styles.patientContainer,{backgroundColor:getStatusColor(item.status)}]}>
                   <Text style={styles.patientName}>{`${item.patientDetails.firstName} ${item.patientDetails.lastName}`}</Text>
                 </View>
               )}
@@ -91,7 +107,7 @@ const TherapistScreen = () => {
             <BannerNotification
               message={bannerMessage}
               severity={bannerMessage.includes('Failed') ? 'error' : 'success'}
-              onClose={() => setBannerMessage(null)}
+              onClose={() => {setBannerMessage(null),fetchData()}}
             />
           )}
         </>

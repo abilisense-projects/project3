@@ -89,7 +89,8 @@ async function loginUser(userName, password) {
     const user = therapist || patient;
 
     if (user) {
-      if (comparePassword(password, user.password)) {
+      const p=await comparePassword(password, user.password)
+      if (p) {
         if (therapist) {
           return { user: { ...therapist.toObject(), type: "therapist" } };
         } else if (patient) {
@@ -97,6 +98,7 @@ async function loginUser(userName, password) {
         }
       }
     }
+    return null
   } catch (error) {
     console.error(error);
     throw new Error("Error logging in");
@@ -113,15 +115,18 @@ async function comparePassword(password, hashedPassword) {
 // Check if a username already exists (for new user registration)
 async function doesUserNameExist(userName) {
   try {
-    //save the type for notifications
-    let therapist = await Therapist.findOne({ userName });
-    let patient = await Patient.findOne({ userName });
-    return { exists: therapist || patient };
+    const therapist = await Therapist.findOne({ userName });
+    const patient = await Patient.findOne({ userName });
+
+    return therapist ? { exists: true, type: 'therapist' ,data:therapist } :
+           patient   ? { exists: true, type: 'patient' ,data:patient } :
+                       { exists: false, type: null,data:null };
   } catch (error) {
     console.error(error);
     throw new Error("Error checking username existence");
   }
 }
+
 
 module.exports = {
   updateNew,

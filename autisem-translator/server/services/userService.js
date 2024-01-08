@@ -26,7 +26,7 @@ async loginUser(userName, password) {
 async doesUserNameExist(userName) {
   try {
     const userNameExists = await userRepository.doesUserNameExist(userName);
-    return userNameExists.exists;
+    return userNameExists;
   } catch (error) {
     console.error(error);
     throw new Error("Error checking username existence");

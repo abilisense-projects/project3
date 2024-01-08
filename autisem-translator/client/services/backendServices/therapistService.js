@@ -13,15 +13,14 @@ const therapistService = {
 
     sendNotificationToPatient: async (therapistId, patientUserName) => {
         try {
-            console.log(therapistId, patientUserName);
-    
-            // Send the therapistId and patientUserName in the request body as an object
-            const response = await axios.post(`${REACT_APP_BASE_URL}/therapist/sendNotification`, {
-                therapistId: therapistId,
-                patientUserName: patientUserName
-            });
-            // Check if the request was successful
-            console.log("response notification", response.data);
+          const response = await axios.post(`${REACT_APP_BASE_URL}/therapist/sendNotification`, {
+            therapistId: therapistId,
+            patientUserName: patientUserName
+          });
+          if(response.data.message=='Patient not found'){
+            return 'no such patient'
+          }
+          return null
         } catch (error) {
             console.error('Error sending notification:', error);
             throw new Error('Error sending notification');

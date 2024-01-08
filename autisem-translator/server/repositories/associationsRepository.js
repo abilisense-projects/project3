@@ -3,18 +3,19 @@ const Associations = require("../models/associations");
 async function createAssociation(therapistID, patientID) {
   try {
     const newAssociation = new Associations({ therapistId: therapistID, patientId: patientID, status: 'Pending' });
-    const savedAssociation = await newAssociation.save();
-    console.log(savedAssociation);
-    return savedAssociation;
+    await newAssociation.save();
+    return { success: true };
   } catch (error) {
     console.error(error);
     return { success: false, message: "Error creating association" };
   }
 }
 
-async function getListOfPatientsByTherapistID(therapistID) {
+async function getListOfPatientsByTherapistID(therapistID, status) {
   try {
-    const associations = await Associations.find({ therapistId: therapistID }).populate('patientId');
+    //do i need this query?
+    const query = status ? { therapistId: therapistID, status: status } : { therapistId: therapistID };
+    const associations = await Associations.find(query).populate('patientId');
 
     return associations.map(association => ({
       patientDetails: association.patientId, 
