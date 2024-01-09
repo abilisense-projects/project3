@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Button, Text, StyleSheet } from "react-native";
+import { View, Button, Text, StyleSheet, Image, ImageBackground } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native"; // Import useNavigation hook
 import GenericButton from "../components/shared/button";
@@ -42,6 +42,8 @@ const PatientScreen = () => {
 
   const name = useSelector((state) => state.user.user.userData.firstName);
   console.log("firstName ", name);
+  const image = useSelector((state) => state.user.user.userData.image);
+  console.log("image ", image);
 
   // Move the useSelector inside the component
   const user = useSelector((state) => state.userReucer);
@@ -51,42 +53,76 @@ const PatientScreen = () => {
   };
 
   return (
-    <View accessible={true} style={globalStyles.whitePaper}>
-      <Text style={styles.label}>Hello {name}</Text>
+    // <View accessible={true} style={globalStyles.whitePaper}>
+    //   <Text style={styles.label}>Hello {name}</Text>
 
-      {/* <Button title="רשימת מילים" onPress={handleWordListPress} /> */}
+    //   {/* <Button title="רשימת מילים" onPress={handleWordListPress} /> */}
 
-      <RecordAudio />
-    </View>
+    //   <RecordAudio />
+    // </View>
+    <View style={styles.container}>
+      {image && <Image source={{ uri: image }} style={styles.backgroundImage} resizeMode="cover" />}
+     <View style={styles.content}>
+       <Text>hello {name}</Text>
+       <Button title="רשימת מילים" onPress={handleWordListPress} />
+     </View>
+   </View>
   );
 };
 
 export default PatientScreen;
 
+// const styles = StyleSheet.create({
+//   label: {
+//     fontSize: 20,
+//     // alignSelf: "flex-end",
+//     marginBottom: 15,
+//   },
+//   notificationBadgeContainer: {
+//     position: "absolute",
+//     zIndex: 1,
+//     backgroundColor: "green",
+//     borderRadius: 10,
+//     width: 15,
+//     height: 15,
+//     justifyContent: "center",
+//     alignItems: "center",
+//   },
+
+//   iconContainer: {
+//     position: "relative",
+//     width: 30,
+//   },
+
+//   notificationText: {
+//     color: "white",
+//     fontSize: 12,
+//   },
+// });
+
 const styles = StyleSheet.create({
-  label: {
-    fontSize: 20,
-    // alignSelf: "flex-end",
-    marginBottom: 15,
+  container: {
+    alignItems: 'center',
+    flex: 1,
+    width: '100%',
+    height: '100%',
   },
-  notificationBadgeContainer: {
-    position: "absolute",
-    zIndex: 1,
-    backgroundColor: "green",
-    borderRadius: 10,
-    width: 15,
-    height: 15,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-
-  iconContainer: {
-    position: "relative",
-    width: 30,
+  backgroundImage: {
+    position: 'absolute',
+    // top: 0,
+    // left: 0,
+    width: '100%',
+    height: '100%',
+    zIndex: -1, 
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 
-  notificationText: {
-    color: "white",
-    fontSize: 12,
+  content: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+
   },
 });
+

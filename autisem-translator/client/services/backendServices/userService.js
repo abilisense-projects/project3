@@ -83,6 +83,20 @@ const UserService = {
       throw error;
     }
   },
+  
+  updateImage: async (image) => {
+    try {
+      const response = await axios.put(
+        `${REACT_APP_BASE_URL}/user/updateImage`,
+        image
+      );
+      return response.data; // Return the entire response if needed
+    } catch (error) {
+      // Handle errors
+      console.error("Login error:", error);
+      throw error;
+    }
+  },
 };
 
 export default UserService;
