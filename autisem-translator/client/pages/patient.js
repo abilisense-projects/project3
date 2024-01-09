@@ -58,13 +58,14 @@ const PatientScreen = () => {
 
     //   {/* <Button title="רשימת מילים" onPress={handleWordListPress} /> */}
 
-    //   <RecordAudio />
+      
     // </View>
     <View style={styles.container}>
       {image && <Image source={{ uri: image }} style={styles.backgroundImage} resizeMode="cover" />}
-     <View style={styles.content}>
-       <Text>hello {name}</Text>
-       <Button title="רשימת מילים" onPress={handleWordListPress} />
+     <View >
+       <Text style={styles.label}>hello {name}</Text>
+       <Button title="רשימת מילים" onPress={handleWordListPress} /> 
+       <RecordAudio />
      </View>
    </View>
   );
@@ -124,5 +125,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
 
   },
+  label: {
+        fontSize: 20,
+        // alignSelf: "flex-end",
+        marginBottom: 15,
+      },
 });
 

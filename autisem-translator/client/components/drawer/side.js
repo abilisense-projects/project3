@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View, TouchableWithoutFeedback } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useSelector } from "react-redux";
 import { useFocusEffect } from "@react-navigation/native";
@@ -7,9 +7,12 @@ import UploadImage from "../shared/uploadImage";
 
 const SideNavigator = ({ navigation, shouldDisplaySideNavigator }) => {
   const [page, setPage] = useState("");
+  const [showLanguageOptions, setShowLanguageOptions] = useState(false);
+  const [overlayVisible, setOverlayVisible] = useState(false);
 
   const pages = ["Notifications", "Settings", "Theme", "Language"];
   const icons = ["notifications", "settings", "color-palette", "language"];
+  const languages = ["English","Hebrew"];
   const user = useSelector((state) => state.user.user);
   const countNotifications = useSelector((state) => state.patient.num);
 
@@ -24,6 +27,18 @@ const SideNavigator = ({ navigation, shouldDisplaySideNavigator }) => {
       index: 0,
       routes: [{ name: pageName }],
     });
+    setShowLanguageOptions(false);
+  };
+
+  const handleLanguageIconClick = () => {
+    setPage("Language");
+    setShowLanguageOptions(!showLanguageOptions);
+    setOverlayVisible(!showLanguageOptions);
+  };
+
+  const handleOverlayPress = () => {
+    setShowLanguageOptions(false);
+    setOverlayVisible(false);
   };
 
   if (!shouldDisplaySideNavigator) {
@@ -33,6 +48,9 @@ const SideNavigator = ({ navigation, shouldDisplaySideNavigator }) => {
 
   return (
     <View style={styles.drawerContent}>
+      <TouchableWithoutFeedback onPress={handleOverlayPress}>
+        <View style={[styles.overlay, { display: overlayVisible ? "flex" : "none" }]} />
+      </TouchableWithoutFeedback>
       <View style={styles.userContainer}>
         <UploadImage />
         {user && <Text style={styles.userName}>{user.userData.firstName}</Text>}
@@ -46,7 +64,18 @@ const SideNavigator = ({ navigation, shouldDisplaySideNavigator }) => {
             setPage(item);
             console.log("item", item);
             goToFirstScreen(item);
+            if (item === "Language") {
+              handleLanguageIconClick();
+            }
           }}
+        //   if (item === "Language") {
+        //     setPage(item);
+        //     handleLanguageIconClick();
+        //   } else {
+        //     setPage(item);
+        //     goToFirstScreen(item);
+        //   }
+        // }}
         >
           {/* Conditionally render the badge for the 'notifications' icon */}
 
@@ -70,6 +99,26 @@ const SideNavigator = ({ navigation, shouldDisplaySideNavigator }) => {
           </Text>
         </TouchableOpacity>
       ))}
+      
+      {showLanguageOptions && (
+        <View>
+        {languages.map((item, index) => (
+          <TouchableOpacity
+            style={styles.language}
+            key={index}
+            onPress={() => {
+              setPage(item);
+              console.log("item", item);
+              goToFirstScreen(item);
+            }} 
+          >
+            <Text style={page === item ? { color: "green" } : { color: "black" }}>
+              {item}
+            </Text>
+          </TouchableOpacity>
+        ))}
+        </View>
+      )}
     </View>
   );
 };
@@ -122,6 +171,12 @@ const styles = StyleSheet.create({
   notificationText: {
     color: "white",
     fontSize: 8,
+  },
+  language:{
+    marginBottom: 15,
+    flexDirection: "row",
+    marginLeft: 30,
+    
   },
 });
 

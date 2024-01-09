@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
-import { View, Pressable, Modal, StyleSheet, Text, Picker } from 'react-native';
+import { View,  StyleSheet, Text, Picker } from 'react-native';
 import { translationService } from '../../services/translationService';
 
-const HamburgerModal = ({ modalVisible, closeModal, openBackgroundSelection }) => {
+const LanguageSelected = () => {
+   // onPress={() => setShowLanguageList(!showLanguageList)}
   const [selectedLanguage, setSelectedLanguage] = useState('English');
-  const [showLanguageList, setShowLanguageList] = useState(false);
+  const [showLanguageList, setShowLanguageList] = useState(true);
+
+  
 
   const handleLanguageChange = (language) => {
     setSelectedLanguage(language);
@@ -19,17 +22,11 @@ const HamburgerModal = ({ modalVisible, closeModal, openBackgroundSelection }) =
     translationService.initializeLanguage();
 
     setShowLanguageList(false);
-    closeModal();
   };
 
 
   return (
-    <Modal transparent visible={modalVisible}>
-      <Pressable style={styles.modalBackground}>
-        <View style={styles.modalContainer}>
-          <Pressable style={styles.modalButton} onPress={() => setShowLanguageList(!showLanguageList)}>
-            <Text>Language</Text>
-          </Pressable>
+        <View >
           {showLanguageList && (
             <Picker
               selectedValue={selectedLanguage} style={styles.languagePicker}
@@ -39,41 +36,13 @@ const HamburgerModal = ({ modalVisible, closeModal, openBackgroundSelection }) =
               <Picker.Item label="Hebrew" value="Hebrew" />
             </Picker>
           )}
-          <Pressable style={styles.modalButton} onPress={openBackgroundSelection}>
-            <Text>Background Selection</Text>
-          </Pressable>
-          <Pressable style={styles.modalButton} onPress={closeModal}>
-            <Text>Close</Text>
-          </Pressable>
 
         </View>
-      </Pressable>
-    </Modal>
+    
   );
 };
 
 const styles = StyleSheet.create({
-
-  modalBackground: {
-    position: 'absolute',
-    left: 20,
-    top: 58,
-    flex: 1,
-    justifyContent: 'flex-end', // Align modal to the bottom
-  },
-
-
-  modalContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'white',
-    borderRadius: 5,
-    borderWidth: 2,
-    borderColor: 'black',
-    padding: 20,
-    height: 300,
-    width: 250,
-  },
 
   modalButton: {
     width: 220,
@@ -92,4 +61,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default HamburgerModal;
+export default LanguageSelected;

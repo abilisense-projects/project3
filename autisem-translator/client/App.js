@@ -18,6 +18,7 @@ import AssociateTherapist from "./components/patient/associateTherapist";
 import AccessOption from "./components/patient/accessOption";
 import GetTherapst from "./components/patient/getTherapist";
 import BackgroundSelection from "./components/side_bar/background_selection";
+import Language_selected from "./components/side_bar/language_selected";
 import SideNavigator from "./components/drawer/side";
 
 const Drawer = createDrawerNavigator();
@@ -108,11 +109,11 @@ const App = () => {
             component={BackgroundSelection}
             options={{ title: "" }}
           />
-          <Drawer.Screen
+          {/* <Drawer.Screen
             name="Language"
-            component={BackgroundSelection}
+            component={Language_selected}
             options={{ title: "" }}
-          />
+          /> */}
           <Drawer.Screen
             name="Notifications"
             component={AssociateTherapist}
@@ -120,7 +121,17 @@ const App = () => {
           />
           <Drawer.Screen
             name="Settings"
-            component={BackgroundSelection}
+            component={PatientScreen}
+            options={{ title: "" }}
+          />
+          <Drawer.Screen
+            name="English"
+            component={Language_selected}
+            options={{ title: "" }}
+          />
+          <Drawer.Screen
+            name="Hebrew"
+            component={Language_selected}
             options={{ title: "" }}
           />
         </Drawer.Navigator>
