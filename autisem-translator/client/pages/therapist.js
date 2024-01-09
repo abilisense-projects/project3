@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet, Image } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Image,TouchableOpacity } from 'react-native';
 import therapistService from '../services/backendServices/therapistService';
 import GenericButton from '../components/shared/button';
 import { useSelector } from 'react-redux';
@@ -7,6 +7,7 @@ import NoPatientsImage from '../assets/images/therapist room.jpg'
 import AssociatePatient from '../components/therapist/associatePatient';
 import BannerNotification from '../components/shared/bannerNotification';
 import { globalStyles } from '../styles';
+import { Ionicons } from '@expo/vector-icons';
 
 const TherapistScreen = () => {
   const [patients, setPatients] = useState([]);
@@ -20,7 +21,7 @@ const TherapistScreen = () => {
     fetchData();
   }, [therapistId]);
 
- //gets patients list by therapist id
+  //gets patients list by therapist id
   const fetchData = async () => {
     try {
       const patientsData = await therapistService.getTherapistPatients(therapistId);
@@ -62,6 +63,17 @@ const TherapistScreen = () => {
     setAssociatePatientModalVisible(false);
   };
 
+  const handleRemoveSinglePatient = (patient) => {
+    try {
+      // const updatedPatients = patients.filter((p) => p.patientDetails._id !== patient.patientDetails._id);
+      // setPatients(updatedPatients);
+      setBannerMessage(`Patient ${patient.patientDetails.firstName} ${patient.patientDetails.lastName} deleted successfully.`);
+    } catch (error) {
+      console.error('Error deleting patient:', error);
+      setBannerMessage('Failed to delete patient. Please try again.');
+    }
+  };
+
   const getStatusColor = (status) => {
     switch (status) {
       case 'Confirmed':
@@ -92,9 +104,14 @@ const TherapistScreen = () => {
               data={patients}
               keyExtractor={(item) => item.patientDetails._id}
               renderItem={({ item }) => (
-                <View style={[styles.patientContainer,{backgroundColor:getStatusColor(item.status)}]}>
+                <View style={[styles.patientContainer, { backgroundColor: getStatusColor(item.status) }]}>
+                  <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                   <Text style={styles.patientName}>{`${item.patientDetails.firstName} ${item.patientDetails.lastName}`}</Text>
+                  <TouchableOpacity onPress={() => handleRemoveSinglePatient(item)}>
+                    <Ionicons name='trash' style={styles.icon}/>
+                  </TouchableOpacity>
                 </View>
+                 </View>
               )}
             />
           )}
@@ -102,6 +119,7 @@ const TherapistScreen = () => {
             style={styles.addButton}
             onPress={handleAddPatient}
             title="Add Patient"
+            buttonWidth={160}
           />
           <AssociatePatient
             isVisible={isAssociatePatientModalVisible}
@@ -112,7 +130,7 @@ const TherapistScreen = () => {
             <BannerNotification
               message={bannerMessage}
               severity={bannerMessage.includes('Failed') ? 'error' : 'success'}
-              onClose={() => {setBannerMessage(null),fetchData()}}
+              onClose={() => { setBannerMessage(null), fetchData() }}
             />
           )}
         </>
@@ -183,6 +201,10 @@ const styles = StyleSheet.create({
   noPatientsImage: {
     width: 200,
     height: 100,
+  },
+  icon: {
+    color:'green',
+    fontSize: 24,
   },
 });
 
