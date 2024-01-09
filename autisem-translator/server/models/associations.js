@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
 
 const associationsSchema = new mongoose.Schema({
-  //should this be a ref for therapist table?
-  therapistId: String,
+  therapistId: { type: mongoose.Schema.Types.ObjectId, ref: 'Therapist' },
   patientId: { type: mongoose.Schema.Types.ObjectId, ref: 'Patient' },
   status: String,
 });

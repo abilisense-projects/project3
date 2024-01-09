@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Button, Text, StyleSheet, Image, ImageBackground } from "react-native";
+import { View, Button, Text, StyleSheet, Image, ImageBackground ,ActivityIndicator  } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native"; // Import useNavigation hook
 import GenericButton from "../components/shared/button";
@@ -14,6 +14,7 @@ const PatientScreen = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [countNotifications, setCountNotifications] = useState(" ");
+  const [isLoading, setIsLoading] = useState(true);
 
   const receiverId = useSelector((state) => state.user.user.userData._id);
 
@@ -33,8 +34,8 @@ const PatientScreen = () => {
         }
       } catch (error) {
         console.error("Error fetching data:", error);
-        // } finally {
-        //   setIsLoading(false);
+        } finally {
+          setIsLoading(false);
       }
     };
     fetchData();
@@ -51,6 +52,15 @@ const PatientScreen = () => {
   const handleWordListPress = () => {
     return user.listOfWords; // update in DB
   };
+
+  if (isLoading) {
+    // Display a loading indicator while the data is being fetched
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="green" />
+      </View>
+    );
+  }
 
   return (
     // <View accessible={true} style={globalStyles.whitePaper}>
@@ -129,6 +139,11 @@ const styles = StyleSheet.create({
         fontSize: 20,
         // alignSelf: "flex-end",
         marginBottom: 15,
-      },
+  },
+  loadingContainer: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+  },
 });
 

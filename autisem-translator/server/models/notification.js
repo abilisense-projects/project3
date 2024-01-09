@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+//i want this to be reuseable also for therapist
 const notificationSchema = new mongoose.Schema({
   senderId: { type: mongoose.Schema.Types.ObjectId, ref: 'Therapist', required: true },
   receiverId: { type: mongoose.Schema.Types.ObjectId, ref: 'Patient', required: true },
