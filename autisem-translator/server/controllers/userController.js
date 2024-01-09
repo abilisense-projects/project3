@@ -31,46 +31,46 @@ async function userLogin(req, res) {
   }
 }
 
-// async function updateImage(req, res) {
-//   try {
-//     const { userName, image } = req.body;
-//     console.log(userName, image);
+async function updateImage(req, res) {
+  try {
+    const { userName, image } = req.body;
+    console.log("userName:",userName, "image",image);
 
-//     //  Check if the required fields are provided
-//     if (!userName) {
-//       return (
-//         res
-//           .status(200)
-//           //400
-//           .json({ message: "Username and newPassword are required" })
-//       );
-//     }
+    //  Check if the required fields are provided
+    if (!userName) {
+      return (
+        res
+          .status(200)
+          //400
+          .json({ message: "Username and newPassword are required" })
+      );
+    }
 
-//     const imageUpdateResult = await userService.doesUserNameExist(userName);
-//     if (imageUpdateResult) {
-//       const updateResult = await userService.updateNewImage(userName, image);
+    const imageUpdateResult = await userService.doesUserNameExist(userName);
+    if (imageUpdateResult) {
+      const updateResult = await userService.updateNewImage(userName, image);
 
-//       // Check the specific condition based on the result of updateUser
-//       if (updateResult) {
-//         res.status(200).json({ message: "Success update" });
-//       } else {
-//         res
-//           .status(200)
-//           //500
-//           .json({ message: "Failed to update image" });
-//       }
-//     } else {
-//       // User does not exist, return a message to register
-//       res
-//         .status(200)
-//         //404
-//         .json({ message: "User does not exist. Please register." });
-//     }
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ message: "Internal server error" });
-//   }
-// }
+      // Check the specific condition based on the result of updateUser
+      if (updateResult) {
+        res.status(200).json({ message: "Success update" });
+      } else {
+        res
+          .status(200)
+          //500
+          .json({ message: "Failed to update image" });
+      }
+    } else {
+      // User does not exist, return a message to register
+      res
+        .status(200)
+        //404
+        .json({ message: "User does not exist. Please register." });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
 //can it be more generic
 async function updatePassword(req, res) {
   try {
@@ -168,5 +168,5 @@ module.exports = {
   updatePassword,
   createUser,
   getUserDetailes,
-  // updateImage,
+  updateImage,
 };

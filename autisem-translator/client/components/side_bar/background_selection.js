@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { View, Image, TouchableOpacity, StyleSheet, Button, ScrollView, AccessibilityInfo } from 'react-native';
+import UserService from '../../services/backendServices/userService';
+import { useSelector } from "react-redux";
 
 import option1 from './background_options/115.jpg';
 import option2 from './background_options/113.jpg';
@@ -7,6 +9,7 @@ import option3 from './background_options/119.jpg';
 import option4 from './background_options/117.jpg';
 import option5 from './background_options/114.jpg';
 import option6 from './background_options/110.jpg';
+
 
 const backgroundOptions = [
   { id: 1, image: option1 },
@@ -28,6 +31,9 @@ const BackgroundSelection = () => {
 
   };
 
+  const userName = useSelector((state) => state.user.user.userData.userName);
+  console.log("userName ", userName);
+
 
   const handleConfirm = async () => {
     if (selectedImage !== null) {
@@ -35,7 +41,13 @@ const BackgroundSelection = () => {
       setConfirmedImage(selectedOption.image);
       setConfirmed(true);
       console.log(`Image ${selectedImage} selected`);
-      //const response = await UserService.loginUser(data);
+      const response = await UserService.updateImage({
+        userName:userName,
+        image:selectedOption.image});
+      console.log("selectedOption.image",selectedOption.image)
+      console.log("response",response)
+
+
 
     } else {
       AccessibilityInfo.announceForAccessibility('Please select an image');

@@ -23,23 +23,23 @@ async function updateNew(userName, newPassword) {
   }
 }
 
-// async function updateNewImage(userName, image) {
-//   try {
-//     const filter = { userName };
-//     const update = { image: image };
-//     //const therapistUpdate = await Therapist.findOneAndUpdate(filter, update);
-//     const patientUpdate = await Patient.findOneAndUpdate(filter, update);
+async function updateNewImage(userName, image) {
+  try {
+    const filter = { userName };
+    const update = { image: image };
+    //const therapistUpdate = await Therapist.findOneAndUpdate(filter, update);
+    const patientUpdate = await Patient.findOneAndUpdate(filter, update);
 
-//     if (patientUpdate) {
-//       return { success: true };
-//     } else {
-//       return { success: false, message: "User not found" };
-//     }
-//   } catch (error) {
-//     console.error(error);
-//     throw new Error("Error updating password");
-//   }
-// }
+    if (patientUpdate) {
+      return { success: true };
+    } else {
+      return { success: false, message: "User not found" };
+    }
+  } catch (error) {
+    console.error(error);
+    throw new Error("Error updating password");
+  }
+}
 
 async function createUser(
   userName,
@@ -146,5 +146,5 @@ module.exports = {
   getUser,
   loginUser,
   doesUserNameExist,
-  // updateNewImage,
+  updateNewImage,
 };

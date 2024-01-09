@@ -4,9 +4,9 @@ async updateNew(userName, newPassword) {
   return userRepository.updateNew(userName, newPassword);
 },
 
-// async updateNewImage(userName, image) {
-//   return userRepository.updateNewImage(userName, image);
-// },
+async updateNewImage(userName, image) {
+  return userRepository.updateNewImage(userName, image);
+},
 
 async createUser(userName, firstName, lastName, phoneNumber, password, type) {
   return userRepository.createUser(userName, firstName, lastName, phoneNumber, password, type);
