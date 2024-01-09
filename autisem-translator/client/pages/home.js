@@ -3,8 +3,6 @@ import { View, Button, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import GenericButton from "../components/shared/button";
 import { translationService } from "../services/translationService";
-import UserService from "../services/backendServices/userService";
-import PatientScreen from "./patient";
 
 const translate = translationService.translate;
 export default function HomeScreen() {
@@ -19,6 +17,7 @@ export default function HomeScreen() {
       <GenericButton
         title={translate("login")}
         onPress={() => navigateToScreen("Login")}
+        buttonWidth={80}
       />
     </View>
   );
@@ -28,7 +27,6 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   // modalContent: {
   //   backgroundColor: "white",
-  //   marginTop: 60, // עדכני זאת לפי הצורך
   //   padding: 20,
   //   borderRadius: 10,
   //   borderWidth: 1,

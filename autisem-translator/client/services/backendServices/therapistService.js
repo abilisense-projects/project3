@@ -10,5 +10,22 @@ const therapistService = {
             throw new Error('Error fetching therapist patients');
         }
     },
-};
+
+    sendNotificationToPatient: async (therapistId, patientUserName) => {
+        try {
+          const response = await axios.post(`${REACT_APP_BASE_URL}/therapist/sendNotification`, {
+            therapistId: therapistId,
+            patientUserName: patientUserName
+          });
+          if(response.data.message=='Patient not found'){
+            return 'no such patient'
+          }
+          return null
+        } catch (error) {
+            console.error('Error sending notification:', error);
+            throw new Error('Error sending notification');
+        }
+    }
+  }
+  
 export default therapistService;

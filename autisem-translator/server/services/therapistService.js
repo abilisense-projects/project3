@@ -1,15 +1,29 @@
-const therapistRepository = require('../repositories/therapistRepository');
+const associationService = require('./associationsService');
+const notificationService = require('./notificationService');
+const userService = require('./userService');
 
-async function getTherapistPatients(therapistId) {
+async function sendNotificationToPatient(therapistId, patientUserName) {
   try {
-    const therapist = await therapistRepository.getTherapistPPatientsById(therapistId);
-    console.log("therapist",therapist)
-    return therapist ? therapist.listOfPatients : [];
+    //first check if there is patient with this userName
+    const userNameExists = await userService.doesUserNameExist(patientUserName)
+    if (userNameExists.exists && userNameExists.type=='patient') {
+      const patientId = userNameExists.data._id;
+      //create notification
+      const notification = await notificationService.createNotification(therapistId, patientId, "hi");
+      //create association 
+      const association = await associationService.createAssociation(therapistId,patientId);
+      //check if association returned succesfull
+      return notification;
+    }
+    else {
+      // Patient not found
+      return "PatientNotFound";
+    }
   } catch (error) {
-    throw new Error('Error fetching therapist patients');
+    throw new Error('Error sending notification');
   }
 }
 
 module.exports = {
-  getTherapistPatients,
+  sendNotificationToPatient
 };

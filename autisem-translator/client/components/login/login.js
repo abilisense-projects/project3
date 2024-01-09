@@ -7,6 +7,7 @@ import { translationService } from "../../services/translationService";
 import UserService from "../../services/backendServices/userService";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../redux/actions/userAction";
+
 // Translation function alias for shorter usage
 const translate = translationService.translate;
 
@@ -83,9 +84,8 @@ export default function Login() {
       // Send login request to the server
       const response = await UserService.loginUser(data);
       console.log(response);
-      dispatch(setUser({ ...response.user.user, _id: response.user.user._id }));
-
       if (response.message === "User exists") {
+        dispatch(setUser({ ...response.user.user, _id: response.user.user._id }));
         if (response.user.user.type == "therapist") {
           navigation.navigate("Therapist");
         } else {
