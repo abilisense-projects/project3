@@ -7,10 +7,19 @@ import UploadImage from "../shared/uploadImage";
 
 const SideNavigator = ({ navigation, shouldDisplaySideNavigator }) => {
   const [page, setPage] = useState("");
-
-  const pages = ["Notifications", "Settings", "Theme", "Language"];
-  const icons = ["notifications", "settings", "color-palette", "language"];
   const user = useSelector((state) => state.user.user);
+  let homePage = "";
+  if (user) {
+    const type = user.userData.type;
+    if (type === "therapist") {
+      homePage = "Therapist";
+    } else if (type === "patient") {
+      homePage = "Patient";
+    }
+  }
+  const pages = [homePage, "Notifications", "Settings", "Theme", "Language"];
+  const icons = ["home", "notifications", "settings", "color-palette", "language"];
+
   const countNotifications = useSelector((state) => state.patient.num);
 
   useFocusEffect(() => {

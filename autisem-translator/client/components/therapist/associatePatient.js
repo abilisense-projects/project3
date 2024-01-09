@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Modal } from 'react-native';
+import { View, Modal,StyleSheet } from 'react-native';
 import TextInputField from '../shared/textInputField';
 import GenericButton from '../shared/button';
 import { globalStyles } from '../../styles';
@@ -22,18 +22,30 @@ const AssociatePatient = ({ isVisible, onConfirm, onCancel }) => {
     };
 
     return (
-        <Modal visible={isVisible}>
+        <Modal visible={isVisible} transparent>
+        <View style={styles.modalContainer}>
             <View style={globalStyles.whitePaper}>
                 <TextInputField
                     placeholder="Enter patient username"
                     value={newPatientUsername}
                     onChangeText={(text) => setNewPatientUsername(text)}
                 />
-                <GenericButton onPress={handleModalConfirm} title='Confirm' />
-                <GenericButton onPress={handleModalCancel} title='Cancel' />
+                <GenericButton onPress={handleModalConfirm} title='Confirm' buttonWidth={160}/>
+                <GenericButton onPress={handleModalCancel} title='Cancel' buttonWidth={160}/>
+            </View>
             </View>
         </Modal>
     );
 };
+
+
+const styles = StyleSheet.create({
+    modalContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: '#01461cd6',
+    },
+  });
 
 export default AssociatePatient;
