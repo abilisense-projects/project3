@@ -25,7 +25,23 @@ const therapistService = {
             console.error('Error sending notification:', error);
             throw new Error('Error sending notification');
         }
-    }
+    },
+    unAssociatePatient: async (therapistId, patientId) => {
+      try {
+        console.log("cliiii",therapistId,patientId)
+        const response = await axios.delete(`${REACT_APP_BASE_URL}/therapist?therapistID=${therapistId}&patientID=${patientId}`);
+        console.log("response",response)
+        if(response.data.success!=true){
+          return 'failed'
+        }
+        else{
+          return true
+        }
+      } catch (error) {
+          console.error('Error sending notification:', error);
+          throw new Error('Error sending notification');
+      }
+  }
   }
   
 export default therapistService;
