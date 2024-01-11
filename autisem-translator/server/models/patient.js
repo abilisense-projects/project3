@@ -11,6 +11,7 @@ const patientSchema = new mongoose.Schema({
     of: String,
     default: {},
   },
+  image: String,
 });
 
 const Patient = mongoose.model('Patient', patientSchema);
