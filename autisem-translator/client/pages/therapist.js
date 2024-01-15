@@ -11,10 +11,10 @@ import { Ionicons } from '@expo/vector-icons';
 
 const TherapistScreen = () => {
   const [patients, setPatients] = useState([]);
-  const [isAssociatePatientModalVisible, setAssociatePatientModalVisible] =
-    useState(false);
+  const [isAssociatePatientModalVisible, setAssociatePatientModalVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [bannerMessage, setBannerMessage] = useState(null);
+  const [message, setMessage] = useState(null);
   const therapistId = useSelector((state) => state.user.user.userData._id);
 
   useEffect(() => {
@@ -45,6 +45,15 @@ const TherapistScreen = () => {
 
   const handleAssociatePatientConfirm = async (patientUsername) => {
     try {
+      //first check if it exist in patients
+      const isUserNameExists = patients.some(patient => (
+        `${patient.patientDetails.userName}`=== patientUsername
+      ));
+  
+      if (isUserNameExists) {
+        setMessage(`This patient already exists on your list.`);
+        return;
+      }
       // send notification to patient
       const notificationStatus = await therapistService.sendNotificationToPatient(therapistId, patientUsername);
       if (notificationStatus === 'no such patient') {
@@ -125,6 +134,7 @@ const TherapistScreen = () => {
             isVisible={isAssociatePatientModalVisible}
             onConfirm={handleAssociatePatientConfirm}
             onCancel={handleAssociatePatientCancel}
+            errorMessage={message}
           />
           {bannerMessage && (
             <BannerNotification
