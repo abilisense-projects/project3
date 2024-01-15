@@ -13,6 +13,10 @@ const associationService = {
     return associationRepository.markNotificationAsConfirmed(id, receiverID);
   },
 
+  async getlistTherapist(receiverID) {
+    return associationRepository.getlistTherapist(receiverID);
+  },
+
 }
 
 module.exports = associationService;
