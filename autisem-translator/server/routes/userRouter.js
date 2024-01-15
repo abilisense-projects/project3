@@ -5,6 +5,7 @@ const {
   updatePassword,
   createUser,
   getUserDetailes,
+  uploadProfileImage
 } = require("../controllers/userController");
 const authenticateJWT = require("../middlewares/authentication");
 
@@ -15,5 +16,6 @@ userRouter.put("/updateImage", updateImage);
 userRouter.put("/updatePassword", updatePassword);
 userRouter.post("/register", createUser);
 userRouter.get("/profile", authenticateJWT, getUserDetailes);
+userRouter.put("/uploadProfileImage", uploadProfileImage);
 
 module.exports = userRouter;

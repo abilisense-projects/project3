@@ -26,7 +26,6 @@ const userService = {
   async loginUser(userName, password) {
     try {
       const userExists = await userRepository.loginUser(userName, password);
-      console.log("user service", userExists);
       return userExists;
     } catch (error) {
       console.error(error);
@@ -43,7 +42,17 @@ async doesUserNameExist(userName) {
     throw new Error("Error checking username existence");
   }
 }
-
+,
+async uploadProfileImage(userId,image) {
+  try {
+    //check if userId is therapist or patient
+    const upload = await userRepository.uploadProfileImage(userId,image);
+    return upload;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Error uploading image");
+  }
+}
 
 }
 module.exports = userService
