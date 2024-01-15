@@ -80,5 +80,29 @@ const patientService = {
       throw new Error("Error fetching therapist patients");
     }
   },
+  deletingTherapist: async (deleting) => {
+    console.log("delete:", deleting);
+    try {
+      const response = await axios.delete(
+        `${REACT_APP_BASE_URL}/patient/deleteFromNotification`,
+        // deleting
+        { data: deleting }
+      );
+      const responseDelete = await axios.delete(
+        `${REACT_APP_BASE_URL}/patient/deleteFromAssociations`,
+        // deleting
+        { data: deleting }
+      );
+      console.log("delete:", deleting);
+      console.log("response 1", response);
+      console.log("response 2", responseDelete);
+
+
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching therapist patients:", error);
+      throw new Error("Error fetching therapist patients");
+    }
+  },
 };
 export default patientService;

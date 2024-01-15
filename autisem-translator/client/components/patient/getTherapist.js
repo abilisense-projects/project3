@@ -82,9 +82,9 @@ export default function GetTherapst() {
     }
   };
 
-  const handleMyTherapist =()=>{
+  const handleMyTherapist = () => {
     navigation.navigate("ListOfAssociatedTherapists");
-  }
+  };
 
   if (isLoading) {
     // Display a loading indicator while the data is being fetched
@@ -98,7 +98,9 @@ export default function GetTherapst() {
   return (
     <View style={styles.container}>
       <View style={styles.modalContainer}>
-        <Text style={styles.label}>Look for therapists you know</Text>
+        {Therapists.length > 0 && (
+          <Text style={styles.label}>Look for therapists you know</Text>
+        )}
         {countNotifications === "0" ? (
           <View style={styles.noPatientsContainer}>
             <Text style={styles.noPatientsText}>
@@ -147,7 +149,6 @@ export default function GetTherapst() {
             ))}
 
             <GenericButton onPress={handleDone} title="Done" />
-            
           </View>
         )}
         <GenericButton onPress={handleMyTherapist} title="My Therapist" />

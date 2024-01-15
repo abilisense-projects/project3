@@ -40,11 +40,27 @@ async function getlistOfAssociatedTherapist(req, res) {
   }
 }
 
+async function deletingTherapistFromAssociations(req, res) {
+  try {
+    const { id, receiverID } = req.body;
+    console.log("id, receiverID 2", id, receiverID);
+    const deleting = await AssociationService.deletingTherapistOfPatient(
+      id,
+      receiverID
+    );
+    res.json(deleting);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
 
 
 
 module.exports = {
   create,
   statusChangeToConfirmed,
-  getlistOfAssociatedTherapist
+  getlistOfAssociatedTherapist,
+  deletingTherapistFromAssociations
 };

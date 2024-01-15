@@ -55,11 +55,24 @@ export default function ListOfAssociatedTherapists() {
     setSelectedTherapist(therapists);
   };
 
-  const handleTrash = () => {};
+  const handleTrash = async () => {
+    if (selectedTherapist) {
+      const { userName, firstName, lastName, id } = selectedTherapist;
+      const therapistData = { userName, firstName, lastName, id };
+      const responseDelete = await patientService.deletingTherapist({
+        id: id,
+        receiverID: receiverId,
+      });
+      console.log("responseDelete", responseDelete);
+
+    }
+  };
   return (
     <View style={styles.container}>
       <View style={styles.modalContainer}>
+      {Therapists.length > 0 && (
         <Text style={styles.label}>My Therapists</Text>
+        )}
         {Therapists.length === 0 ? (
           <View style={styles.noPatientsContainer}>
             <Text style={styles.noPatientsText}>There are no therapists</Text>
@@ -106,7 +119,8 @@ export default function ListOfAssociatedTherapists() {
                     </Text>
                   </View>
                   <View style={styles.Icon}>
-                    <TouchableOpacity onPress={handleTrash}>
+                    <TouchableOpacity               
+                      onPress={() => handleTrash(therapist)}>
                       <Icon
                         name="trash"
                         size={27}

@@ -3,7 +3,11 @@ const Therapist = require("../models/therapist");
 
 async function createAssociation(therapistID, patientID) {
   try {
-    const newAssociation = new Associations({ therapistId: therapistID, patientId: patientID, status: 'Pending' });
+    const newAssociation = new Associations({
+      therapistId: therapistID,
+      patientId: patientID,
+      status: "Pending",
+    });
     await newAssociation.save();
     return { success: true };
   } catch (error) {
@@ -15,8 +19,10 @@ async function createAssociation(therapistID, patientID) {
 async function getListOfPatientsByTherapistID(therapistID, status) {
   try {
     //do i need this query?
-    const query = status ? { therapistId: therapistID, status: status } : { therapistId: therapistID };
-    const associations = await Associations.find(query).populate('patientId');
+    const query = status
+      ? { therapistId: therapistID, status: status }
+      : { therapistId: therapistID };
+    const associations = await Associations.find(query).populate("patientId");
 
     return associations.map((association) => ({
       patientDetails: association.patientId,
@@ -100,9 +106,29 @@ async function getlistTherapist(patientID) {
   }
 }
 
+async function deletingTherapistOfPatient(id, receiverID) {
+  try {
+    const deleteAssociations = await Associations.findOneAndDelete(
+      {
+        therapistId: id,
+        patientId: receiverID,
+      },
+      { status: "Confirmed" },
+      { new: true }
+    );
+    console.log("deleteAssociations", deleteAssociations);
+
+    return true;
+  } catch (error) {
+    console.error("Error in getSenderIdByUsernameAndReceiverID:", error);
+    return null;
+  }
+}
+
 module.exports = {
   createAssociation,
   getListOfPatientsByTherapistID,
   markNotificationAsConfirmed,
-  getlistTherapist
+  getlistTherapist,
+  deletingTherapistOfPatient,
 };

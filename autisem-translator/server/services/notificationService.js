@@ -20,6 +20,9 @@ const notificationService = {
   async getListOfTherapistsByReceiverID(receiverId) {
     return NotificationRepository.getListOfTherapistsByReceiverID(receiverId);
   },
+  async deletingTherapistOfPatient(id, receiverID) {
+    return NotificationRepository.deletingTherapistOfPatient(id, receiverID);
+  },
  
 };
 

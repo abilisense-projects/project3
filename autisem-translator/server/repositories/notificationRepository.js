@@ -42,6 +42,25 @@ async function markNotificationAsRead(id, receiverID) {
   }
 }
 
+async function deletingTherapistOfPatient(id, receiverID) {
+  try {
+    const deleteNotification = await Notification.findOneAndDelete(
+      {
+        senderId: id,
+        receiverId: receiverID,
+      },
+      { status: "read" },
+      { new: true }
+    );
+    console.log("deleteNotification", deleteNotification);
+
+    return true;
+  } catch (error) {
+    console.error("Error in getSenderIdByUsernameAndReceiverID:", error);
+    return null;
+  }
+}
+
 async function getListOfTherapistsByReceiverID(receiverID) {
   try {
     console.log("receiverID 2: ", receiverID);
@@ -100,4 +119,5 @@ module.exports = {
   getUnreadNotificationsForPatient,
   markNotificationAsRead,
   getListOfTherapistsByReceiverID,
+  deletingTherapistOfPatient
 };

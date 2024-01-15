@@ -4,9 +4,10 @@ const {
   statusChange,
   getPatientsTherapist,
   unreadNotifications,
+  deletingTherapistFromNotification,
 } = require("../controllers/patientController");
 const authenticateJWT = require("../middlewares/authentication");
-const { statusChangeToConfirmed , getlistOfAssociatedTherapist } = require('../controllers/associationsController');
+const { statusChangeToConfirmed , getlistOfAssociatedTherapist, deletingTherapistFromAssociations } = require('../controllers/associationsController');
 
 
 const patientRouter = express.Router();
@@ -19,5 +20,9 @@ patientRouter.put("/changeAssociations", statusChangeToConfirmed);
 patientRouter.get("/list/:receiverId", getPatientsTherapist);
 patientRouter.get("/ListOfAssociatedTherapists/:receiverId", getlistOfAssociatedTherapist);
 patientRouter.get("/:patientId", unreadNotifications);
+patientRouter.delete("/deleteFromNotification", deletingTherapistFromNotification);
+patientRouter.delete("/deleteFromAssociations", deletingTherapistFromAssociations);
+
+
 
 module.exports = patientRouter;
