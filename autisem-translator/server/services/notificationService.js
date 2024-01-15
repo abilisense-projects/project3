@@ -9,6 +9,9 @@ const notificationService = {
       message
     );
   },
+  async removeNotification(senderId, receiverId) {
+    return NotificationRepository.removeNotification(senderId,receiverId);
+  },
 
   async getUnreadNotificationsForPatient(patientId) {
     return NotificationRepository.getUnreadNotificationsForPatient(patientId);

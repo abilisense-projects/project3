@@ -11,6 +11,19 @@ async function createNotification(senderId, receiverId, message) {
   return await newNotification.save();
 }
 
+async function removeNotification(senderId, receiverId) {
+  try {
+    const result = await Notification.findOneAndDelete({ senderId: senderId, receiverId: receiverId });
+    if (!result) {
+      return { success: false, message: "Notification not found" };
+    }
+    return { success: true };
+  } catch (error) {
+    console.error("Error removing notification:", error.message);
+    return { success: false, message: "Error removing notification" };
+  }
+}
+
 async function getUnreadNotificationsForPatient(receiverID) {
   // return Notification.find({ receiverId: patientId, status: "unread" });
   const notifications = await Notification.find({
@@ -116,6 +129,7 @@ async function getListOfTherapistsByReceiverID(receiverID) {
 
 module.exports = {
   createNotification,
+  removeNotification,
   getUnreadNotificationsForPatient,
   markNotificationAsRead,
   getListOfTherapistsByReceiverID,

@@ -11,6 +11,22 @@ async function create(req, res) {
   }
 };
 
+async function remove(req, res) {
+  try {
+    console.log("req.bodyyy",req.query)
+    const { therapistID, patientID } = req.query;
+    console.log("ppp",therapistID,patientID)
+    const association = await AssociationService.removeAssociation(therapistID, patientID)
+    if(association!=null){
+      res.status(201).json(association);
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+
 async function statusChangeToConfirmed(req, res) {
   try {
     const { id, receiverID } = req.body;
@@ -60,6 +76,7 @@ async function deletingTherapistFromAssociations(req, res) {
 
 module.exports = {
   create,
+  remove,
   statusChangeToConfirmed,
   getlistOfAssociatedTherapist,
   deletingTherapistFromAssociations
