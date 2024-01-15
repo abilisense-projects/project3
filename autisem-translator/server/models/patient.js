@@ -12,6 +12,7 @@ const patientSchema = new mongoose.Schema({
     default: {},
   },
   image: String,
+  profileImage: String,
 });
 
 const Patient = mongoose.model('Patient', patientSchema);

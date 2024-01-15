@@ -27,24 +27,21 @@ export default function UploadImage() {
       quality: 1,
     });
     if (!_image.canceled) {
-      setImage(_image.assets[0].uri);
-      // Call the image functions to encode the image
+      setErrorMessage(null);
       try {
         const codedImage = await ImageService.encode(_image.assets[0].uri);
-        try {
+        const maxAllowedSize = 100 * 1024;
+        if (codedImage.length > maxAllowedSize) {
+          setImage(null);
+          setErrorMessage("That’s a very nice photo, \nbut it’s a bit too big.\n Try one that’s smaller.");
+        } else {
+          setImage(_image.assets[0].uri);
           const response = await UserService.uploadProfileImage(user._id, codedImage);
-        } catch (error) {
-          if (error.response && error.response.status === 413) {
-            // Payload Too Large error
-            setErrorMessage("Image Too Large.");
-          } else {
-            // Handle other errors
-            setErrorMessage(error.message || "An error occurred while uploading the image.");
-          }
+          console.log(response)
         }
-      } catch (encodeError) {
-        // Handle image encoding error
-        setErrorMessage("Error encoding image. Please try again.");
+      } catch (error) {
+        console.log(error)
+       // setErrorMessage("Error accured. Please try again.");
       }
     }
   };
@@ -58,9 +55,9 @@ export default function UploadImage() {
 
   return (
     <View>
-      {errorMessage && <Text style={imageUploaderStyles.errorMessage}>{errorMessage}</Text>}
       <View style={imageUploaderStyles.container}>
         {image && <Image source={{ uri: image }} style={imageUploaderStyles.image} />}
+        {errorMessage && <Text style={imageUploaderStyles.errorMessage}>{errorMessage}</Text>}
         <View style={imageUploaderStyles.uploadBtnContainer}>
           <TouchableOpacity onPress={addImage} style={imageUploaderStyles.uploadBtn}>
             <AntDesign name="camera" size={20} color="black" />
@@ -80,6 +77,7 @@ const imageUploaderStyles = StyleSheet.create({
     position: 'relative',
     borderRadius: 999,
     overflow: 'hidden',
+    justifyContent: 'center',
   },
   image: {
     width: '100%',
@@ -103,7 +101,6 @@ const imageUploaderStyles = StyleSheet.create({
   errorMessage: {
     color: 'red',
     textAlign: 'center',
-    marginTop: 10,
-    bottom: 0,
+    fontSize: 12, 
   },
 });
