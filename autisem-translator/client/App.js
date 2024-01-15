@@ -3,7 +3,7 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { Provider } from "react-redux";
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import LandingScreen from "./pages/landing";
 import RegistrationScreen from "./pages/register";
 import LoginScreen from "./pages/login";
@@ -20,13 +20,16 @@ import GetTherapst from "./components/patient/getTherapist";
 import BackgroundSelection from "./components/side_bar/background_selection";
 import Language_selected from "./components/side_bar/language_selected";
 import SideNavigator from "./components/drawer/side";
+import CustomHeader from "./components/drawer/customHeader";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import ListOfAssociatedTherapists from "./components/patient/listOfAssociatedTherapists";
 
 const Drawer = createDrawerNavigator();
 
 const App = () => {
   return (
     <Provider store={store}>
-      <NavigationContainer style={styles.container}>
+      <NavigationContainer >
         <Drawer.Navigator
           drawerContent={(props) => (
             <SideNavigator
@@ -42,6 +45,7 @@ const App = () => {
             />
           )}
         >
+        
           <Drawer.Screen
             name="Landing"
             component={LandingScreen}
@@ -97,11 +101,12 @@ const App = () => {
             component={AccessOption}
             options={{ title: "" }}
           />
-          {/* <Drawer.Screen
-            name="AssociateTherapist"
-            component={AssociateTherapist}
+          <Drawer.Screen
+            name="ListOfAssociatedTherapists"
+            component={ListOfAssociatedTherapists}
             options={{ title: "" }}
-          /> */}
+          />
+
           {/* all these will appear in the sidebar */}
           {/* <Drawer.Screen name="Home" component={BackgroundSelection} options={{ title: "" }} /> */}
           <Drawer.Screen
@@ -109,11 +114,6 @@ const App = () => {
             component={BackgroundSelection}
             options={{ title: "" }}
           />
-          {/* <Drawer.Screen
-            name="Language"
-            component={Language_selected}
-            options={{ title: "" }}
-          /> */}
           <Drawer.Screen
             name="Notifications"
             component={AssociateTherapist}
@@ -134,6 +134,7 @@ const App = () => {
             component={Language_selected}
             options={{ title: "" }}
           />
+         
         </Drawer.Navigator>
       </NavigationContainer>
     </Provider>

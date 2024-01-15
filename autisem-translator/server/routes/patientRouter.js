@@ -6,7 +6,7 @@ const {
   unreadNotifications,
 } = require("../controllers/patientController");
 const authenticateJWT = require("../middlewares/authentication");
-const { statusChangeToConfirmed } = require('../controllers/associationsController');
+const { statusChangeToConfirmed , getlistOfAssociatedTherapist } = require('../controllers/associationsController');
 
 
 const patientRouter = express.Router();
@@ -16,8 +16,8 @@ const patientRouter = express.Router();
 patientRouter.get("/get", authenticateJWT, getPatientDetailes);
 patientRouter.put("/change", statusChange);
 patientRouter.put("/changeAssociations", statusChangeToConfirmed);
-// patientRouter.get("/:receiverId/therapists", getPatientsTherapist);
 patientRouter.get("/list/:receiverId", getPatientsTherapist);
+patientRouter.get("/ListOfAssociatedTherapists/:receiverId", getlistOfAssociatedTherapist);
 patientRouter.get("/:patientId", unreadNotifications);
 
 module.exports = patientRouter;

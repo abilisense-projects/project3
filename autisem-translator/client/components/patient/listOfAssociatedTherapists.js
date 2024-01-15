@@ -1,35 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
-  View,
+  ActivityIndicator,
   Text,
+  View,
   StyleSheet,
   TouchableOpacity,
-  ActivityIndicator,
 } from "react-native";
-import GenericButton from "../shared/button";
-import { useNavigation } from "@react-navigation/native";
-import { useDispatch, useSelector } from "react-redux";
 import patientService from "../../services/backendServices/patientService";
+import { useSelector } from "react-redux";
+import GenericButton from "../shared/button";
 import Icon from "react-native-vector-icons/FontAwesome";
-import { translationService } from "../../services/translationService";
-import { setUnreadNotification } from "../../redux/actions/patientAction";
 
-// Translation function alias for shorter usage
-const translate = translationService.translate;
-
-export default function GetTherapst() {
-  const navigation = useNavigation();
-  const dispatch = useDispatch();
-  const [selectedTherapist, setSelectedTherapist] = useState(null);
+export default function ListOfAssociatedTherapists() {
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedTherapist, setSelectedTherapist] = useState(null);
   const [Therapists, setTherapists] = useState([]);
-  // const countNotifications = useSelector(
-  //   (state) => state.patient.num.numOfUnread
-  // );
-  const countNotifications = useSelector((state) => state.patient.num);
-  // const countNotifications = useSelector((state) => state.patient.num?.numOfUnread);
-
-  console.log("countNotifications:", countNotifications);
 
   const receiverId = useSelector((state) => state.user.user.userData._id);
 
@@ -37,10 +22,9 @@ export default function GetTherapst() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log("receiverId 0 ", receiverId);
-        const responseTherapist = await patientService.getPatientsTherapist(
-          receiverId
-        );
+        console.log("receiverId 2 ", receiverId);
+        const responseTherapist =
+          await patientService.getlistOfAssociatedTherapist(receiverId);
         if (responseTherapist && responseTherapist.therapists) {
           setTherapists(responseTherapist.therapists);
           // setCountNotifications(responseTherapist.count);
@@ -58,34 +42,6 @@ export default function GetTherapst() {
     fetchData();
   }, [receiverId]);
 
-  const handleTherapist = (therapists) => {
-    setSelectedTherapist(therapists);
-  };
-
-  const handleDone = async () => {
-    if (selectedTherapist) {
-      const { userName, firstName, lastName, id } = selectedTherapist;
-      const therapistData = { userName, firstName, lastName, id };
-      const responseChange = await patientService.statusChange({
-        id: id,
-        receiverID: receiverId,
-      });
-
-      console.log("responseChange", responseChange);
-
-      // if (countNotifications > 0) {
-      if (countNotifications.numOfUnread > 0) {
-        dispatch(setUnreadNotification(countNotifications.numOfUnread - 1));
-
-        navigation.navigate("AccessOption", { therapist: therapistData });
-      }
-    }
-  };
-
-  const handleMyTherapist =()=>{
-    navigation.navigate("ListOfAssociatedTherapists");
-  }
-
   if (isLoading) {
     // Display a loading indicator while the data is being fetched
     return (
@@ -95,15 +51,18 @@ export default function GetTherapst() {
     );
   }
 
+  const handleTherapist = (therapists) => {
+    setSelectedTherapist(therapists);
+  };
+
+  const handleTrash = () => {};
   return (
     <View style={styles.container}>
       <View style={styles.modalContainer}>
-        <Text style={styles.label}>Look for therapists you know</Text>
-        {countNotifications === "0" ? (
+        <Text style={styles.label}>My Therapists</Text>
+        {Therapists.length === 0 ? (
           <View style={styles.noPatientsContainer}>
-            <Text style={styles.noPatientsText}>
-              There are no new therapists
-            </Text>
+            <Text style={styles.noPatientsText}>There are no therapists</Text>
           </View>
         ) : (
           <View>
@@ -119,11 +78,15 @@ export default function GetTherapst() {
                 ]}
               >
                 <View style={styles.IconContainer}>
-                  <Icon
-                    name="user-md"
-                    size={30}
-                    color={selectedTherapist === therapist ? "white" : "green"}
-                  />
+                  <View style={styles.Icon}>
+                    <Icon
+                      name="user-md"
+                      size={30}
+                      color={
+                        selectedTherapist === therapist ? "white" : "green"
+                      }
+                    />
+                  </View>
                   <View style={styles.textContainer}>
                     <Text
                       style={{
@@ -142,15 +105,26 @@ export default function GetTherapst() {
                       {therapist.firstName} {therapist.lastName}
                     </Text>
                   </View>
+                  <View style={styles.Icon}>
+                    <TouchableOpacity onPress={handleTrash}>
+                      <Icon
+                        name="trash"
+                        size={27}
+                        color={
+                          selectedTherapist === therapist ? "white" : "green"
+                        }
+                      />
+                    </TouchableOpacity>
+                  </View>
                 </View>
               </TouchableOpacity>
             ))}
-
-            <GenericButton onPress={handleDone} title="Done" />
-            
+            {/* <GenericButton
+                //  onPress={handleDone}
+                title="Done"
+              />*/}
           </View>
         )}
-        <GenericButton onPress={handleMyTherapist} title="My Therapist" />
       </View>
     </View>
   );
@@ -175,7 +149,8 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 20,
-    marginBottom: 8,
+    marginBottom: 15,
+    textAlign: "center",
   },
   button: {
     backgroundColor: "white",
@@ -190,10 +165,10 @@ const styles = StyleSheet.create({
   loadingContainer: {
     flex: 1,
     justifyContent: "center",
-    alignItems: "center",
   },
 
   IconContainer: {
+    marginRight: 8,
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
@@ -210,5 +185,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     flex: 1,
+  },
+  Icon: {
+    marginLeft: 8,
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
   },
 });

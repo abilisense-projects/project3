@@ -36,7 +36,6 @@ const SideNavigator = ({ navigation, shouldDisplaySideNavigator }) => {
       index: 0,
       routes: [{ name: pageName }],
     });
-    setShowLanguageOptions(false);
   };
 
   const handleLanguageIconClick = () => {
@@ -77,14 +76,6 @@ const SideNavigator = ({ navigation, shouldDisplaySideNavigator }) => {
               handleLanguageIconClick();
             }
           }}
-        //   if (item === "Language") {
-        //     setPage(item);
-        //     handleLanguageIconClick();
-        //   } else {
-        //     setPage(item);
-        //     goToFirstScreen(item);
-        //   }
-        // }}
         >
           {/* Conditionally render the badge for the 'notifications' icon */}
 
