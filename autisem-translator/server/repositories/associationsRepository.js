@@ -1,4 +1,5 @@
 const Associations = require("../models/associations");
+const Therapist = require("../models/therapist");
 
 async function createAssociation(therapistID, patientID) {
   try {
@@ -67,9 +68,60 @@ async function markNotificationAsConfirmed(id, receiverID) {
   }
 }
 
+async function getlistTherapist(patientID) {
+  try {
+    console.log("patientId: ", patientID);
+    const associations = await Associations.find({
+      patientId: patientID.toString(),
+      status: "Confirmed",
+    }).populate("therapistId");
+
+    const therapists = await Promise.all(
+      associations.map(async (association) => {
+        // Check if the senderId is present
+        if (association.therapistId) {
+          console.log("therapistId: ", association.therapistId);
+          const therapistDetails = await Therapist.findOne({
+            $or: [{ _id: association.therapistId }],
+          });
+
+          console.log("therapistDetails", therapistDetails);
+          console.log("therapistDetails._id", therapistDetails._id);
+          return {
+            id: therapistDetails._id,
+            userName: therapistDetails.userName,
+            firstName: therapistDetails.firstName,
+            lastName: therapistDetails.lastName,
+          };
+        } else {
+          console.warn("senderId not present in notification:", association);
+          return null;
+        }
+      })
+    );
+
+    // Filter out null values (notifications without senderId)
+    const filteredTherapists = therapists.filter(
+      (therapist) => therapist !== null
+    );
+    console.log("filteredTherapists", filteredTherapists);
+    return {
+      therapists: filteredTherapists,
+      // count,
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      success: false,
+      message: "Error getting associations by therapistID",
+    };
+  }
+}
+
 module.exports = {
   createAssociation,
   removeAssociation,
   getListOfPatientsByTherapistID,
   markNotificationAsConfirmed,
+  getlistTherapist
 };

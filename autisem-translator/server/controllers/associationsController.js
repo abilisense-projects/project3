@@ -42,9 +42,26 @@ async function statusChangeToConfirmed(req, res) {
   }
 }
 
+async function getlistOfAssociatedTherapist(req, res) {
+  try {
+    // const { receiverId } = req.body;
+    const receiverId = req.params.receiverId;
+    console.log("receiver Id123: ", receiverId);
+    const therapists =
+      await AssociationService.getlistTherapist(receiverId);
+    res.json(therapists);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
+
+
 
 module.exports = {
   create,
   remove,
-  statusChangeToConfirmed
+  statusChangeToConfirmed,
+  getlistOfAssociatedTherapist
 };
