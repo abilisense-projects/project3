@@ -12,6 +12,24 @@ async function createAssociation(therapistID, patientID) {
   }
 }
 
+async function removeAssociation(therapistID, patientID) {
+  try {
+    console.log(therapistID,patientID)
+    const result = await Associations.findOneAndDelete({ therapistId: therapistID, patientId: patientID });
+   console.log("result",result) 
+    if (!result) {
+      // No document found matching the criteria
+      return { success: false, message: "Association not found" };
+    }
+
+    return { success: true };
+  } catch (error) {
+    console.error("Error removing association:", error.message);
+    return { success: false, message: "Error removing association" };
+  }
+}
+
+
 async function getListOfPatientsByTherapistID(therapistID, status) {
   try {
     //do i need this query?
@@ -102,6 +120,7 @@ async function getlistTherapist(patientID) {
 
 module.exports = {
   createAssociation,
+  removeAssociation,
   getListOfPatientsByTherapistID,
   markNotificationAsConfirmed,
   getlistTherapist

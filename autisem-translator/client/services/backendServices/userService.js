@@ -97,6 +97,23 @@ const UserService = {
       throw error;
     }
   },
+  uploadProfileImage: async (userId, encodedImage) => {
+    try {
+      const response = await axios.put(
+        `${REACT_APP_BASE_URL}/user/uploadProfileImage?userId=${userId}`,
+        { image: encodedImage } // send the encoded image in the request body
+      );
+      return response.data;
+    } catch (error) {
+      console.log("Upload profile image failed:", error);
+      if (error.response && error.response.status === 413) {
+        throw new Error("Image Too Large");
+      }
+
+      throw error;
+    }
+  },
+
 };
 
 export default UserService;

@@ -161,10 +161,23 @@ async function updateImage(req, res) {
   }
 }
 
+async function uploadProfileImage(req, res) {
+  try {
+    const {userId}=req.query;
+    const {image} = req.body;
+    const imageResult = await userService.uploadProfileImage(userId,image);
+    return res.json(imageResult);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
+
 module.exports = {
   userLogin,
   updatePassword,
   createUser,
   getUserDetailes,
   updateImage,
+  uploadProfileImage
 };
