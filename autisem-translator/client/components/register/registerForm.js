@@ -95,8 +95,7 @@ export default function RegistrationForm() {
       if (data.type == "therapist") {
         navigation.navigate("Therapist");
       } else {
-        console.log("navigate to patient page");
-        //navigation.navigate("Patient")
+        navigation.navigate("Patient")
       }
     } catch (error) {
       if (error.message === "Username conflict") {
