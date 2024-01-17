@@ -32,7 +32,22 @@ async function getAllWords() {
     }
 }
 
+async function getAllWordsByPatientId(patientId) {
+    try {
+        const words = await Word.find({ patientID: patientId });
+        if(words.length==0){
+            return null;
+        }
+        return { success: true, words: words };
+    } catch (error) {
+        console.error(error);
+        return { success: false, message: 'Internal server error' };
+    }
+}
+
+
 module.exports = {
     createWord,
-    getAllWords
+    getAllWords,
+    getAllWordsByPatientId
 };

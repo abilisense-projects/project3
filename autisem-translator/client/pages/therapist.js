@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet, Image,TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import therapistService from '../services/backendServices/therapistService';
 import GenericButton from '../components/shared/button';
 import { useSelector } from 'react-redux';
@@ -8,6 +8,7 @@ import AssociatePatient from '../components/therapist/associatePatient';
 import BannerNotification from '../components/shared/bannerNotification';
 import { globalStyles } from '../styles';
 import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 const TherapistScreen = () => {
   const [patients, setPatients] = useState([]);
@@ -16,7 +17,8 @@ const TherapistScreen = () => {
   const [bannerMessage, setBannerMessage] = useState(null);
   const [message, setMessage] = useState(null);
   const therapistId = useSelector((state) => state.user.user.userData._id);
-
+  const navigation = useNavigation();
+  
   useEffect(() => {
     fetchData();
   }, [therapistId]);
@@ -117,14 +119,17 @@ const TherapistScreen = () => {
               data={patients}
               keyExtractor={(item) => item.patientDetails._id}
               renderItem={({ item }) => (
-                <View style={[styles.patientContainer, { backgroundColor: getStatusColor(item.status) }]}>
-                  <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <Text style={styles.patientName}>{`${item.patientDetails.firstName} ${item.patientDetails.lastName}`}</Text>
-                  <TouchableOpacity onPress={() => handleRemoveSinglePatient(item)}>
-                    <Ionicons name='trash' style={styles.icon}/>
-                  </TouchableOpacity>
-                </View>
-                 </View>
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('PatientDetails', { patientId: item.patientDetails._id })}>
+                  <View style={[styles.patientContainer, { backgroundColor: getStatusColor(item.status) }]}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <Text style={styles.patientName}>{`${item.patientDetails.firstName} ${item.patientDetails.lastName}`}</Text>
+                      <TouchableOpacity onPress={() => handleRemoveSinglePatient(item)}>
+                        <Ionicons name='trash' style={styles.icon} />
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                </TouchableOpacity>
               )}
             />
           )}

@@ -28,7 +28,19 @@ async function sendNotificationToPatient(req, res) {
   }
 }
 
+async function getPatientsDetails(req, res) {
+  try {
+    const {patientId} = req.body;
+    const patientDetailes = await therapistService.getPatientsDetails(patientId);
+    res.status(200).json(patientDetailes);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
 module.exports = {
   getTherapistPatients,
   sendNotificationToPatient,
+  getPatientsDetails
 };
