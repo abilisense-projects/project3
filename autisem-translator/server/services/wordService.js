@@ -30,6 +30,21 @@ const wordService = {
         }
     },
 
+    async getAllWordsByPatientId(patientId) {
+        try {
+            const fetchedWords = await wordRepository.getAllWordsByPatientId(patientId)
+            if(fetchedWords==null){
+                return null
+            }
+            else if (!fetchedWords.success) {
+                return { success: false, message: 'Failed to retrieve words' };
+            }
+            return { success: true, words: fetchedWords.words };
+        } catch (error) {
+            console.error(error);
+            return { success: false, message: 'Internal server error' };
+        }
+    },
     
 };
 

@@ -23,6 +23,7 @@ import SideNavigator from "./components/drawer/side";
 import CustomHeader from "./components/drawer/customHeader";
 // import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import ListOfAssociatedTherapists from "./components/patient/listOfAssociatedTherapists";
+import PatientDetails from "./components/therapist/patientDetailes";
 
 const Drawer = createDrawerNavigator();
 
@@ -104,6 +105,11 @@ const App = () => {
           <Drawer.Screen
             name="ListOfAssociatedTherapists"
             component={ListOfAssociatedTherapists}
+            options={{ title: "" }}
+          />
+          <Drawer.Screen
+            name="PatientDetails"
+            component={PatientDetails}
             options={{ title: "" }}
           />
 
