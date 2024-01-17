@@ -6,7 +6,7 @@ const therapistSchema = new mongoose.Schema({
   lastName: String,
   phoneNumber: String,
   password: String,
-  profileImage: { type: String, required: true },
+  profileImage:String,
 });
 
 const Therapist = mongoose.model('Therapist', therapistSchema, 'therapists');
