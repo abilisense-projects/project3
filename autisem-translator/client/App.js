@@ -38,7 +38,8 @@ const App = () => {
               shouldDisplaySideNavigator={
                 props.state.routes[props.state.index].name !== "Login" &&
                 props.state.routes[props.state.index].name !== "Registration" &&
-                props.state.routes[props.state.index].name !== "Landing"
+                props.state.routes[props.state.index].name !== "Landing" &&
+                props.state.routes[props.state.index].name !== "ForgotYourPassword"
               }
               // countNotifications={
               //   props.state.routes[props.state.index].name == "Patient"
