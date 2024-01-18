@@ -1,6 +1,10 @@
 const associationService = require('./associationsService');
 const notificationService = require('./notificationService');
 const userService = require('./userService');
+const wordService = require('./wordService');
+const TherapistRepository = require("../repositories/therapistRepository");
+
+
 
 async function sendNotificationToPatient(therapistId, patientUserName) {
   try {
@@ -24,6 +28,19 @@ async function sendNotificationToPatient(therapistId, patientUserName) {
   }
 }
 
+async function getPatientsDetails(patientId) {
+  try {
+    //get basic detailes
+    const detailes = await TherapistRepository.getPatientsDetails(patientId)
+    //get list of words
+    const words = await wordService.getAllWordsByPatientId(patientId)
+    return {patient:detailes,words:words}
+  } catch (error) {
+    throw new Error('Error sending notification');
+  }
+}
+
 module.exports = {
-  sendNotificationToPatient
+  sendNotificationToPatient,
+  getPatientsDetails
 };
