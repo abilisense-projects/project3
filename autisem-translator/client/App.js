@@ -40,7 +40,9 @@ const App = () => {
                 props.state.routes[props.state.index].name !== "Login" &&
                 props.state.routes[props.state.index].name !== "Registration" &&
                 props.state.routes[props.state.index].name !== "Landing" &&
-                props.state.routes[props.state.index].name !== "ForgotYourPassword"
+                props.state.routes[props.state.index].name !== "ForgotYourPassword" &&
+                props.state.routes[props.state.index].name !== "CodeFromTheEmail" &&
+                props.state.routes[props.state.index].name !== "NewPassword"
               }
               // countNotifications={
               //   props.state.routes[props.state.index].name == "Patient"
