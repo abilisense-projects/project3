@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { View, Button, Text, StyleSheet, Image, ImageBackground ,ActivityIndicator  } from "react-native";
+import {
+  View,
+  Button,
+  Text,
+  StyleSheet,
+  Image,
+  ImageBackground,
+  ActivityIndicator,
+} from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native"; // Import useNavigation hook
 import GenericButton from "../components/shared/button";
@@ -30,28 +38,18 @@ const PatientScreen = () => {
           console.log("response. ", response);
         } else {
           console.log("Invalid response data - CountNotifications:", 0);
-          // console.error("Invalid response data:", response);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
-        } finally {
-          setIsLoading(false);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchData();
   }, [receiverId, setCountNotifications]);
 
-  const name = useSelector((state) => state.user.user.userData.firstName);
-  console.log("firstName ", name);
-  const image = useSelector((state) => state.user.user.userData.image);
-  console.log("image ", image);
-
-  // Move the useSelector inside the component
-  const user = useSelector((state) => state.userReucer);
-
-  const handleWordListPress = () => {
-    return user.listOfWords; // update in DB
-  };
+  const user = useSelector((state) => state.user.user.userData);
+ 
 
   if (isLoading) {
     // Display a loading indicator while the data is being fetched
@@ -63,87 +61,65 @@ const PatientScreen = () => {
   }
 
   return (
-    // <View accessible={true} style={globalStyles.whitePaper}>
-    //   <Text style={styles.label}>Hello {name}</Text>
-
-    //   {/* <Button title="רשימת מילים" onPress={handleWordListPress} /> */}
-
-      
-    // </View>
     <View style={styles.container}>
-      {image && <Image source={{ uri: image }} style={styles.backgroundImage} resizeMode="cover" />}
-     <View >
-       <Text style={styles.label}>hello {name}</Text>
-       <Button title="רשימת מילים" onPress={handleWordListPress} /> 
-       <RecordAudio />
-     </View>
-   </View>
+      {user.image && (
+        <Image
+          source={{ uri: user.image }}
+          style={styles.backgroundImage}
+          resizeMode="cover"
+        />
+      )}
+      <View>
+        <View style={styles.hello}>
+          <Text style={styles.label}>hello {user.firstName}</Text>
+        </View>
+        <View style={styles.recordAudio}>
+          <RecordAudio />
+        </View>
+      </View>
+    </View>
   );
 };
 
 export default PatientScreen;
 
-// const styles = StyleSheet.create({
-//   label: {
-//     fontSize: 20,
-//     // alignSelf: "flex-end",
-//     marginBottom: 15,
-//   },
-//   notificationBadgeContainer: {
-//     position: "absolute",
-//     zIndex: 1,
-//     backgroundColor: "green",
-//     borderRadius: 10,
-//     width: 15,
-//     height: 15,
-//     justifyContent: "center",
-//     alignItems: "center",
-//   },
-
-//   iconContainer: {
-//     position: "relative",
-//     width: 30,
-//   },
-
-//   notificationText: {
-//     color: "white",
-//     fontSize: 12,
-//   },
-// });
-
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
+    // alignItems: "center",
     flex: 1,
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
   },
   backgroundImage: {
-    position: 'absolute',
-    // top: 0,
-    // left: 0,
-    width: '100%',
-    height: '100%',
-    zIndex: -1, 
-    justifyContent: 'center',
-    alignItems: 'center',
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+    zIndex: -1,
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   content: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-
+    justifyContent: "center",
+    alignItems: "center",
   },
   label: {
-        fontSize: 20,
-        // alignSelf: "flex-end",
-        marginBottom: 15,
+    fontSize: 20,
+    marginBottom: 15,
   },
   loadingContainer: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  recordAudio: {
+    marginTop: 150,
+  },
+  hello: {
+    marginLeft: 25,
+    marginTop:10,
+
+
   },
 });
-

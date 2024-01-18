@@ -14,10 +14,11 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import { translationService } from "../../services/translationService";
 import { setUnreadNotification } from "../../redux/actions/patientAction";
 
+
 // Translation function alias for shorter usage
 const translate = translationService.translate;
 
-export default function GetTherapst() {
+export default function GetTherapist() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [selectedTherapist, setSelectedTherapist] = useState(null);
@@ -35,8 +36,10 @@ export default function GetTherapst() {
 
   //gets therapists list by receiver id
   useEffect(() => {
+    console.log("1111111111111111")
     const fetchData = async () => {
       try {
+        console.log("hghfgd")
         console.log("receiverId 0 ", receiverId);
         const responseTherapist = await patientService.getPatientsTherapist(
           receiverId
@@ -56,7 +59,7 @@ export default function GetTherapst() {
       }
     };
     fetchData();
-  }, [receiverId]);
+  }, []);
 
   const handleTherapist = (therapists) => {
     setSelectedTherapist(therapists);
@@ -82,9 +85,9 @@ export default function GetTherapst() {
     }
   };
 
-  const handleMyTherapist =()=>{
+  const handleMyTherapist = () => {
     navigation.navigate("ListOfAssociatedTherapists");
-  }
+  };
 
   if (isLoading) {
     // Display a loading indicator while the data is being fetched
@@ -98,11 +101,13 @@ export default function GetTherapst() {
   return (
     <View style={styles.container}>
       <View style={styles.modalContainer}>
-        <Text style={styles.label}>Look for therapists you know</Text>
+        {Therapists.length > 0 && (
+          <Text style={styles.label}>Look for therapists you know</Text>
+        )}
         {countNotifications === "0" ? (
           <View style={styles.noPatientsContainer}>
             <Text style={styles.noPatientsText}>
-              There are no new therapists
+            There are now no therapists {`\n`}who want an affiliation from you
             </Text>
           </View>
         ) : (
@@ -147,7 +152,6 @@ export default function GetTherapst() {
             ))}
 
             <GenericButton onPress={handleDone} title="Done" />
-            
           </View>
         )}
         <GenericButton onPress={handleMyTherapist} title="My Therapist" />

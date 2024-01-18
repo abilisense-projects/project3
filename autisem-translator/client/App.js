@@ -16,7 +16,7 @@ import PatientScreen from "./pages/patient";
 import AssociatePatient from "./components/therapist/associatePatient";
 import AssociateTherapist from "./components/patient/associateTherapist";
 import AccessOption from "./components/patient/accessOption";
-import GetTherapst from "./components/patient/getTherapist";
+import GetTherapist from "./components/patient/getTherapist";
 import BackgroundSelection from "./components/side_bar/background_selection";
 import Language_selected from "./components/side_bar/language_selected";
 import SideNavigator from "./components/drawer/side";
@@ -30,7 +30,8 @@ const Drawer = createDrawerNavigator();
 const App = () => {
   return (
     <Provider store={store}>
-      <NavigationContainer >
+      <NavigationContainer>
+        {/* <CustomHeader/> */}
         <Drawer.Navigator
           drawerContent={(props) => (
             <SideNavigator
@@ -46,8 +47,12 @@ const App = () => {
               // }
             />
           )}
+          // screenOptions={{
+          //   headerShown: true,
+          //   header: (props) => <CustomHeader {...props} />,
+          
+          // }}
         >
-        
           <Drawer.Screen
             name="Landing"
             component={LandingScreen}
@@ -94,8 +99,8 @@ const App = () => {
             options={{ title: "" }}
           />
           <Drawer.Screen
-            name="GetTherapst"
-            component={GetTherapst}
+            name="GetTherapist"
+            component={GetTherapist}
             options={{ title: "" }}
           />
           <Drawer.Screen
@@ -141,7 +146,6 @@ const App = () => {
             component={Language_selected}
             options={{ title: "" }}
           />
-         
         </Drawer.Navigator>
       </NavigationContainer>
     </Provider>

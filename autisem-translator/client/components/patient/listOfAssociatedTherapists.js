@@ -10,37 +10,40 @@ import patientService from "../../services/backendServices/patientService";
 import { useSelector } from "react-redux";
 import GenericButton from "../shared/button";
 import Icon from "react-native-vector-icons/FontAwesome";
+import BannerNotification from "../shared/bannerNotification";
 
 export default function ListOfAssociatedTherapists() {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedTherapist, setSelectedTherapist] = useState(null);
   const [Therapists, setTherapists] = useState([]);
+  const [bannerMessage, setBannerMessage] = useState(null);
 
   const receiverId = useSelector((state) => state.user.user.userData._id);
 
   //gets therapists list by receiver id
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        console.log("receiverId 2 ", receiverId);
-        const responseTherapist =
-          await patientService.getlistOfAssociatedTherapist(receiverId);
-        if (responseTherapist && responseTherapist.therapists) {
-          setTherapists(responseTherapist.therapists);
-          // setCountNotifications(responseTherapist.count);
-          console.log("response.therapists ", responseTherapist.therapists);
-          // console.log("response.count ", responseTherapist.count);
-        } else {
-          console.error("Invalid response data:", responseTherapist);
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
     fetchData();
   }, [receiverId]);
+
+  const fetchData = async () => {
+    try {
+      console.log("receiverId 2 ", receiverId);
+      const responseTherapist =
+        await patientService.getlistOfAssociatedTherapist(receiverId);
+      if (responseTherapist && responseTherapist.therapists) {
+        setTherapists(responseTherapist.therapists);
+        // setCountNotifications(responseTherapist.count);
+        console.log("response.therapists ", responseTherapist.therapists);
+        // console.log("response.count ", responseTherapist.count);
+      } else {
+        console.error("Invalid response data:", responseTherapist);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   if (isLoading) {
     // Display a loading indicator while the data is being fetched
@@ -55,14 +58,29 @@ export default function ListOfAssociatedTherapists() {
     setSelectedTherapist(therapists);
   };
 
-  const handleTrash = () => {};
+  const handleTrash = async () => {
+    if (selectedTherapist) {
+      const { userName, firstName, lastName, id } = selectedTherapist;
+      const therapistData = { userName, firstName, lastName, id };
+      const responseDelete = await patientService.deletingTherapist({
+        id: id,
+        receiverID: receiverId,
+      });
+      console.log("responseDelete", responseDelete);
+      setBannerMessage(
+        `Therapist ${firstName} ${lastName} deleted successfully.`
+      );
+    }
+  };
   return (
     <View style={styles.container}>
       <View style={styles.modalContainer}>
-        <Text style={styles.label}>My Therapists</Text>
+        {Therapists.length > 0 && (
+          <Text style={styles.label}>My Therapists</Text>
+        )}
         {Therapists.length === 0 ? (
           <View style={styles.noPatientsContainer}>
-            <Text style={styles.noPatientsText}>There are no therapists</Text>
+            <Text style={styles.noPatientsText}>You do not yet have therapist {`\n`}associated with you</Text>
           </View>
         ) : (
           <View>
@@ -106,7 +124,7 @@ export default function ListOfAssociatedTherapists() {
                     </Text>
                   </View>
                   <View style={styles.Icon}>
-                    <TouchableOpacity onPress={handleTrash}>
+                    <TouchableOpacity onPress={() => handleTrash(therapist)}>
                       <Icon
                         name="trash"
                         size={27}
@@ -124,6 +142,15 @@ export default function ListOfAssociatedTherapists() {
                 title="Done"
               />*/}
           </View>
+        )}
+        {bannerMessage && (
+          <BannerNotification
+            message={bannerMessage}
+            severity={bannerMessage.includes("Failed") ? "error" : "success"}
+            onClose={() => {
+              setBannerMessage(null), fetchData();
+            }}
+          />
         )}
       </View>
     </View>

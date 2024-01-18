@@ -66,9 +66,25 @@ async function getPatientDetailes(req, res) {
   }
 }
 
+async function deletingTherapistFromNotification(req, res) {
+  try {
+    const { id, receiverID } = req.body;
+    console.log("id, receiverID 1", id, receiverID);
+    const deleting = await notificationService.deletingTherapistOfPatient(
+      id,
+      receiverID
+    );
+    res.json(deleting);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
 module.exports = {
   getPatientDetailes,
   getPatientsTherapist,
   statusChange,
   unreadNotifications,
+  deletingTherapistFromNotification
 };
