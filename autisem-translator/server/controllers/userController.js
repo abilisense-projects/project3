@@ -1,4 +1,4 @@
-const bcrypt = require("bcrypt");
+// const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const userService = require("../services/userService");
 require("dotenv").config();
@@ -80,7 +80,7 @@ async function createUser(req, res) {
       req.body;
 
     // Hash the password before storing it
-    const hashedPassword = await bcrypt.hash(password, 10);
+    // const hashedPassword = await bcrypt.hash(password, 10);
 
     // Check if the username already exists
     const userNameExists = await userService.doesUserNameExist(userName);
@@ -92,7 +92,7 @@ async function createUser(req, res) {
       firstName,
       lastName,
       phoneNumber,
-      hashedPassword, // Store the hashed password
+      password, // Store the hashed password
       // password,
       type
     );
