@@ -39,7 +39,6 @@ export default function GetTherapist() {
     console.log("1111111111111111")
     const fetchData = async () => {
       try {
-        console.log("hghfgd")
         console.log("receiverId 0 ", receiverId);
         const responseTherapist = await patientService.getPatientsTherapist(
           receiverId
@@ -69,19 +68,21 @@ export default function GetTherapist() {
     if (selectedTherapist) {
       const { userName, firstName, lastName, id } = selectedTherapist;
       const therapistData = { userName, firstName, lastName, id };
-      const responseChange = await patientService.statusChange({
-        id: id,
-        receiverID: receiverId,
-      });
+      // const responseChange = await patientService.statusChange({
+      //   id: id,
+      //   receiverID: receiverId,
+      // });
 
-      console.log("responseChange", responseChange);
+      // console.log("responseChange", responseChange);
 
       // if (countNotifications > 0) {
       if (countNotifications.numOfUnread > 0) {
         dispatch(setUnreadNotification(countNotifications.numOfUnread - 1));
 
-        navigation.navigate("AccessOption", { therapist: therapistData });
+        // navigation.navigate("AccessOption", { therapist: therapistData });
       }
+      navigation.navigate("AccessOption", { therapist: therapistData });
+
     }
   };
 
@@ -104,7 +105,8 @@ export default function GetTherapist() {
         {Therapists.length > 0 && (
           <Text style={styles.label}>Look for therapists you know</Text>
         )}
-        {countNotifications === "0" ? (
+        {/* {countNotifications === "0" ? ( */}
+        {Therapists.length === 0 ? (
           <View style={styles.noPatientsContainer}>
             <Text style={styles.noPatientsText}>
             There are now no therapists {`\n`}who want an affiliation from you

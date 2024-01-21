@@ -120,6 +120,7 @@ const App = () => {
             component={PatientDetails}
             options={{ title: "" }}
           />
+          
 
           {/* all these will appear in the sidebar */}
           {/* <Drawer.Screen name="Home" component={BackgroundSelection} options={{ title: "" }} /> */}
