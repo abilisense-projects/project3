@@ -14,11 +14,25 @@ export default function AccessOption() {
   const route = useRoute();
   const { therapist } = route.params || {};
 
-  const handleModalCancel = () => {
-    navigation.navigate("GetTherapst");
+  const handleModalCancel = async () => {
+    // navigation.navigate("GetTherapist");
+    
+
+    navigation.reset({
+      index: 0,
+      routes: [{ name: "GetTherapist" }]
+    });
   };
 
   const handleModalOk = async () => {
+    const responseChange = await patientService.statusChange({
+      id: id,
+      receiverID: receiverId,
+    });
+
+    console.log("responseChange", responseChange);
+
+
     const response = await patientService.statusChangeToConfirmed({
       id: therapist.id,
       receiverID: receiverId,
@@ -78,7 +92,10 @@ export default function AccessOption() {
             severity={bannerMessage.includes("Failed") ? "error" : "success"}
             onClose={() => {
               setBannerMessage(null),
-                navigation.navigate("GetTherapist");
+                navigation.reset({
+                  index: 0,
+                  routes: [{ name: "GetTherapist" }]
+                });
             }}
           />
         )}
