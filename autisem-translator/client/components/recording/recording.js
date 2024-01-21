@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity, Text, StyleSheet} from 'react-native';
+import { View, Pressable, Text, StyleSheet} from 'react-native';
 import { Audio } from 'expo-av';
 import { translationService } from '../../services/translationService';
 export default function RecordAudio(props) {
@@ -56,14 +56,14 @@ const translate = translationService.translate;
 
   return (
     <View style={styles.container} accessible accessibilityLabel='recording'>
-      <TouchableOpacity
+      <Pressable
         style={[styles.recordButton, { backgroundColor: buttonColor }]}
         onPress={handleButtonPress}
       >
         <Text style={styles.buttonText} accessible >
           {isRecording ? translate('stop recording') : translate('start recording')}
         </Text>
-      </TouchableOpacity>
+      </Pressable>
          </View>
   );
 }

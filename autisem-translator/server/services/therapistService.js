@@ -31,10 +31,10 @@ async function sendNotificationToPatient(therapistId, patientUserName) {
 async function getPatientsDetails(patientId) {
   try {
     //get basic detailes
-    const detailes = await TherapistRepository.getPatientsDetails(patientId)
+    const details = await TherapistRepository.getPatientsDetails(patientId)
     //get list of words
     const words = await wordService.getAllWordsByPatientId(patientId)
-    return {patient:detailes,words:words}
+    return {patient:details,words:words}
   } catch (error) {
     throw new Error('Error sending notification');
   }
