@@ -132,7 +132,11 @@ export default function CodeFromTheEmail(userName) {
 
   // Navigation function for handling "Forgot Password" press
   const handleForgotPasswordPress = () => {
-    navigation.navigate("ForgotYourPassword");
+    // navigation.navigate("ForgotYourPassword");
+    navigation.reset({
+      index: 0,
+      routes: [{ name: "ForgotYourPassword" }]
+    });
   };
 
   // Render the component

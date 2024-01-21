@@ -16,7 +16,7 @@ import PatientScreen from "./pages/patient";
 import AssociatePatient from "./components/therapist/associatePatient";
 import AssociateTherapist from "./components/patient/associateTherapist";
 import AccessOption from "./components/patient/accessOption";
-import GetTherapst from "./components/patient/getTherapist";
+import GetTherapist from "./components/patient/getTherapist";
 import BackgroundSelection from "./components/side_bar/background_selection";
 import Language_selected from "./components/side_bar/language_selected";
 import SideNavigator from "./components/drawer/side";
@@ -30,7 +30,8 @@ const Drawer = createDrawerNavigator();
 const App = () => {
   return (
     <Provider store={store}>
-      <NavigationContainer >
+      <NavigationContainer>
+        {/* <CustomHeader/> */}
         <Drawer.Navigator
           drawerContent={(props) => (
             <SideNavigator
@@ -39,15 +40,21 @@ const App = () => {
                 props.state.routes[props.state.index].name !== "Login" &&
                 props.state.routes[props.state.index].name !== "Registration" &&
                 props.state.routes[props.state.index].name !== "Landing" &&
-                props.state.routes[props.state.index].name !== "ForgotYourPassword"
+                props.state.routes[props.state.index].name !== "ForgotYourPassword" &&
+                props.state.routes[props.state.index].name !== "CodeFromTheEmail" &&
+                props.state.routes[props.state.index].name !== "NewPassword"
               }
               // countNotifications={
               //   props.state.routes[props.state.index].name == "Patient"
               // }
             />
           )}
+          // screenOptions={{
+          //   headerShown: true,
+          //   header: (props) => <CustomHeader {...props} />,
+          
+          // }}
         >
-        
           <Drawer.Screen
             name="Landing"
             component={LandingScreen}
@@ -94,8 +101,8 @@ const App = () => {
             options={{ title: "" }}
           />
           <Drawer.Screen
-            name="GetTherapst"
-            component={GetTherapst}
+            name="GetTherapist"
+            component={GetTherapist}
             options={{ title: "" }}
           />
           <Drawer.Screen
@@ -113,6 +120,7 @@ const App = () => {
             component={PatientDetails}
             options={{ title: "" }}
           />
+          
 
           {/* all these will appear in the sidebar */}
           {/* <Drawer.Screen name="Home" component={BackgroundSelection} options={{ title: "" }} /> */}
@@ -141,7 +149,6 @@ const App = () => {
             component={Language_selected}
             options={{ title: "" }}
           />
-         
         </Drawer.Navigator>
       </NavigationContainer>
     </Provider>
