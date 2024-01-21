@@ -24,6 +24,9 @@ const associationService = {
   async getlistTherapist(receiverID) {
     return associationRepository.getlistTherapist(receiverID);
   },
+  async deletingTherapistOfPatient(id, receiverID) {
+    return associationRepository.deletingTherapistOfPatient(id, receiverID);
+  },
 
 }
 

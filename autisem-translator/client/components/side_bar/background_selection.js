@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import {
   View,
   Image,
-  TouchableOpacity,
+  Pressable,
   StyleSheet,
   Button,
   ScrollView,
   AccessibilityInfo,
 } from "react-native";
 import UserService from "../../services/backendServices/userService";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import option1 from "./background_options/115.jpg";
 import option2 from "./background_options/113.jpg";
@@ -31,7 +31,7 @@ const BackgroundSelection = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [confirmedImage, setConfirmedImage] = useState(null);
   const [confirmed, setConfirmed] = useState(false);
-
+  const dispatch = useDispatch();
   const handleImageSelect = (image) => {
     setSelectedImage(image.id);
   };
@@ -51,6 +51,7 @@ const BackgroundSelection = () => {
         userName: userName,
         image: selectedOption.image,
       });
+      dispatch(setUser());
       console.log("selectedOption.image", selectedOption.image);
       console.log("response", response);
     } else {
@@ -59,7 +60,7 @@ const BackgroundSelection = () => {
   };
 
   const renderItem = (item) => (
-    <TouchableOpacity
+    <Pressable
       accessible
       accessibilityLabel="background image"
       onPress={() => handleImageSelect(item)}
@@ -69,7 +70,7 @@ const BackgroundSelection = () => {
       ]}
     >
       {confirmed ? null : <Image source={item.image} style={styles.image} />}
-    </TouchableOpacity>
+    </Pressable>
   );
 
   return (
