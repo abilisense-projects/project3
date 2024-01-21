@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Image, Pressable } from 'react-native';
 import therapistService from '../services/backendServices/therapistService';
 import GenericButton from '../components/shared/button';
 import { useSelector } from 'react-redux';
@@ -119,17 +119,17 @@ const TherapistScreen = () => {
               data={patients}
               keyExtractor={(item) => item.patientDetails._id}
               renderItem={({ item }) => (
-                <TouchableOpacity
+                <Pressable
                   onPress={() => navigation.navigate('PatientDetails', { patientId: item.patientDetails._id })}>
                   <View style={[styles.patientContainer, { backgroundColor: getStatusColor(item.status) }]}>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                       <Text style={styles.patientName}>{`${item.patientDetails.firstName} ${item.patientDetails.lastName}`}</Text>
-                      <TouchableOpacity onPress={() => handleRemoveSinglePatient(item)}>
+                      <Pressable onPress={() => handleRemoveSinglePatient(item)}>
                         <Ionicons name='trash' style={styles.icon} />
-                      </TouchableOpacity>
+                      </Pressable>
                     </View>
                   </View>
-                </TouchableOpacity>
+                </Pressable>
               )}
             />
           )}

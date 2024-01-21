@@ -4,7 +4,7 @@ import {
   Text,
   View,
   StyleSheet,
-  TouchableOpacity,
+  Pressable,
 } from "react-native";
 import patientService from "../../services/backendServices/patientService";
 import { useSelector } from "react-redux";
@@ -67,7 +67,7 @@ export default function ListOfAssociatedTherapists() {
         ) : (
           <View>
             {Therapists.map((therapist) => (
-              <TouchableOpacity
+              <Pressable
                 key={therapist.userName}
                 onPress={() => handleTherapist(therapist)}
                 style={[
@@ -106,7 +106,7 @@ export default function ListOfAssociatedTherapists() {
                     </Text>
                   </View>
                   <View style={styles.Icon}>
-                    <TouchableOpacity onPress={handleTrash}>
+                    <Pressable onPress={handleTrash}>
                       <Icon
                         name="trash"
                         size={27}
@@ -114,10 +114,10 @@ export default function ListOfAssociatedTherapists() {
                           selectedTherapist === therapist ? "white" : "green"
                         }
                       />
-                    </TouchableOpacity>
+                    </Pressable>
                   </View>
                 </View>
-              </TouchableOpacity>
+              </Pressable>
             ))}
             {/* <GenericButton
                 //  onPress={handleDone}

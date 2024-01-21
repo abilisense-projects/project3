@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Text, Pressable } from "react-native";
 import GenericForm from "../shared/form";
 import validations from "../../config/validations";
 import { useNavigation } from "@react-navigation/native";
@@ -157,9 +157,9 @@ export default function CodeFromTheEmail(userName) {
       ></GenericForm>
 
       {/* Link to navigate to the "Forgot Password" screen */}
-      <TouchableOpacity onPress={handleForgotPasswordPress}>
+      <Pressable onPress={handleForgotPasswordPress}>
         <Text style={{ color: "blue" }}>No email sent?</Text>
-      </TouchableOpacity>
+      </Pressable>
 
       {/* Display error message if there is an error */}
       {error && <Text style={styles.errorText}>{error}</Text>}
