@@ -30,7 +30,7 @@ async function sendNotificationToPatient(req, res) {
 
 async function getPatientsDetails(req, res) {
   try {
-    const {patientId} = req.body;
+    const {patientId} = req.params;
     const patientDetailes = await therapistService.getPatientsDetails(patientId);
     res.status(200).json(patientDetailes);
   } catch (error) {

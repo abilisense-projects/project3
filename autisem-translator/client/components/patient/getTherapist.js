@@ -3,7 +3,7 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity,
+  Pressable,
   ActivityIndicator,
 } from "react-native";
 import GenericButton from "../shared/button";
@@ -115,7 +115,7 @@ export default function GetTherapist() {
         ) : (
           <View>
             {Therapists.map((therapist) => (
-              <TouchableOpacity
+              <Pressable
                 key={therapist.userName}
                 onPress={() => handleTherapist(therapist)}
                 style={[
@@ -150,7 +150,7 @@ export default function GetTherapist() {
                     </Text>
                   </View>
                 </View>
-              </TouchableOpacity>
+              </Pressable>
             ))}
 
             <GenericButton onPress={handleDone} title="Done" />

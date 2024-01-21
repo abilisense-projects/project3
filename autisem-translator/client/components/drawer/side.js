@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View, TouchableWithoutFeedback } from "react-native";
+import { StyleSheet, Text, Pressable, View, TouchableWithoutFeedback } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useSelector } from "react-redux";
 import { useFocusEffect } from "@react-navigation/native";
@@ -65,7 +65,7 @@ const SideNavigator = ({ navigation, shouldDisplaySideNavigator }) => {
       </View>
       <View style={styles.separator} />
       {pages.map((item, index) => (
-        <TouchableOpacity
+        <Pressable
           style={styles.drawerItem}
           key={index}
           onPress={() => {
@@ -97,13 +97,13 @@ const SideNavigator = ({ navigation, shouldDisplaySideNavigator }) => {
           <Text style={page === item ? { color: "green" } : { color: "black" }}>
             {item}
           </Text>
-        </TouchableOpacity>
+        </Pressable>
       ))}
       
       {showLanguageOptions && (
         <View>
         {languages.map((item, index) => (
-          <TouchableOpacity
+          <Pressable
             style={styles.language}
             key={index}
             onPress={() => {
@@ -115,7 +115,7 @@ const SideNavigator = ({ navigation, shouldDisplaySideNavigator }) => {
             <Text style={page === item ? { color: "green" } : { color: "black" }}>
               {item}
             </Text>
-          </TouchableOpacity>
+          </Pressable>
         ))}
         </View>
       )}

@@ -8,9 +8,10 @@ async function sendNotificationToPatient(therapistId,patientUserName) {
 }
 
 async function getPatientsDetails(patientId) {
+  console.log(patientId)
   try {
     // Find the patient by ID
-    const patient = await Patient.findOne(patientId);
+    const patient = await Patient.findById(patientId);
     if (!patient) {
       console.log(`Patient with ID ${patientId} not found`);
       return null;

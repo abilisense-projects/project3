@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { Image, View, TouchableOpacity, StyleSheet, Text } from "react-native";
-import { AntDesign } from "@expo/vector-icons";
-import * as ImagePicker from "expo-image-picker";
-import im1 from "../../assets/images/default-user-image.svg";
-import ImageService from "../../services/imageService";
-import UserService from "../../services/backendServices/userService";
+import React, { useState, useEffect } from 'react';
+import { Image, View, Pressable, StyleSheet, Text } from 'react-native';
+import { AntDesign } from '@expo/vector-icons';
+import * as ImagePicker from 'expo-image-picker';
+import im1 from '../../assets/images/default-user-image.svg';
+import ImageService from '../../services/imageService';
+import UserService from '../../services/backendServices/userService';
 import { useSelector } from "react-redux";
 
 export default function UploadImage() {
@@ -70,12 +70,9 @@ export default function UploadImage() {
           <Text style={imageUploaderStyles.errorMessage}>{errorMessage}</Text>
         )}
         <View style={imageUploaderStyles.uploadBtnContainer}>
-          <TouchableOpacity
-            onPress={addImage}
-            style={imageUploaderStyles.uploadBtn}
-          >
+          <Pressable onPress={addImage} style={imageUploaderStyles.uploadBtn}>
             <AntDesign name="camera" size={20} color="black" />
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </View>
     </View>

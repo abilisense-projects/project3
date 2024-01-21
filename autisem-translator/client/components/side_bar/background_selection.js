@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import {
   View,
   Image,
-  TouchableOpacity,
+  Pressable,
   StyleSheet,
   Button,
   ScrollView,
@@ -60,7 +60,7 @@ const BackgroundSelection = () => {
   };
 
   const renderItem = (item) => (
-    <TouchableOpacity
+    <Pressable
       accessible
       accessibilityLabel="background image"
       onPress={() => handleImageSelect(item)}
@@ -70,7 +70,7 @@ const BackgroundSelection = () => {
       ]}
     >
       {confirmed ? null : <Image source={item.image} style={styles.image} />}
-    </TouchableOpacity>
+    </Pressable>
   );
 
   return (
