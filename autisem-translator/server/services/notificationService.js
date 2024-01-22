@@ -9,6 +9,9 @@ const notificationService = {
       message
     );
   },
+  async removeNotification(senderId, receiverId) {
+    return NotificationRepository.removeNotification(senderId,receiverId);
+  },
 
   async getUnreadNotificationsForPatient(patientId) {
     return NotificationRepository.getUnreadNotificationsForPatient(patientId);
@@ -19,6 +22,9 @@ const notificationService = {
   },
   async getListOfTherapistsByReceiverID(receiverId) {
     return NotificationRepository.getListOfTherapistsByReceiverID(receiverId);
+  },
+  async deletingTherapistOfPatient(id, receiverID) {
+    return NotificationRepository.deletingTherapistOfPatient(id, receiverID);
   },
  
 };

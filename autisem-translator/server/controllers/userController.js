@@ -1,4 +1,4 @@
-// const bcrypt = require("bcrypt");
+const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const userService = require("../services/userService");
 require("dotenv").config();
@@ -163,10 +163,61 @@ async function getUserDetailes(req, res) {
   }
 }
 
+async function updateImage(req, res) {
+  try {
+    const { userName, image } = req.body;
+    console.log("userName:", userName, "image", image);
+    //  Check if the required fields are provided
+    if (!userName) {
+      return (
+        res
+          .status(200)
+          //400
+          .json({ message: "Username and newPassword are required" })
+      );
+    }
+    const imageUpdateResult = await userService.doesUserNameExist(userName);
+    if (imageUpdateResult) {
+      const updateResult = await userService.updateNewImage(userName, image);
+      // Check the specific condition based on the result of updateUser
+      if (updateResult) {
+        res.status(200).json({ message: "Success update" });
+      } else {
+        res
+          .status(200)
+          //500
+          .json({ message: "Failed to update image" });
+      }
+    } else {
+      // User does not exist, return a message to register
+      res
+        .status(200)
+        //404
+        .json({ message: "User does not exist. Please register." });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+async function uploadProfileImage(req, res) {
+  try {
+    const {userId}=req.query;
+    const {image} = req.body;
+    const imageResult = await userService.uploadProfileImage(userId,image);
+    return res.json(imageResult);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
+
 module.exports = {
   userLogin,
   updatePassword,
   createUser,
   getUserDetailes,
   updateImage,
+  uploadProfileImage
 };

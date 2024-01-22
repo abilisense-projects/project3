@@ -4,13 +4,20 @@ const userService = {
     return userRepository.updateNew(userName, newPassword);
   },
 
-async updateNewImage(userName, image) {
-  return userRepository.updateNewImage(userName, image);
-},
+  async updateNewImage(userName, image) {
+    return userRepository.updateNewImage(userName, image);
+  },
 
-async createUser(userName, firstName, lastName, phoneNumber, password, type) {
-  return userRepository.createUser(userName, firstName, lastName, phoneNumber, password, type);
-},
+  async createUser(userName, firstName, lastName, phoneNumber, password, type) {
+    return userRepository.createUser(
+      userName,
+      firstName,
+      lastName,
+      phoneNumber,
+      password,
+      type
+    );
+  },
 
   async getUser(userName) {
     return userRepository.getUser(userName);
@@ -19,7 +26,6 @@ async createUser(userName, firstName, lastName, phoneNumber, password, type) {
   async loginUser(userName, password) {
     try {
       const userExists = await userRepository.loginUser(userName, password);
-      console.log("user service", userExists);
       return userExists;
     } catch (error) {
       console.error(error);
@@ -36,7 +42,17 @@ async doesUserNameExist(userName) {
     throw new Error("Error checking username existence");
   }
 }
-
+,
+async uploadProfileImage(userId,image) {
+  try {
+    //check if userId is therapist or patient
+    const upload = await userRepository.uploadProfileImage(userId,image);
+    return upload;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Error uploading image");
+  }
+}
 
 }
 module.exports = userService

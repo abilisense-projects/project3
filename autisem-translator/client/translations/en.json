@@ -47,7 +47,6 @@
   "next": "Next",
   "no email sent": "No email sent?",
   "save": "Save",
-  "password changed": "Password Changed!"
-
-
+  "password changed": "Password Changed!",
+  "error creating user": "error creating user"
 }

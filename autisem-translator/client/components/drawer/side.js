@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, Pressable, View, TouchableWithoutFeedback } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useSelector } from "react-redux";
 import { useFocusEffect } from "@react-navigation/native";
@@ -7,10 +7,22 @@ import UploadImage from "../shared/uploadImage";
 
 const SideNavigator = ({ navigation, shouldDisplaySideNavigator }) => {
   const [page, setPage] = useState("");
-
-  const pages = ["Notifications", "Settings", "Theme", "Language"];
-  const icons = ["notifications", "settings", "color-palette", "language"];
+  const [showLanguageOptions, setShowLanguageOptions] = useState(false);
+  const [overlayVisible, setOverlayVisible] = useState(false);
   const user = useSelector((state) => state.user.user);
+  let homePage = "";
+  if (user) {
+    const type = user.userData.type;
+    if (type === "therapist") {
+      homePage = "Therapist";
+    } else if (type === "patient") {
+      homePage = "Patient";
+    }
+  }
+
+  const pages = [homePage, "Notifications", "Settings", "Theme", "Language"];
+  const icons = ["home", "notifications", "settings", "color-palette", "language"];
+  const languages = ["English","Hebrew"];
   const countNotifications = useSelector((state) => state.patient.num);
 
   useFocusEffect(() => {
@@ -26,6 +38,17 @@ const SideNavigator = ({ navigation, shouldDisplaySideNavigator }) => {
     });
   };
 
+  const handleLanguageIconClick = () => {
+    setPage("Language");
+    setShowLanguageOptions(!showLanguageOptions);
+    setOverlayVisible(!showLanguageOptions);
+  };
+
+  const handleOverlayPress = () => {
+    setShowLanguageOptions(false);
+    setOverlayVisible(false);
+  };
+
   if (!shouldDisplaySideNavigator) {
     return null;
   }
@@ -33,19 +56,25 @@ const SideNavigator = ({ navigation, shouldDisplaySideNavigator }) => {
 
   return (
     <View style={styles.drawerContent}>
+      <TouchableWithoutFeedback onPress={handleOverlayPress}>
+        <View style={[styles.overlay, { display: overlayVisible ? "flex" : "none" }]} />
+      </TouchableWithoutFeedback>
       <View style={styles.userContainer}>
         <UploadImage />
         {user && <Text style={styles.userName}>{user.userData.firstName}</Text>}
       </View>
       <View style={styles.separator} />
       {pages.map((item, index) => (
-        <TouchableOpacity
+        <Pressable
           style={styles.drawerItem}
           key={index}
           onPress={() => {
             setPage(item);
             console.log("item", item);
             goToFirstScreen(item);
+            if (item === "Language") {
+              handleLanguageIconClick();
+            }
           }}
         >
           {/* Conditionally render the badge for the 'notifications' icon */}
@@ -68,8 +97,28 @@ const SideNavigator = ({ navigation, shouldDisplaySideNavigator }) => {
           <Text style={page === item ? { color: "green" } : { color: "black" }}>
             {item}
           </Text>
-        </TouchableOpacity>
+        </Pressable>
       ))}
+      
+      {showLanguageOptions && (
+        <View>
+        {languages.map((item, index) => (
+          <Pressable
+            style={styles.language}
+            key={index}
+            onPress={() => {
+              setPage(item);
+              console.log("item", item);
+              goToFirstScreen(item);
+            }} 
+          >
+            <Text style={page === item ? { color: "green" } : { color: "black" }}>
+              {item}
+            </Text>
+          </Pressable>
+        ))}
+        </View>
+      )}
     </View>
   );
 };
@@ -122,6 +171,12 @@ const styles = StyleSheet.create({
   notificationText: {
     color: "white",
     fontSize: 8,
+  },
+  language:{
+    marginBottom: 15,
+    flexDirection: "row",
+    marginLeft: 30,
+    
   },
 });
 

@@ -3,7 +3,7 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity,
+  Pressable,
   ActivityIndicator,
 } from "react-native";
 import GenericButton from "../shared/button";
@@ -14,10 +14,11 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import { translationService } from "../../services/translationService";
 import { setUnreadNotification } from "../../redux/actions/patientAction";
 
+
 // Translation function alias for shorter usage
 const translate = translationService.translate;
 
-export default function GetTherapst() {
+export default function GetTherapist() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [selectedTherapist, setSelectedTherapist] = useState(null);
@@ -35,6 +36,7 @@ export default function GetTherapst() {
 
   //gets therapists list by receiver id
   useEffect(() => {
+    console.log("1111111111111111")
     const fetchData = async () => {
       try {
         console.log("receiverId 0 ", receiverId);
@@ -56,7 +58,7 @@ export default function GetTherapst() {
       }
     };
     fetchData();
-  }, [receiverId]);
+  }, []);
 
   const handleTherapist = (therapists) => {
     setSelectedTherapist(therapists);
@@ -65,23 +67,27 @@ export default function GetTherapst() {
   const handleDone = async () => {
     if (selectedTherapist) {
       const { userName, firstName, lastName, id } = selectedTherapist;
-      const therapistData = { userName, firstName, lastName, id};
-      const responseChange = await patientService.statusChange({
-        id: id,
-        receiverID: receiverId,
-      });
+      const therapistData = { userName, firstName, lastName, id };
+      // const responseChange = await patientService.statusChange({
+      //   id: id,
+      //   receiverID: receiverId,
+      // });
 
-      console.log("responseChange", responseChange);
+      // console.log("responseChange", responseChange);
 
       // if (countNotifications > 0) {
       if (countNotifications.numOfUnread > 0) {
         dispatch(setUnreadNotification(countNotifications.numOfUnread - 1));
 
-        navigation.navigate("AccessOption", { therapist: therapistData });
-      } else {
-        navigation.navigate("AccessOption", { therapist: therapistData });
+        // navigation.navigate("AccessOption", { therapist: therapistData });
       }
+      navigation.navigate("AccessOption", { therapist: therapistData });
+
     }
+  };
+
+  const handleMyTherapist = () => {
+    navigation.navigate("ListOfAssociatedTherapists");
   };
 
   if (isLoading) {
@@ -96,17 +102,20 @@ export default function GetTherapst() {
   return (
     <View style={styles.container}>
       <View style={styles.modalContainer}>
-        <Text style={styles.label}>Look for therapists you know</Text>
-        {countNotifications === "0" ? (
+        {Therapists.length > 0 && (
+          <Text style={styles.label}>Look for therapists you know</Text>
+        )}
+        {/* {countNotifications === "0" ? ( */}
+        {Therapists.length === 0 ? (
           <View style={styles.noPatientsContainer}>
             <Text style={styles.noPatientsText}>
-              There are no new therapists
+            There are now no therapists {`\n`}who want an affiliation from you
             </Text>
           </View>
         ) : (
           <View>
             {Therapists.map((therapist) => (
-              <TouchableOpacity
+              <Pressable
                 key={therapist.userName}
                 onPress={() => handleTherapist(therapist)}
                 style={[
@@ -141,12 +150,13 @@ export default function GetTherapst() {
                     </Text>
                   </View>
                 </View>
-              </TouchableOpacity>
+              </Pressable>
             ))}
 
             <GenericButton onPress={handleDone} title="Done" />
           </View>
         )}
+        <GenericButton onPress={handleMyTherapist} title="My Therapist" />
       </View>
     </View>
   );

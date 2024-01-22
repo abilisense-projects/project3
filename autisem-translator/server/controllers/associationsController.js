@@ -11,6 +11,22 @@ async function create(req, res) {
   }
 };
 
+async function remove(req, res) {
+  try {
+    console.log("req.bodyyy",req.query)
+    const { therapistID, patientID } = req.query;
+    console.log("ppp",therapistID,patientID)
+    const association = await AssociationService.removeAssociation(therapistID, patientID)
+    if(association!=null){
+      res.status(201).json(association);
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+
 async function statusChangeToConfirmed(req, res) {
   try {
     const { id, receiverID } = req.body;
@@ -26,8 +42,42 @@ async function statusChangeToConfirmed(req, res) {
   }
 }
 
+async function getlistOfAssociatedTherapist(req, res) {
+  try {
+    // const { receiverId } = req.body;
+    const receiverId = req.params.receiverId;
+    console.log("receiver Id123: ", receiverId);
+    const therapists =
+      await AssociationService.getlistTherapist(receiverId);
+    res.json(therapists);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
+async function deletingTherapistFromAssociations(req, res) {
+  try {
+    const { id, receiverID } = req.body;
+    console.log("id, receiverID 2", id, receiverID);
+    const deleting = await AssociationService.deletingTherapistOfPatient(
+      id,
+      receiverID
+    );
+    res.json(deleting);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
+
+
 
 module.exports = {
   create,
-  statusChangeToConfirmed
+  remove,
+  statusChangeToConfirmed,
+  getlistOfAssociatedTherapist,
+  deletingTherapistFromAssociations
 };

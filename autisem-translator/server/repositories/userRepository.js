@@ -60,7 +60,7 @@ async function createUser(
         lastName,
         phoneNumber,
         password: hashedPassword, // Store the hashed password
-        // password,
+        profileImage:'',
       });
     } else if (type === "patient") {
       newUser = new Patient({
@@ -140,6 +140,43 @@ async function doesUserNameExist(userName) {
   }
 }
 
+async function updateNewImage(userName, image) {
+  try {
+    const filter = { userName };
+    const update = { image: image };
+    //const therapistUpdate = await Therapist.findOneAndUpdate(filter, update);
+    const patientUpdate = await Patient.findOneAndUpdate(filter, update);
+    if (patientUpdate) {
+      return { success: true };
+    } else {
+      return { success: false, message: "User not found" };
+    }
+  } catch (error) {
+    console.error(error);
+    throw new Error("Error updating password");
+  }
+}
+
+
+async function uploadProfileImage(userId, image) {
+  try {
+    console.log(userId,"image-repository",image)
+    let therapist = await Therapist.findOneAndUpdate( { _id: userId },
+      { profileImage: image},
+      { new: true } )
+    let patient = await Patient.findOneAndUpdate( { _id: userId },
+       { profileImage: image },
+      { new: true } )
+    if (!therapist && !patient) {
+      return { user: null, message: "User not found" };
+    }
+   return true;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Error updating password");
+  }
+}
+
 module.exports = {
   updateNew,
   createUser,
@@ -147,4 +184,5 @@ module.exports = {
   loginUser,
   doesUserNameExist,
   updateNewImage,
+  uploadProfileImage
 };

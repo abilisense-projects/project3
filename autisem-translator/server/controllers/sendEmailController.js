@@ -52,7 +52,7 @@ const sendEmail = async (req, res) => {
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: "glowing123456@gmail.com",
+        user: "abilisens.practikum@gmail.com",
         // user: "doNotReplay@gmail.com",
         pass: process.env.PASSWORD,
       },
@@ -60,13 +60,10 @@ const sendEmail = async (req, res) => {
 
     // Configure email options
     const mailOptions = {
-      from: "glowing123456@gmail.com",
-      // from: "Abilisense", // <Abilisense@gmail.com> Set your no-reply email address here
+      from: 'Abilisense <abilisens.practikum@gmail.com>',
       to,
-      // userName,
       subject: "Verification Code",
       text: `Your verification code is: ${verificationCode}`,
-      // replyTo: "glowing123456@gmail.com", // Set a different email for replies, if needed
     };
 
     // Send the email

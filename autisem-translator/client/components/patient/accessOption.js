@@ -1,27 +1,47 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import GenericButton from "../shared/button";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useSelector } from "react-redux";
 import patientService from "../../services/backendServices/patientService";
+import BannerNotification from "../shared/bannerNotification";
 
 export default function AccessOption() {
   const navigation = useNavigation();
   const receiverId = useSelector((state) => state.user.user.userData._id);
+  const [bannerMessage, setBannerMessage] = useState(null);
 
   const route = useRoute();
   const { therapist } = route.params || {};
 
-  const handleModalCancel = () => {
-    navigation.navigate("GetTherapst");
+  const handleModalCancel = async () => {
+    // navigation.navigate("GetTherapist");
+    
+
+    navigation.reset({
+      index: 0,
+      routes: [{ name: "GetTherapist" }]
+    });
   };
 
   const handleModalOk = async () => {
+    const responseChange = await patientService.statusChange({
+      id: id,
+      receiverID: receiverId,
+    });
+
+    console.log("responseChange", responseChange);
+
+
     const response = await patientService.statusChangeToConfirmed({
       id: therapist.id,
       receiverID: receiverId,
     });
     console.log("response", response);
+    //here show banner
+    setBannerMessage(
+      `Therapist ${therapist.firstName} ${therapist.lastName} added successfully.`
+    );
   };
 
   return (
@@ -66,6 +86,19 @@ export default function AccessOption() {
             buttonWidth={80}
           />
         </View>
+        {bannerMessage && (
+          <BannerNotification
+            message={bannerMessage}
+            severity={bannerMessage.includes("Failed") ? "error" : "success"}
+            onClose={() => {
+              setBannerMessage(null),
+                navigation.reset({
+                  index: 0,
+                  routes: [{ name: "GetTherapist" }]
+                });
+            }}
+          />
+        )}
       </View>
     </View>
   );

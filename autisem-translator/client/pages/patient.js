@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { View, Button, Text, StyleSheet, Image, ImageBackground } from "react-native";
+import {
+  View,
+  Button,
+  Text,
+  StyleSheet,
+  Image,
+  ImageBackground,
+  ActivityIndicator,
+} from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native"; // Import useNavigation hook
 import GenericButton from "../components/shared/button";
@@ -7,11 +15,13 @@ import RecordAudio from "../components/recording/recording";
 import patientService from "../services/backendServices/patientService";
 
 import { setUnreadNotification } from "../redux/actions/patientAction";
+import { globalStyles } from "../styles";
 
 const PatientScreen = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [countNotifications, setCountNotifications] = useState(" ");
+  const [isLoading, setIsLoading] = useState(true);
 
   const receiverId = useSelector((state) => state.user.user.userData._id);
 
@@ -27,69 +37,87 @@ const PatientScreen = () => {
           console.log("response. ", response);
         } else {
           console.log("Invalid response data - CountNotifications:", 0);
-          // console.error("Invalid response data:", response);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
-        // } finally {
-        //   setIsLoading(false);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchData();
   }, [receiverId, setCountNotifications]);
 
-  const name = useSelector((state) => state.user.user.userData.firstName);
-  console.log("firstName ", name);
-  const image = useSelector((state) => state.user.user.userData.image);
-  console.log("image ", image);
-  // Move the useSelector inside the component
-  const user = useSelector((state) => state.userReucer);
+  const user = useSelector((state) => state.user.user.userData);
+ 
 
-  const handleWordListPress = () => {
-    return user.listOfWords; // update in DB
-  };
+  if (isLoading) {
+    // Display a loading indicator while the data is being fetched
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="green" />
+      </View>
+    );
+  }
 
   return (
-    // <View accessible={true}></View>
-     <View style={styles.container}>
-      {image && <Image source={{ uri: image }} style={styles.backgroundImage} resizeMode="cover" />}
-     <View style={styles.content}>
-       <Text>hello {name}</Text>
-       <Button title="רשימת מילים" onPress={handleWordListPress} />
-     </View>
-   </View>
- 
+    <View style={styles.container}>
+      {user.image && (
+        <Image
+          source={{ uri: user.image }}
+          style={styles.backgroundImage}
+          resizeMode="cover"
+        />
+      )}
+      <View>
+        <View style={styles.hello}>
+          <Text style={styles.label}>hello {user.firstName}</Text>
+        </View>
+        <View style={styles.recordAudio}>
+          <RecordAudio />
+        </View>
+      </View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-
   container: {
-    alignItems: 'center',
+    // alignItems: "center",
     flex: 1,
-    width: '100%',
-    height: '100%',
-  },
-  label: {
-    fontSize: 15,
-    marginBottom: 15,
+    width: "100%",
+    height: "100%",
   },
   backgroundImage: {
-    position: 'absolute',
-    // top: 0,
-    // left: 0,
-    width: '100%',
-    height: '100%',
-    zIndex: -1, 
-    justifyContent: 'center',
-    alignItems: 'center',
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+    zIndex: -1,
+    justifyContent: "center",
+    alignItems: "center",
   },
-  
+
   content: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  label: {
+    fontSize: 20,
+    marginBottom: 15,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  recordAudio: {
+    marginTop: 150,
+  },
+  hello: {
+    marginLeft: 25,
+    marginTop:10,
+
+
   },
 });
 
