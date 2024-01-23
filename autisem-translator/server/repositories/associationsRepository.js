@@ -97,7 +97,8 @@ async function getlistTherapist(patientID) {
             id: therapistDetails._id,
             userName: therapistDetails.userName,
             firstName: therapistDetails.firstName,
-            lastName: therapistDetails.lastName,
+            lastName: therapistDetails.lastName,           
+            phoneNumber: therapistDetails.phoneNumber,
           };
         } else {
           console.warn("senderId not present in notification:", association);
