@@ -133,7 +133,7 @@ const App = () => {
             options={{ title: "" }}
           />
           <Drawer.Screen
-            name="Management"
+            name="Manage"
             component={AssociateTherapist}
             options={{ title: "" }}
           />
