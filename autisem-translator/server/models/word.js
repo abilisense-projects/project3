@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
 const wordSchema = new mongoose.Schema({
-  patientID: String,
   recording:String,
+  patientID: String,
   translation:String,
 });
 

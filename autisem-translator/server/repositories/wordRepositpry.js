@@ -2,21 +2,25 @@
 const Word = require('../models/word');
 const Recording = require('../services/recordingService');
 
-async function createWord(recording, patientID, translation,) {
+async function createWord(recording, patientID, translation) {
+    let newWord;
     try {
-        const recordingLink = Recording.uploadAudio('recording', recording);
-        console.log('recordingLink',recordingLink);
-        const newWord = new Word({
-            recordingLink,
-            patientID,
-            translation
-        });
-        return newWord.save();
+        // Await the completion of the uploadAudio function
+        const recordingLink = await Recording.uploadAudio(recording);
+        console.log(`Recording link: ${recordingLink}`);
+
+        // Create a new Word object with the recording link
+         newWord = new Word({
+            recording: recordingLink,
+            patientID: patientID,
+            translation: translation        });
+        console.log(newWord);
+        // Save the new Word object
+        return await newWord.save();
     } catch (error) {
         console.error(error);
         return { success: false, message: 'Internal server error' };
     }
-
 }
 
 async function getAllWords() {
