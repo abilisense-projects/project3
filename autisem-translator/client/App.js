@@ -28,6 +28,7 @@ const Drawer = createDrawerNavigator();
 
 const App = () => {
   return (
+    
     <Provider store={store}>
       <NavigationContainer>
         <Drawer.Navigator
