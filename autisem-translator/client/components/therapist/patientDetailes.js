@@ -49,7 +49,7 @@ const PatientDetails = ({ route }) => {
             <View>
               <Text style={styles.subtitle}>Words:</Text>
               <View>
-                {patientDetails.words.words.map((word, index) => (
+                {patientDetails.words && patientDetails.words.words.map((word, index) => (
                   <View key={index} style={styles.wordContainer}>
                     <Pressable onPress={() => handleRecordingIconPress(word.recording)}>
                       <Icon name="microphone" size={20} color="green" />
