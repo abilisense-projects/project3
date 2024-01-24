@@ -1,7 +1,7 @@
 import axios from "axios"
 const baseUrl = process.env.REACT_APP_API_KEY || "http://localhost:3000";
 const backendService = {
-  uploadRecording: (path, audioURI, patientID, translation) => {
+  uploadRecording: async (path, audioURI, patientID, translation) => {
     /* this function is used to upload the recording to the server.
     params:
     path - the path of the route in the server
@@ -9,9 +9,15 @@ const backendService = {
     patientID - the patient ID
     translation - the translation of the recording
     */
-    const audioFile = new File([audioURI], 'recording.wav', {
-      type: 'audio/wav',
+    // const audioFile = new File([audioURI], 'recording.wav', {
+    //   type: 'audio/wav',
+    // });
+    // console.log(`${baseUrl}/${path}`);
+    const audioBlob = await fetch(audioURI).then((r) => r.blob());
+    const audioFile = new File([audioBlob], "audiofile.mp3", {
+      type: "audio/mpeg",
     });
+
     try {
       const formData = new FormData();
       formData.append('recording', audioFile);
