@@ -10,6 +10,8 @@ import {
 } from "react-native";
 import UserService from "../../services/backendServices/userService";
 import { useDispatch, useSelector } from "react-redux";
+import GenericButton from "../shared/button";
+
 
 import option1 from "./background_options/115.jpg";
 import option2 from "./background_options/113.jpg";
@@ -17,6 +19,7 @@ import option3 from "./background_options/119.jpg";
 import option4 from "./background_options/117.jpg";
 import option5 from "./background_options/114.jpg";
 import option6 from "./background_options/110.jpg";
+
 
 const backgroundOptions = [
   { id: 1, image: option1 },
@@ -86,7 +89,8 @@ const BackgroundSelection = () => {
         {backgroundOptions.map((option) => renderItem(option))}
       </ScrollView>
 
-      {confirmed ? null : <Button title="Confirm" onPress={handleConfirm} />}
+      {confirmed ? null : <View style={styles.ConfirmButton}>
+        <GenericButton buttonWidth={100} title="Confirm" onPress={handleConfirm} /></View>}
     </View>
   );
 };
@@ -98,6 +102,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
   },
+
+  ConfirmButton:{
+    marginBottom: 100,
+
+  }, 
+
   backgroundImage: {
     position: "absolute",
     top: 0,

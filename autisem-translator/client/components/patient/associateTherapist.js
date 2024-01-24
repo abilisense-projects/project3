@@ -43,7 +43,7 @@ export default function AssociateTherapist() {
       console.log("response ", response);
 
       if (response.message === "User exists") {
-        navigation.navigate("GetTherapist");
+        navigation.navigate("ManagementByTheParent");
         // Clear error message if the user exists
         setErrorMessage(null);
       } else {

@@ -23,6 +23,24 @@ async function updateNew(userName, newPassword) {
   }
 }
 
+async function updateNewImage(userName, image) {
+  try {
+    const filter = { userName };
+    const update = { image: image };
+    //const therapistUpdate = await Therapist.findOneAndUpdate(filter, update);
+    const patientUpdate = await Patient.findOneAndUpdate(filter, update);
+
+    if (patientUpdate) {
+      return { success: true };
+    } else {
+      return { success: false, message: "User not found" };
+    }
+  } catch (error) {
+    console.error(error);
+    throw new Error("Error updating password");
+  }
+}
+
 async function createUser(
   userName,
   firstName,
@@ -82,15 +100,14 @@ async function loginUser(userName, password) {
   try {
     let therapist = await Therapist.findOne({ userName });
     let patient = await Patient.findOne({ userName });
-    console.log("patient:", patient);
+
     if (!therapist && !patient) {
       return { user: null, message: "User not found" };
     }
     const user = therapist || patient;
 
     if (user) {
-      const p=await comparePassword(password, user.password)
-      if (p) {
+      if (comparePassword(password, user.password)) {
         if (therapist) {
           return { user: { ...therapist.toObject(), type: "therapist" } };
         } else if (patient) {
@@ -98,7 +115,6 @@ async function loginUser(userName, password) {
         }
       }
     }
-    return null
   } catch (error) {
     console.error(error);
     throw new Error("Error logging in");
@@ -115,12 +131,9 @@ async function comparePassword(password, hashedPassword) {
 // Check if a username already exists (for new user registration)
 async function doesUserNameExist(userName) {
   try {
-    const therapist = await Therapist.findOne({ userName });
-    const patient = await Patient.findOne({ userName });
-
-    return therapist ? { exists: true, type: 'therapist' ,data:therapist } :
-           patient   ? { exists: true, type: 'patient' ,data:patient } :
-                       { exists: false, type: null,data:null };
+    let therapist = await Therapist.findOne({ userName });
+    let patient = await Patient.findOne({ userName });
+    return { exists: therapist || patient };
   } catch (error) {
     console.error(error);
     throw new Error("Error checking username existence");

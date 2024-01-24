@@ -101,6 +101,7 @@ async function getListOfTherapistsByReceiverID(receiverID) {
             userName: therapistDetails.userName,
             firstName: therapistDetails.firstName,
             lastName: therapistDetails.lastName,
+            phoneNumber: therapistDetails.phoneNumber,
           };
         } else {
           console.warn("senderId not present in notification:", notification);
