@@ -1,5 +1,5 @@
 import "react-native-gesture-handler";
-import React from "react";
+import React, { useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { Provider } from "react-redux";
@@ -18,7 +18,6 @@ import AssociateTherapist from "./components/patient/associateTherapist";
 import AccessOption from "./components/patient/accessOption";
 import GetTherapist from "./components/patient/getTherapist";
 import BackgroundSelection from "./components/side_bar/background_selection";
-import Language_selected from "./components/side_bar/language_selected";
 import SideNavigator from "./components/drawer/side";
 import CustomHeader from "./components/drawer/customHeader";
 // import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -28,6 +27,11 @@ import PatientDetails from "./components/therapist/patientDetailes";
 const Drawer = createDrawerNavigator();
 
 const App = () => {
+  const [selectedLanguage, setSelectedLanguage] = useState("English");
+
+  const handleLanguageChange = (language) => {
+    setSelectedLanguage(language);
+  };
   return (
     
     <Provider store={store}>
@@ -50,6 +54,8 @@ const App = () => {
               // }
             />
           )}
+          drawerPosition={selectedLanguage === "Hebrew" ? "right" : "left"}
+
           // screenOptions={{
           //   headerShown: true,
           //   header: (props) => <CustomHeader {...props} />,
@@ -140,16 +146,7 @@ const App = () => {
             component={PatientScreen}
             options={{ title: "" }}
           />
-          <Drawer.Screen
-            name="English"
-            component={Language_selected}
-            options={{ title: "" }}
-          />
-          <Drawer.Screen
-            name="Hebrew"
-            component={Language_selected}
-            options={{ title: "" }}
-          />
+
         </Drawer.Navigator>
       </NavigationContainer>
     </Provider>

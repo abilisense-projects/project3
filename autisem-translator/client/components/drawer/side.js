@@ -4,11 +4,14 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { useSelector } from "react-redux";
 import { useFocusEffect } from "@react-navigation/native";
 import UploadImage from "../shared/uploadImage";
+import { translationService } from "../../services/translationService";
 
-const SideNavigator = ({ navigation, shouldDisplaySideNavigator }) => {
+const SideNavigator = ({ navigation, shouldDisplaySideNavigator, onLanguageChange }) => {
   const [page, setPage] = useState("");
   const [showLanguageOptions, setShowLanguageOptions] = useState(false);
   const [overlayVisible, setOverlayVisible] = useState(false);
+  const [selectedLanguage, setSelectedLanguage] = useState('English');
+  const [showLanguageList, setShowLanguageList] = useState(true);
   const user = useSelector((state) => state.user.user);
   let homePage = "";
   if (user) {
@@ -42,6 +45,23 @@ const SideNavigator = ({ navigation, shouldDisplaySideNavigator }) => {
     setPage("Language");
     setShowLanguageOptions(!showLanguageOptions);
     setOverlayVisible(!showLanguageOptions);
+  };
+
+  const handleLanguageSelection = (language) => {
+    setSelectedLanguage(language);
+    onLanguageChange(language); // קריאה לפונקצית הקולבק לעדכון השפה בקומפוננטת האב
+  
+    if (language === 'Hebrew') {
+      console.log('נבחר עברית');
+      translationService.storeLanguage('he');
+    } else if (language === 'English') {
+      console.log('Selected English');
+      translationService.storeLanguage('en');
+    }
+  
+    translationService.initializeLanguage();
+    setShowLanguageList(false); // הסתרת רשימת השפות לאחר בחירה
+    console.log("Language selected:", language);
   };
 
   const handleOverlayPress = () => {
@@ -106,11 +126,24 @@ const SideNavigator = ({ navigation, shouldDisplaySideNavigator }) => {
           <Pressable
             style={styles.language}
             key={index}
-            onPress={() => {
-              setPage(item);
-              console.log("item", item);
-              goToFirstScreen(item);
-            }} 
+            onPress={() => handleLanguageSelection(item)}
+            // onPress={() => {
+              // setPage(item);
+              // setSelectedLanguage(item);
+              // if (item === 'Hebrew') {
+              //   console.log('נבחר עברית');
+              //   translationService.storeLanguage('he');
+                
+              // } else if (item === 'English') {
+              //   console.log('Selected English');
+              //   translationService.storeLanguage('en');
+              // }
+              // translationService.initializeLanguage();
+          
+              // setShowLanguageList(false);
+              // console.log("Language selected:", item);
+              // goToFirstScreen(item);
+            // }} 
           >
             <Text style={page === item ? { color: "green" } : { color: "black" }}>
               {item}

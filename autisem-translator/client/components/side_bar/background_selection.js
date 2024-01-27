@@ -37,6 +37,7 @@ const BackgroundSelection = () => {
   const dispatch = useDispatch();
   const handleImageSelect = (image) => {
     setSelectedImage(image.id);
+    setConfirmedImage(image.image); 
   };
 
   const userName = useSelector((state) => state.user.user.userData.userName);
@@ -82,14 +83,14 @@ const BackgroundSelection = () => {
       accessible
       accessibilityLabel="background image selection"
     >
-      {confirmed && (
-        <Image source={confirmedImage} style={styles.backgroundImage} />
-      )}
+    {selectedImage && !confirmed && (
+      <Image source={confirmedImage} style={styles.backgroundImage} />
+    )}
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {backgroundOptions.map((option) => renderItem(option))}
       </ScrollView>
 
-      {confirmed ? null : <View style={styles.ConfirmButton}>
+      {!confirmed && <View style={styles.ConfirmButton}>
         <GenericButton buttonWidth={100} title="Confirm" onPress={handleConfirm} /></View>}
     </View>
   );
@@ -104,7 +105,7 @@ const styles = StyleSheet.create({
   },
 
   ConfirmButton:{
-    marginBottom: 100,
+    marginBottom: 65,
 
   }, 
 
@@ -114,7 +115,7 @@ const styles = StyleSheet.create({
     left: 0,
     width: "100%",
     height: "100%",
-    zIndex: 1, //chek that....this on 1
+    zIndex: -1, //chek that....this on 1
   },
 
   scrollContainer: {
@@ -132,7 +133,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   selectedImage: {
-    borderColor: "blue",
+    borderColor: "green",
   },
   image: {
     width: 100,
@@ -141,3 +142,4 @@ const styles = StyleSheet.create({
 });
 
 export default BackgroundSelection;
+
