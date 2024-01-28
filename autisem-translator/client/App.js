@@ -43,16 +43,8 @@ const App = () => {
                 props.state.routes[props.state.index].name !== "CodeFromTheEmail" &&
                 props.state.routes[props.state.index].name !== "NewPassword"
               }
-              // countNotifications={
-              //   props.state.routes[props.state.index].name == "Patient"
-              // }
             />
           )}
-          // screenOptions={{
-          //   headerShown: true,
-          //   header: (props) => <CustomHeader {...props} />,
-          
-          // }}
         >
           <Drawer.Screen
             name="Landing"
