@@ -26,9 +26,9 @@ export default function LandingScreen() {
     // }, 10000);
   
     // Cleanup function
-    return () => {
-      clearTimeout(timer);
-    };
+    // return () => {
+    //   clearTimeout(timer);
+    // };
   }, []);
 
   useEffect(() => {
