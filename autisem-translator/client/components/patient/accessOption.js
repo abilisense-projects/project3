@@ -16,8 +16,6 @@ export default function AccessOption() {
 
   const handleModalCancel = async () => {
     // navigation.navigate("GetTherapist");
-    
-
     navigation.reset({
       index: 0,
       routes: [{ name: "GetTherapist" }]
@@ -26,7 +24,7 @@ export default function AccessOption() {
 
   const handleModalOk = async () => {
     const responseChange = await patientService.statusChange({
-      id: id,
+      id: therapist.id,
       receiverID: receiverId,
     });
 

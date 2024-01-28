@@ -4,13 +4,14 @@ import {
   Image,
   Pressable,
   StyleSheet,
-  Button,
   ScrollView,
   AccessibilityInfo,
 } from "react-native";
 import UserService from "../../services/backendServices/userService";
 import { useDispatch, useSelector } from "react-redux";
 import GenericButton from "../shared/button";
+import { useNavigation } from "@react-navigation/native";
+import { setUser } from "../../redux/actions/userAction";
 
 
 import option1 from "./background_options/115.jpg";
@@ -32,32 +33,31 @@ const backgroundOptions = [
 
 const BackgroundSelection = () => {
   const [selectedImage, setSelectedImage] = useState(null);
-  const [confirmedImage, setConfirmedImage] = useState(null);
-  const [confirmed, setConfirmed] = useState(false);
   const dispatch = useDispatch();
-  const handleImageSelect = (image) => {
-    setSelectedImage(image.id);
-    setConfirmedImage(image.image); 
-  };
-
+  const navigation = useNavigation();
+  const user = useSelector((state) => state.user.user.userData);
   const userName = useSelector((state) => state.user.user.userData.userName);
-  console.log("userName ", userName);
+
+  const handleImageSelect = (imageId) => {
+    setSelectedImage(imageId);
+  };
 
   const handleConfirm = async () => {
     if (selectedImage !== null) {
       const selectedOption = backgroundOptions.find(
         (option) => option.id === selectedImage
       );
-      setConfirmedImage(selectedOption.image);
-      setConfirmed(true);
       console.log(`Image ${selectedImage} selected`);
       const response = await UserService.updateImage({
         userName: userName,
         image: selectedOption.image,
       });
-      dispatch(setUser());
-      console.log("selectedOption.image", selectedOption.image);
-      console.log("response", response);
+      const updatedUser = { ...user, image: selectedOption.image };
+      dispatch(setUser(updatedUser));
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "Patient" }]
+      });
     } else {
       AccessibilityInfo.announceForAccessibility("Please select an image");
     }
@@ -65,15 +65,16 @@ const BackgroundSelection = () => {
 
   const renderItem = (item) => (
     <Pressable
+      key={item.id}
       accessible
       accessibilityLabel="background image"
-      onPress={() => handleImageSelect(item)}
+      onPress={() => handleImageSelect(item.id)}
       style={[
         styles.imageContainer,
         selectedImage === item.id && styles.selectedImage,
       ]}
     >
-      {confirmed ? null : <Image source={item.image} style={styles.image} />}
+      <Image source={item.image} style={styles.image} />
     </Pressable>
   );
 
@@ -83,18 +84,25 @@ const BackgroundSelection = () => {
       accessible
       accessibilityLabel="background image selection"
     >
-    {selectedImage && !confirmed && (
-      <Image source={confirmedImage} style={styles.backgroundImage} />
-    )}
+      {selectedImage && (
+        <Image
+          source={backgroundOptions.find(option => option.id === selectedImage).image}
+          style={styles.backgroundImage}
+        />
+      )}
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {backgroundOptions.map((option) => renderItem(option))}
       </ScrollView>
 
-      {!confirmed && <View style={styles.ConfirmButton}>
-        <GenericButton buttonWidth={100} title="Confirm" onPress={handleConfirm} /></View>}
+      <View style={styles.ConfirmButton}>
+        <GenericButton buttonWidth={100} title="Confirm" onPress={handleConfirm} />
+      </View>
     </View>
   );
 };
+
+
+
 
 const styles = StyleSheet.create({
   container: {

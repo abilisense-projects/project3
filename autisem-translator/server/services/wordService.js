@@ -34,7 +34,7 @@ const wordService = {
         try {
             const fetchedWords = await wordRepository.getAllWordsByPatientId(patientId)
             if(fetchedWords==null){
-                return null
+                return { success: false, message: null };
             }
             else if (!fetchedWords.success) {
                 return { success: false, message: 'Failed to retrieve words' };

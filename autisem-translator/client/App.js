@@ -19,10 +19,9 @@ import AccessOption from "./components/patient/accessOption";
 import GetTherapist from "./components/patient/getTherapist";
 import BackgroundSelection from "./components/side_bar/background_selection";
 import SideNavigator from "./components/drawer/side";
-import CustomHeader from "./components/drawer/customHeader";
-// import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import ListOfAssociatedTherapists from "./components/patient/listOfAssociatedTherapists";
 import PatientDetails from "./components/therapist/patientDetailes";
+import ManagementByTheParent from "./components/patient/managementByTheParent";
 
 const Drawer = createDrawerNavigator();
 
@@ -36,7 +35,6 @@ const App = () => {
     
     <Provider store={store}>
       <NavigationContainer>
-        {/* <CustomHeader/> */}
         <Drawer.Navigator
           drawerContent={(props) => (
             <SideNavigator
@@ -127,7 +125,11 @@ const App = () => {
             component={PatientDetails}
             options={{ title: "" }}
           />
-          
+          <Drawer.Screen
+            name="ManagementByTheParent"
+            component={ManagementByTheParent}
+            options={{ title: "" }}
+          />
 
           {/* all these will appear in the sidebar */}
           {/* <Drawer.Screen name="Home" component={BackgroundSelection} options={{ title: "" }} /> */}
@@ -137,7 +139,7 @@ const App = () => {
             options={{ title: "" }}
           />
           <Drawer.Screen
-            name="Notifications"
+            name="Manage"
             component={AssociateTherapist}
             options={{ title: "" }}
           />
