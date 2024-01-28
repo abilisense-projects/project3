@@ -5,25 +5,14 @@ import validations from "../../config/validations";
 import { useNavigation } from "@react-navigation/native";
 import sendTheEmailService from "../../services/backendServices/sendTheEmailService";
 import { translationService } from "../../services/translationService";
+import { globalStyles } from "../../styles";
+
 
 // Translation function alias for shorter usage
 const translate = translationService.translate;
 
 // StyleSheet for styling components
 const styles = StyleSheet.create({
-  modalContent: {
-    backgroundColor: "white",
-    padding: 20,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.5,
-    shadowRadius: 2,
-    elevation: 3,
-    marginTop: 40, // Adjust this value as needed
-  },
   errorText: {
     color: "red",
     marginTop: 10,
@@ -141,7 +130,7 @@ export default function CodeFromTheEmail(userName) {
 
   // Render the component
   return (
-    <View style={styles.modalContent} accessible accesabilityLabel='verification code screen'>
+    <View  style={globalStyles.whitePaper} accessible accesabilityLabel='verification code screen'>
       {console.log("isButtonDisabled:", isButtonDisabled)}
 
       {/* GenericForm component for entering verification code */}
