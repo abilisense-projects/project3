@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from "react";
 import { View, Text, StyleSheet, Pressable, TouchableOpacity, Image, Animated, Easing } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { translationService } from "../services/translationService";
-import GenericButton from "../components/shared/button";
 import image100 from "../components/side_bar/background_options/100.png";
 import { globalStyles } from '../styles';
 import Login from "../components/login/login";
@@ -35,13 +34,13 @@ export default function LandingScreen() {
     if (showLoading) {
       Animated.timing(fadeIn, {
         toValue: 1,
-        duration: 500, // adjust duration as needed
+        duration: 500, 
         useNativeDriver: true,
       }).start();
     } else {
       Animated.timing(fadeIn, {
         toValue: 0,
-        duration: 500, // adjust duration as needed
+        duration: 500, 
         useNativeDriver: true,
       }).start();
     }
@@ -51,14 +50,14 @@ export default function LandingScreen() {
     Animated.loop(
       Animated.sequence([
         Animated.timing(scaleValue, {
-          toValue: 1.09, // decrease toValue for less growth
-          duration: 1000, // adjust duration for the animation speed
+          toValue: 1.09, 
+          duration: 1000, 
           easing: Easing.linear,
           useNativeDriver: true,
         }),
         Animated.timing(scaleValue, {
           toValue: 1,
-          duration: 1000, // adjust duration for the animation speed
+          duration: 1000, 
           easing: Easing.linear,
           useNativeDriver: true,
         }),
@@ -85,7 +84,7 @@ export default function LandingScreen() {
         <Animated.View
           style={[
             styles.startButton,
-            { transform: [{ scale: scaleValue }] }, // apply scale transform
+            { transform: [{ scale: scaleValue }] }, 
           ]}
         >
           <Text style={styles.startButtonText}>start</Text>
