@@ -36,6 +36,13 @@ const App = () => {
     <Provider store={store}>
       <NavigationContainer>
         <Drawer.Navigator
+        screenOptions={{
+          headerShown: true,
+          headerStyle: {
+            backgroundColor: 'green', // הצבע הרצוי שלך כאן
+          },
+          headerTintColor: '#fff',
+        }}
           drawerContent={(props) => (
             <SideNavigator
               {...props}

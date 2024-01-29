@@ -104,6 +104,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 20,
     marginBottom: 15,
+    color: 'green',
   },
   loadingContainer: {
     flex: 1,
@@ -116,8 +117,7 @@ const styles = StyleSheet.create({
   hello: {
     marginLeft: 25,
     marginTop:10,
-
-
+    
   },
 });
 
