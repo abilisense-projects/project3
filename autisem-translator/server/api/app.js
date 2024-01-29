@@ -33,6 +33,9 @@ app.use((req, res, next) => {
 });
 app.use(cors());
 app.use(bodyParser.json());
+app.get("/", (req, res) => {
+  res.send("Server is running!");
+});
 app.use("/therapist", therapistRouter);
 app.use("/patient", patientRouter);
 app.use("/sendEmail", sendEmailRouter);
