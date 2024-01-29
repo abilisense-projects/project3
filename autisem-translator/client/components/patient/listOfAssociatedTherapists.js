@@ -60,8 +60,8 @@ export default function ListOfAssociatedTherapists() {
 
   const handleTrash = async () => {
     if (selectedTherapist) {
-      const { userName, firstName, lastName, id } = selectedTherapist;
-      const therapistData = { userName, firstName, lastName, id };
+      const { userName, firstName, lastName, id, phoneNumber } = selectedTherapist;
+      const therapistData = { userName, firstName, lastName, id,phoneNumber };
       const responseDelete = await patientService.deletingTherapist({
         id: id,
         receiverID: receiverId,
@@ -112,7 +112,8 @@ export default function ListOfAssociatedTherapists() {
                           selectedTherapist === therapist ? "white" : "green",
                       }}
                     >
-                      {therapist.userName}
+                      {therapist.firstName} {therapist.lastName}
+                      
                     </Text>
                     <Text
                       style={{
@@ -120,7 +121,15 @@ export default function ListOfAssociatedTherapists() {
                           selectedTherapist === therapist ? "white" : "green",
                       }}
                     >
-                      {therapist.firstName} {therapist.lastName}
+                      {therapist.phoneNumber}
+                    </Text>
+                    <Text
+                      style={{
+                        color:
+                          selectedTherapist === therapist ? "white" : "green",
+                      }}
+                    >
+                      {therapist.userName}
                     </Text>
                   </View>
                   <View style={styles.Icon}>

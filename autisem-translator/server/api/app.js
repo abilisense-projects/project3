@@ -18,7 +18,6 @@ const PORT = process.env.PORT;
 const MONGO_DB_URL = process.env.DB_URL;
 
 // Use Cloudinary configuration
-console.log("cloudinaryConfig",cloudinaryConfig)
 cloudinaryConfig;
 
 mongoose.connect(MONGO_DB_URL);
@@ -35,6 +34,9 @@ app.use((req, res, next) => {
 app.use(cors());
 app.use(bodyParser.json());
 
+app.get("/", (req, res) => {
+  res.send("Server is running!");
+});
 app.use("/therapist", therapistRouter);
 app.use("/patient", patientRouter);
 app.use("/sendEmail", sendEmailRouter);

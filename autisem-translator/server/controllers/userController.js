@@ -16,7 +16,7 @@ async function userLogin(req, res) {
     }
 
     const user = await userService.loginUser(userName, password);
-    if (user&&user.user!=null) {
+    if (user) {
       // User exists, return the user details
       res.status(200).json({ message: "User exists", user });
     } else {
@@ -31,6 +31,46 @@ async function userLogin(req, res) {
   }
 }
 
+async function updateImage(req, res) {
+  try {
+    const { userName, image } = req.body;
+    console.log("userName:",userName, "image",image);
+
+    //  Check if the required fields are provided
+    if (!userName) {
+      return (
+        res
+          .status(200)
+          //400
+          .json({ message: "Username and newPassword are required" })
+      );
+    }
+
+    const imageUpdateResult = await userService.doesUserNameExist(userName);
+    if (imageUpdateResult) {
+      const updateResult = await userService.updateNewImage(userName, image);
+
+      // Check the specific condition based on the result of updateUser
+      if (updateResult) {
+        res.status(200).json({ message: "Success update" });
+      } else {
+        res
+          .status(200)
+          //500
+          .json({ message: "Failed to update image" });
+      }
+    } else {
+      // User does not exist, return a message to register
+      res
+        .status(200)
+        //404
+        .json({ message: "User does not exist. Please register." });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
 //can it be more generic
 async function updatePassword(req, res) {
   try {
@@ -49,7 +89,7 @@ async function updatePassword(req, res) {
 
     const passwordUpdateResult = await userService.doesUserNameExist(userName);
     console.log("passwordUpdateResult", passwordUpdateResult);
-    if (passwordUpdateResult.exists) {
+    if (passwordUpdateResult) {
       const updateResult = await userService.updateNew(userName, newPassword);
 
       // Check the specific condition based on the result of updateUser
@@ -84,6 +124,7 @@ async function createUser(req, res) {
 
     // Check if the username already exists
     const userNameExists = await userService.doesUserNameExist(userName);
+    
     if (userNameExists.exists) {
       return res.status(409).json({ message: "Username already exists" });
     }

@@ -66,8 +66,8 @@ export default function GetTherapist() {
 
   const handleDone = async () => {
     if (selectedTherapist) {
-      const { userName, firstName, lastName, id } = selectedTherapist;
-      const therapistData = { userName, firstName, lastName, id };
+      const { userName, firstName, lastName, id, phoneNumber } = selectedTherapist;
+      const therapistData = { userName, firstName, lastName, id, phoneNumber };
       // const responseChange = await patientService.statusChange({
       //   id: id,
       //   receiverID: receiverId,
@@ -86,9 +86,7 @@ export default function GetTherapist() {
     }
   };
 
-  const handleMyTherapist = () => {
-    navigation.navigate("ListOfAssociatedTherapists");
-  };
+  
 
   if (isLoading) {
     // Display a loading indicator while the data is being fetched
@@ -138,7 +136,7 @@ export default function GetTherapist() {
                           selectedTherapist === therapist ? "white" : "green",
                       }}
                     >
-                      {therapist.userName}
+                      {therapist.firstName} {therapist.lastName}
                     </Text>
                     <Text
                       style={{
@@ -146,7 +144,17 @@ export default function GetTherapist() {
                           selectedTherapist === therapist ? "white" : "green",
                       }}
                     >
-                      {therapist.firstName} {therapist.lastName}
+                      
+                      {therapist.phoneNumber}
+                    </Text>
+                    <Text
+                      style={{
+                        color:
+                          selectedTherapist === therapist ? "white" : "green",
+                      }}
+                    >
+                      
+                      {therapist.userName}
                     </Text>
                   </View>
                 </View>
@@ -156,7 +164,6 @@ export default function GetTherapist() {
             <GenericButton onPress={handleDone} title="Done" />
           </View>
         )}
-        <GenericButton onPress={handleMyTherapist} title="My Therapist" />
       </View>
     </View>
   );

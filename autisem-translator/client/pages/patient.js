@@ -12,9 +12,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native"; // Import useNavigation hook
 import GenericButton from "../components/shared/button";
 import RecordAudio from "../components/recording/recording";
-import { Ionicons } from "@expo/vector-icons";
 import patientService from "../services/backendServices/patientService";
-import SideNavigator from "../components/drawer/side";
+
 import { setUnreadNotification } from "../redux/actions/patientAction";
 import { globalStyles } from "../styles";
 import recordingService from "../services/backendServices/recordingService";
@@ -96,8 +95,6 @@ const PatientScreen = () => {
   );
 };
 
-export default PatientScreen;
-
 const styles = StyleSheet.create({
   container: {
     // alignItems: "center",
@@ -138,3 +135,7 @@ const styles = StyleSheet.create({
 
   },
 });
+
+export default PatientScreen;
+
+
