@@ -18,7 +18,6 @@ const PORT = process.env.PORT;
 const MONGO_DB_URL = process.env.DB_URL;
 
 // Use Cloudinary configuration
-console.log("cloudinaryConfig",cloudinaryConfig)
 cloudinaryConfig;
 
 mongoose.connect(MONGO_DB_URL);
