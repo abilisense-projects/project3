@@ -8,6 +8,10 @@ const patientSchema = new mongoose.Schema({
   password: String,
   image: String,
   profileImage: String,
+  wordIds: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Word'
+  }]
 });
 
 const Patient = mongoose.model('Patient', patientSchema);
