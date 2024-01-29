@@ -1,32 +1,44 @@
-
+const Patient = require('../models/patient');
 const Word = require('../models/word');
 const Recording = require('../services/recordingService');
 
-async function createWord(recording, patientID, translation) {
-    let newWord;
+async function createWord(recordings, patientID, translation) {
     try {
-        // Await the completion of the uploadAudio function
-        const recordingLink = await Recording.uploadAudio(recording);
-        console.log(`Recording link: ${recordingLink}`);
+        // העלאת כל ההקלטות ושמירת הקישורים להן
+        const recordingLinks = await Promise.all(recordings.map(recording => 
+            Recording.uploadAudio(recording)
+        ));
 
-        // Create a new Word object with the recording link
-         newWord = new Word({
-            recording: recordingLink,
-            patientID: patientID,
-            translation: translation        });
-        console.log(newWord);
-        // Save the new Word object
-        return await newWord.save();
+        console.log(`Recording links: ${recordingLinks}`);
+
+        const newWord = new Word({
+            translation: translation,
+            recordings: recordingLinks,
+        });
+
+        const savedWord = await newWord.save();
+        console.log(savedWord);
+
+        const updatedPatient = await Patient.findByIdAndUpdate(
+            patientID,
+            { $push: { wordIds: savedWord._id } },
+            { new: true, useFindAndModify: false }
+        );
+        console.log(updatedPatient);
+
+        return savedWord._id;
     } catch (error) {
         console.error(error);
         return { success: false, message: 'Internal server error' };
     }
 }
 
+
+
 async function getAllWords() {
     try {
         const words = await Word.find({});
-        return { success: true, words:words};
+        return { success: true, words: words };
     } catch (error) {
         console.error(error);
         return { success: false, message: 'Internal server error' };
@@ -36,7 +48,7 @@ async function getAllWords() {
 async function getAllWordsByPatientId(patientId) {
     try {
         const words = await Word.find({ patientID: patientId });
-        if(words.length==0){
+        if (words.length == 0) {
             return null;
         }
         return { success: true, words: words };

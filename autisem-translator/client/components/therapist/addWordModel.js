@@ -1,28 +1,29 @@
-// AddWordModal.js
-import React from 'react';
-import { Modal, View, Text, StyleSheet, Pressable , Button, TextInput} from 'react-native';
+import React, { useState } from 'react';
+import { Modal, View, Text, StyleSheet, Pressable, Button, TextInput } from 'react-native';
 import RecordAudio from '../recording/recording';
 import recordingService from '../../services/backendServices/recordingService';
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
-const AddWordModal = ({ isVisible, onClose }) => {
-    const [recordedData, setRecordedData] = useState(null);
-    const [word, setWord] = useState('');
-    const receiverId = useSelector((state) => state.user.user.userData._id);
 
-    const uploadToServer = async (patientID, translation) => {
-        try {
-            if (recordedData) {
-                const response = await recordingService.uploadRecording('words/word', recordedData, patientID, translation);
-                console.log('Recording uploaded to server', response);
-            } else {
-                console.warn('No recording data available.');
-            }
-        } catch (error) {
-            console.error('Error uploading recording', error);
-        }
+const AddWordModal = ({ isVisible, onClose, patientId }) => {
+    const [recordings, setRecordings] = useState([]); 
+    const [word, setWord] = useState('');
+
+    const handleRecord = (newRecording) => {
+        setRecordings(prev => [...prev, newRecording]);
     };
 
+    const uploadToServer = async () => {
+        if (recordings.length < 8) {
+            console.warn('At least 8 recordings are required.');
+            return;
+        }
+        try {
+            const response = await recordingService.uploadRecordings('words/word', recordings, patientId, word);
+            console.log('Recordings uploaded to server', response);
+        } catch (error) {
+            console.error('Error uploading recordings', error);
+        }
+    };
+    
     return (
         <Modal
             animationType="slide"
@@ -30,18 +31,16 @@ const AddWordModal = ({ isVisible, onClose }) => {
             visible={isVisible}
             onRequestClose={onClose}
         >
-            
             <View style={styles.centeredView}>
                 <View style={styles.modalView}>
-                <TextInput 
+                    <TextInput 
                         style={styles.input}
                         placeholder="Enter word here"
                         value={word}
                         onChangeText={setWord}
                     />
-                    <RecordAudio setRecordedData = {setRecordedData} > </RecordAudio>
-                    <Button title="Add the word" onPress={() => uploadToServer(receiverId, word)} />
-
+                    <RecordAudio setRecordedData={handleRecord} />
+                    <Button title="Add the word" onPress={uploadToServer} />
                     <Pressable
                         style={[styles.button, styles.buttonClose]}
                         onPress={onClose}

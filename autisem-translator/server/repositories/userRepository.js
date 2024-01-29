@@ -107,8 +107,8 @@ async function loginUser(userName, password) {
 
 async function comparePassword(password, hashedPassword) {
   // Compare the entered password with the hashed password stored in the database using bcrypt
-  const passwordMatch = await bcrypt.compare(password, hashedPassword);
-  console.log("Password match:", passwordMatch);
+  // const passwordMatch = await bcrypt.compare(password, hashedPassword);
+  // console.log("Password match:", passwordMatch);
   return true;
 }
 

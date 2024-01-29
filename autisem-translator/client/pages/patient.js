@@ -17,13 +17,27 @@ import patientService from "../services/backendServices/patientService";
 import SideNavigator from "../components/drawer/side";
 import { setUnreadNotification } from "../redux/actions/patientAction";
 import { globalStyles } from "../styles";
-
+import recordingService from "../services/backendServices/recordingService";
 const PatientScreen = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [countNotifications, setCountNotifications] = useState(" ");
   const [isLoading, setIsLoading] = useState(true);
+  const [recordedData, setRecordedData] = useState(null);
 
+
+  // const uploadToServer = async (patientID, translation) => {
+  //   try {
+  //     if (recordedData) {
+  //       const response = await recordingService.uploadRecording('words/word', recordedData, patientID, translation);
+  //       console.log('Recording uploaded to server', response);
+  //     } else {
+  //       console.warn('No recording data available.');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error uploading recording', error);
+  //   }
+  // };
   const receiverId = useSelector((state) => state.user.user.userData._id);
 
   //gets therapists list by receiver id
@@ -74,7 +88,8 @@ const PatientScreen = () => {
           <Text style={styles.label}>hello {user.firstName}</Text>
         </View>
         <View style={styles.recordAudio}>
-          <RecordAudio />
+        <RecordAudio setRecordedData = {setRecordedData}>  </RecordAudio>
+        <Button title="Upload" onPress={() => uploadToServer('121212', 'Malky')} />
         </View>
       </View>
     </View>

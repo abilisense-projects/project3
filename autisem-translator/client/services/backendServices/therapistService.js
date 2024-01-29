@@ -53,8 +53,22 @@ const therapistService = {
       console.error('Error sending notification:', error);
       throw new Error('Error sending notification');
     }
+  },
+
+   createWord: async (patientID, translation) => {
+    try {
+      if (recordedData) {
+        const response = await recordingService.uploadRecording('words/word', recordedData, patientID, translation);
+        console.log('Recording uploaded to server', response);
+      } else {
+        console.warn('No recording data available.');
+      }
+    } catch (error) {
+      console.error('Error uploading recording', error);
+    }
   }
 
 }
+
 
 export default therapistService;

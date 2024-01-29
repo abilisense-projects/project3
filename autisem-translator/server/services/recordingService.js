@@ -4,10 +4,10 @@ cloudinary.config({
     api_key: '919876796936918', 
     api_secret: 'FGdiWO-KZxC102w7MupWdhobfCs' 
   });
-  function uploadAudio(file) {
+function uploadAudio(file) {
     return new Promise((resolve, reject) => {
         cloudinary.uploader.upload_stream(
-            { resource_type: 'auto' },
+            { resource_type: 'video' },
             (error, result) => {
                 if (error) {
                     console.log('Error uploading file');

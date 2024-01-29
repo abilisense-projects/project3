@@ -69,7 +69,7 @@ const PatientDetails = ({ route }) => {
             <Text style={styles.infoText}>No words available for this patient</Text>
           )}
           <GenericButton onPress={handleAddWord} title='Add new word' buttonWidth={120}></GenericButton>
-          <AddWordModal isVisible={isModalVisible} onClose={handleCloseModal} />
+          <AddWordModal isVisible={isModalVisible} onClose={handleCloseModal} patientId={patientId}  />
         </View>
       ) : (
         <Text style={styles.infoText}>No patient details available</Text>
