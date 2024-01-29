@@ -124,7 +124,8 @@ async function createUser(req, res) {
 
     // Check if the username already exists
     const userNameExists = await userService.doesUserNameExist(userName);
-    if (userNameExists) {
+    
+    if (userNameExists.exists) {
       return res.status(409).json({ message: "Username already exists" });
     }
     const createUserResult = await userService.createUser(
