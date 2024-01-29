@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { View, Text, StyleSheet, Pressable, TouchableOpacity, Image, Animated, Easing } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { translationService } from "../services/translationService";
-import image100 from "../components/side_bar/background_options/100.png";
+import image100 from "../assets/images/100.png";
 import { globalStyles } from '../styles';
 import Login from "../components/login/login";
 
