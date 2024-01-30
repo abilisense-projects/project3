@@ -87,7 +87,7 @@ export default function LandingScreen() {
             { transform: [{ scale: scaleValue }] }, // apply scale transform
           ]}
         >
-          <Text style={styles.startButtonText}>start</Text>
+          <Text style={styles.startButtonText}>{translate('start')}</Text>
         </Animated.View>
       </TouchableOpacity>
 

@@ -48,5 +48,22 @@
     "no email sent": "לא קבלת מייל?",
     "save": "שמור",
     "password changed": "הסיסמה שונתה!",
-    "error creating user": "שגיאה ביצירת משתמש"
+    "error creating user": "שגיאה ביצירת משתמש",
+    "profile image too large":"זו תמונה נחמדה מאוד\n, אבל היא קצת גדולה מדי. \nנסה אחד קטן יותר.",
+    "enter patient username": "הכנס שם משתמש של המטופל",
+    "confirm": "אישור",
+    "cancel": "ביטול",
+    "words": "מילים",
+    "start": "התחל",
+    "hello": "שלום",
+    "upload": "העלה",
+    "add patient": "הוסף מטופל",
+    "failed to delete patient": "נכשל במחיקת מטופל",
+    "deleted successfully": "נמחק בהצלחה",
+    "my patients": "המטופלים שלי",
+    "no patients yet": "אין עדיין מטופלים",
+    "translation": "תרגום",
+    "no words available for this patient": "אין מילים זמינות למטופל זה",
+    "no patient details available": "אין פרטי מטופל זמינים",
+    "add new word": "הוסף מילה חדשה"
 }

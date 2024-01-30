@@ -17,9 +17,11 @@ import patientService from "../services/backendServices/patientService";
 import { setUnreadNotification } from "../redux/actions/patientAction";
 import { globalStyles } from "../styles";
 import recordingService from "../services/backendServices/recordingService";
+import { translationService } from "../services/translationService";
 const PatientScreen = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const translate = translationService.translate;
   const [countNotifications, setCountNotifications] = useState(" ");
   const [isLoading, setIsLoading] = useState(true);
   const [recordedData, setRecordedData] = useState(null);
@@ -78,11 +80,11 @@ const PatientScreen = () => {
       )}
       <View>
         <View style={styles.hello}>
-          <Text style={styles.label}>hello {user.firstName}</Text>
+          <Text style={styles.label}>{translate('hello')} {user.firstName}</Text>
         </View>
         <View style={styles.recordAudio}>
         <RecordAudio setRecordedData = {setRecordedData}>  </RecordAudio>
-        <Button title="Upload" onPress={() => uploadToServer(recordedData)} />
+        <Button title={translate("upload")} onPress={() => uploadToServer(recordedData)} />
         
         </View>
       </View>

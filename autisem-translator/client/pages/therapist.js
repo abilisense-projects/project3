@@ -9,6 +9,7 @@ import BannerNotification from '../components/shared/bannerNotification';
 import { globalStyles } from '../styles';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { translationService } from '../services/translationService';
 
 const TherapistScreen = () => {
   const [patients, setPatients] = useState([]);
@@ -19,6 +20,7 @@ const TherapistScreen = () => {
   const [message, setMessage] = useState(null);
   const therapistId = useSelector((state) => state.user.user.userData._id);
   const navigation = useNavigation();
+  const translate = translationService.translate;
   const [isDisplayingPending, setIsDisplayingPending] = useState(false);
 
   useEffect(() => {
@@ -100,11 +102,11 @@ const TherapistScreen = () => {
       if (deletion) {
         // const updatedPatients = patients.filter((p) => p.patientDetails._id !== patient.patientDetails._id);
         // setPatients(updatedPatients);
-        setBannerMessage(`Patient ${patient.patientDetails.firstName} ${patient.patientDetails.lastName} deleted successfully.`);
+        setBannerMessage(`${translate('patient')} ${patient.patientDetails.firstName} ${patient.patientDetails.lastName} ${translate('deleted successfully')}.`);
       }
     } catch (error) {
       console.error('Error deleting patient:', error);
-      setBannerMessage('Failed to delete patient. Please try again.');
+      setBannerMessage(`${translate('failed to delete patient')}`);
     }
   };
 
@@ -129,11 +131,11 @@ const TherapistScreen = () => {
         <>
           <View style={globalStyles.whitePaper}>
             {patients.length > 0 && (
-              <Text style={styles.header}>My Patients</Text>
+              <Text style={styles.header}>{translate('my patients')}</Text>
             )}
             {patients.length === 0 ? (
               <View style={styles.noPatientsContainer}>
-                <Text style={styles.noPatientsText}>No patients yet</Text>
+                <Text style={styles.noPatientsText}>{translate('no patients yet')}</Text>
                 <Image source={NoPatientsImage} style={styles.noPatientsImage} />
               </View>
             ) : (
@@ -161,7 +163,7 @@ const TherapistScreen = () => {
             <GenericButton
               style={styles.addButton}
               onPress={handleAddPatient}
-              title="Add Patient"
+              title={translate("add patient")}
               buttonWidth={160}
             />
             <View style={styles.toggleButtonContainer}>
