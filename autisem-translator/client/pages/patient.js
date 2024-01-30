@@ -25,18 +25,6 @@ const PatientScreen = () => {
   const [recordedData, setRecordedData] = useState(null);
 
 
-  // const uploadToServer = async (patientID, translation) => {
-  //   try {
-  //     if (recordedData) {
-  //       const response = await recordingService.uploadRecording('words/word', recordedData, patientID, translation);
-  //       console.log('Recording uploaded to server', response);
-  //     } else {
-  //       console.warn('No recording data available.');
-  //     }
-  //   } catch (error) {
-  //     console.error('Error uploading recording', error);
-  //   }
-  // };
   const receiverId = useSelector((state) => state.user.user.userData._id);
 
   //gets therapists list by receiver id
@@ -60,6 +48,14 @@ const PatientScreen = () => {
     };
     fetchData();
   }, [receiverId, setCountNotifications]);
+  const uploadToServer = async (recordedData) => {
+    try {
+      const response = await recordingService.translateWord(recordedData);
+      console.log("Recordings uploaded to server", response);
+    } catch (error) {
+      console.error("Error uploading recordings", error);
+    }
+  }
 
   const user = useSelector((state) => state.user.user.userData);
  
@@ -88,7 +84,8 @@ const PatientScreen = () => {
         </View>
         <View style={styles.recordAudio}>
         <RecordAudio setRecordedData = {setRecordedData}>  </RecordAudio>
-        <Button title="Upload" onPress={() => uploadToServer('121212', 'Malky')} />
+        <Button title="Upload" onPress={() => uploadToServer(recordedData)} />
+        
         </View>
       </View>
     </View>

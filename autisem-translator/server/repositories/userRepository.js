@@ -1,11 +1,11 @@
-// const bcrypt = require("bcrypt");
+const bcrypt = require("bcrypt");
 const Therapist = require("../models/therapist");
 const Patient = require("../models/patient");
 
 async function updateNew(userName, newPassword) {
   try {
     const filter = { userName };
-    // const hashedPassword = await bcrypt.hash(newPassword, 10);
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
     const update = { password: newPassword };
     // const update = { password: newPassword };
 
@@ -51,7 +51,7 @@ async function createUser(
 ) {
   try {
     // Hash the password before storing it
-    // const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, 10);
     let newUser;
     if (type === "therapist") {
       newUser = new Therapist({
@@ -59,7 +59,7 @@ async function createUser(
         firstName,
         lastName,
         phoneNumber,
-        password: password, // Store the hashed password
+        password: hashedPassword, // Store the hashed password
         profileImage:'',
       });
     } else if (type === "patient") {
@@ -123,9 +123,9 @@ async function loginUser(userName, password) {
 
 async function comparePassword(password, hashedPassword) {
   // Compare the entered password with the hashed password stored in the database using bcrypt
-  // const passwordMatch = await bcrypt.compare(password, hashedPassword);
+  const passwordMatch = await bcrypt.compare(password, hashedPassword);
   // console.log("Password match:", passwordMatch);
-  return true;
+  return passwordMatch;
 }
 
 // Check if a username already exists (for new user registration)
