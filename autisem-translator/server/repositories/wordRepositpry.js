@@ -4,7 +4,6 @@ const Recording = require('../services/recordingService');
 
 async function createWord(recordings, patientID, translation) {
     try {
-        // העלאת כל ההקלטות ושמירת הקישורים להן
         const recordingLinks = await Promise.all(recordings.map(recording => 
             Recording.uploadAudio(recording)
         ));

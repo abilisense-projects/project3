@@ -5,8 +5,8 @@ const wordService = {
     async createWord(recordings, patientID, translation) {
         try {
             const createdWord = await wordRepository.createWord(
-                patientID,
                 recordings,
+                patientID,
                 translation
             );
 

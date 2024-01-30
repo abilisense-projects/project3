@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 22,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent background for the modal overlay
     },
     modalView: {
         margin: 20,
@@ -77,29 +77,36 @@ const styles = StyleSheet.create({
     },
     button: {
         borderRadius: 20,
-        padding: 10,
+        paddingVertical: 10,
+        paddingHorizontal: 20,
         elevation: 2,
+        marginTop: 10, // Add space above the button
     },
     buttonClose: {
-        backgroundColor: '#2196F3',
+        backgroundColor: 'green', // Change to green to match the login button
     },
     textStyle: {
         color: 'white',
         fontWeight: 'bold',
         textAlign: 'center',
     },
-    modalText: {
-        marginBottom: 15,
-        textAlign: 'center',
-    },
     input: {
         height: 40,
-        margin: 12,
+        marginVertical: 12, // Add vertical margin
+        marginHorizontal: 20, // Set horizontal margin
         borderWidth: 1,
+        borderColor: 'lightgrey', // Set border color to light grey
         padding: 10,
-        width: '80%', // Set width
-        borderRadius: 5, // Optional: for rounded corners
+        width: '90%', // Increase the width to match the login input fields
+        borderRadius: 5, // Keep rounded corners
+        backgroundColor: '#FFF', // Set background color to white
+    },
+    // Add a style for the Button component, if you want to override its default appearance
+    buttonTitle: {
+        color: '#FFF',
+        fontSize: 16,
     },
 });
+
 
 export default AddWordModal;
