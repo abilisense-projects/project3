@@ -107,7 +107,7 @@ async function loginUser(userName, password) {
     const user = therapist || patient;
 
     if (user) {
-      if (comparePassword(password, user.password)) {
+      if (comparePassword(password, user.password)==true) {
         if (therapist) {
           return { user: { ...therapist.toObject(), type: "therapist" } };
         } else if (patient) {
