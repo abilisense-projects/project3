@@ -1,0 +1,30 @@
+{
+  "files": {
+    "main.js": "/static/js/main.72824d87.js",
+    "static/js/959.fab27c53.js": "/static/js/959.fab27c53.js",
+    "static/media/MaterialCommunityIcons.ttf": "/static/media/MaterialCommunityIcons.5d42b4e60858731e7b65.ttf",
+    "static/media/Ionicons.ttf": "/static/media/Ionicons.3517aeaa34b2f8cd8eef.ttf",
+    "static/media/FontAwesome.ttf": "/static/media/FontAwesome.1e59d2330b4c6deb84b3.ttf",
+    "static/media/117.jpg": "/static/media/117.87ba5537624f365e12e8.jpg",
+    "static/media/AntDesign.ttf": "/static/media/AntDesign.163adab9dbd7cb1ed12a.ttf",
+    "static/media/110.jpg": "/static/media/110.ee905e643541dcb2233d.jpg",
+    "static/media/100.png": "/static/media/100.7a72aeb5b237ca5f6ecb.png",
+    "static/media/119.jpg": "/static/media/119.4536eefa7cce2abf2a62.jpg",
+    "favicon.ico": "/favicon.ico",
+    "static/media/therapist room.jpg": "/static/media/therapist room.30af36223985c513bdd3.jpg",
+    "static/media/115.jpg": "/static/media/115.9d49e0d0e00f4a614435.jpg",
+    "static/media/113.jpg": "/static/media/113.2dc86fc5060ecb55e10b.jpg",
+    "static/media/114.jpg": "/static/media/114.5519e1e10eac470d5c6b.jpg",
+    "index.html": "/index.html",
+    "favicon-32.png": "/favicon-32.png",
+    "favicon-16.png": "/favicon-16.png",
+    "manifest.json": "/manifest.json",
+    "serve.json": "/serve.json",
+    "main.72824d87.js.map": "/static/js/main.72824d87.js.map",
+    "959.fab27c53.js.map": "/static/js/959.fab27c53.js.map"
+  },
+  "entrypoints": [
+    "static/js/959.fab27c53.js",
+    "static/js/main.72824d87.js"
+  ]
+}
