@@ -3,12 +3,13 @@ import { View, Text, StyleSheet, ActivityIndicator, ScrollView, Pressable } from
 import therapistService from '../../services/backendServices/therapistService';
 import GenericButton from '../shared/button';
 import Icon from "react-native-vector-icons/FontAwesome";
-
+import AddWordModal from './addWordModel';
 
 const PatientDetails = ({ route }) => {
   const { patientId } = route.params;
   const [patientDetails, setPatientDetails] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
   useEffect(() => {
     fetchData();
@@ -26,11 +27,16 @@ const PatientDetails = ({ route }) => {
   };
 
   const handleAddWord = async () => {
+    setIsModalVisible(true);
     try {
       console.log("adding new word")
     } catch (error) {
       console.error('Error fetching data:', error);
     }
+  };
+
+  const handleCloseModal = () => {
+    setIsModalVisible(false);
   };
 
   const handleRecordingIconPress = (recording) => {
@@ -63,6 +69,7 @@ const PatientDetails = ({ route }) => {
             <Text style={styles.infoText}>No words available for this patient</Text>
           )}
           <GenericButton onPress={handleAddWord} title='Add new word' buttonWidth={120}></GenericButton>
+          <AddWordModal isVisible={isModalVisible} onClose={handleCloseModal} patientId={patientId}  />
         </View>
       ) : (
         <Text style={styles.infoText}>No patient details available</Text>
@@ -91,7 +98,7 @@ const styles = StyleSheet.create({
   },
   wordContainer: {
     flexDirection: 'row', // Make children align horizontally
-    alignItems: 'center', 
+    alignItems: 'center',
     marginBottom: 10,
   },
   translationText: {

@@ -6,7 +6,7 @@ async function updateNew(userName, newPassword) {
   try {
     const filter = { userName };
     const hashedPassword = await bcrypt.hash(newPassword, 10);
-    const update = { password: hashedPassword };
+    const update = { password: newPassword };
     // const update = { password: newPassword };
 
     const therapistUpdate = await Therapist.findOneAndUpdate(filter, update);
@@ -68,7 +68,7 @@ async function createUser(
         firstName,
         lastName,
         phoneNumber,
-        password: hashedPassword, // Store the hashed password
+        password: password, // Store the hashed password
         // password,
       });
     }
@@ -124,7 +124,7 @@ async function loginUser(userName, password) {
 async function comparePassword(password, hashedPassword) {
   // Compare the entered password with the hashed password stored in the database using bcrypt
   const passwordMatch = await bcrypt.compare(password, hashedPassword);
-  console.log("Password match:", passwordMatch);
+  // console.log("Password match:", passwordMatch);
   return passwordMatch;
 }
 

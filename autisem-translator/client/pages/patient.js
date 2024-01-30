@@ -16,12 +16,14 @@ import patientService from "../services/backendServices/patientService";
 
 import { setUnreadNotification } from "../redux/actions/patientAction";
 import { globalStyles } from "../styles";
-
+import recordingService from "../services/backendServices/recordingService";
 const PatientScreen = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [countNotifications, setCountNotifications] = useState(" ");
   const [isLoading, setIsLoading] = useState(true);
+  const [recordedData, setRecordedData] = useState(null);
+
 
   const receiverId = useSelector((state) => state.user.user.userData._id);
 
@@ -46,6 +48,14 @@ const PatientScreen = () => {
     };
     fetchData();
   }, [receiverId, setCountNotifications]);
+  const uploadToServer = async (recordedData) => {
+    try {
+      const response = await recordingService.translateWord(recordedData);
+      console.log("Recordings uploaded to server", response);
+    } catch (error) {
+      console.error("Error uploading recordings", error);
+    }
+  }
 
   const user = useSelector((state) => state.user.user.userData);
  
@@ -73,7 +83,9 @@ const PatientScreen = () => {
           <Text style={styles.label}>hello {user.firstName}</Text>
         </View>
         <View style={styles.recordAudio}>
-          <RecordAudio />
+        <RecordAudio setRecordedData = {setRecordedData}>  </RecordAudio>
+        <Button title="Upload" onPress={() => uploadToServer(recordedData)} />
+        
         </View>
       </View>
     </View>
