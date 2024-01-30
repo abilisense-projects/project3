@@ -19,9 +19,6 @@ const patientService = {
       const response = await axios.get(
         `${REACT_APP_BASE_URL}/patient/ListOfAssociatedTherapists/${receiverId}`
       );
-      console.log("receiverId 2:", receiverId);
-      console.log("response 2", response);
-
       return response.data;
     } catch (error) {
       console.error("Error fetching therapist patients:", error);
