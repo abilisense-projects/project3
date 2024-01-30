@@ -31,7 +31,6 @@ const UserService = {
     try {
       //take userName of redux
       const userName = "piki@example.com";
-      console.log("storedToken", storedToken);
       const response = await axios.get(`${REACT_APP_BASE_URL}/user/profile`, {
         params: {
           userName,
@@ -40,19 +39,15 @@ const UserService = {
           Authorization: `Bearer ${storedToken}`,
         },
       });
-      console.log("response:", response);
       // Check for a new token in the response headers
       const newToken = response.headers["x-new-token"];
       //only if diffrent from old token
       if (newToken && newToken !== storedToken) {
-        console.log("new token", newToken);
         storage.set("token", newToken);
         storedToken = storage.getString("token");
-        console.log("storedTokennnnnnnn", storedToken);
       }
       return response.data;
     } catch (error) {
-      console.log("Get therapist details error:", error);
       console.log(error.response.status);
       if (error.response && error.response.status === 403) {
         // Token is invalid or expired, navigate to the login screen

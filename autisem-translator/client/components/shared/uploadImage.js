@@ -42,7 +42,6 @@ export default function UploadImage() {
             user._id,
             codedImage
           );
-          console.log(response);
         }
       } catch (error) {
         console.log(error);

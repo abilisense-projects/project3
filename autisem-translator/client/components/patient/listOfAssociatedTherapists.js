@@ -27,14 +27,11 @@ export default function ListOfAssociatedTherapists() {
 
   const fetchData = async () => {
     try {
-      console.log("receiverId 2 ", receiverId);
       const responseTherapist =
         await patientService.getlistOfAssociatedTherapist(receiverId);
       if (responseTherapist && responseTherapist.therapists) {
         setTherapists(responseTherapist.therapists);
         // setCountNotifications(responseTherapist.count);
-        console.log("response.therapists ", responseTherapist.therapists);
-        // console.log("response.count ", responseTherapist.count);
       } else {
         console.error("Invalid response data:", responseTherapist);
       }
@@ -66,7 +63,6 @@ export default function ListOfAssociatedTherapists() {
         id: id,
         receiverID: receiverId,
       });
-      console.log("responseDelete", responseDelete);
       setBannerMessage(
         `Therapist ${firstName} ${lastName} deleted successfully.`
       );

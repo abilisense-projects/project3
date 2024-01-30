@@ -72,7 +72,6 @@ const SideNavigator = ({ navigation, shouldDisplaySideNavigator, onLanguageChang
   if (!shouldDisplaySideNavigator) {
     return null;
   }
-  console.log("countNotifications", countNotifications);
 
   return (
     <View style={styles.drawerContent}>
@@ -90,7 +89,6 @@ const SideNavigator = ({ navigation, shouldDisplaySideNavigator, onLanguageChang
           key={index}
           onPress={() => {
             setPage(item);
-            console.log("item", item);
             goToFirstScreen(item);
             if (item === "Language") {
               handleLanguageIconClick();
@@ -131,17 +129,14 @@ const SideNavigator = ({ navigation, shouldDisplaySideNavigator, onLanguageChang
               // setPage(item);
               // setSelectedLanguage(item);
               // if (item === 'Hebrew') {
-              //   console.log('נבחר עברית');
               //   translationService.storeLanguage('he');
                 
               // } else if (item === 'English') {
-              //   console.log('Selected English');
               //   translationService.storeLanguage('en');
               // }
               // translationService.initializeLanguage();
           
               // setShowLanguageList(false);
-              // console.log("Language selected:", item);
               // goToFirstScreen(item);
             // }} 
           >

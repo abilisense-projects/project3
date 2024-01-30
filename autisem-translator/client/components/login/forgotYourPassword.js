@@ -45,21 +45,17 @@ export default function ForgotYourPassword() {
     try {
       // Set loading state to true to indicate that the password reset request is in progress
       setIsLoading(true);
-
-      console.log(data.userName);
       // Call the backend service to send the password reset email
       const response = await SendTheEmailService.createSendTheEmail({
         userName: data.userName,
       });
 
       // Check the response from the server
-      console.log(response);
       if (response.message === "User exists") {
         // Clear error message if the user exists
         setErrorMessage(null);
         // Navigate to the "CodeFromTheEmail" screen, passing the userName as a parameter
         navigation.navigate("CodeFromTheEmail", { userName: data.userName }); //send userName
-        console.log("Email sent successfully!");
       } else {
         // Set error message if the user does not exist
         setErrorMessage("User does not exist.");

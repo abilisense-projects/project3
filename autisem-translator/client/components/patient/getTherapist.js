@@ -30,24 +30,18 @@ export default function GetTherapist() {
   const countNotifications = useSelector((state) => state.patient.num);
   // const countNotifications = useSelector((state) => state.patient.num?.numOfUnread);
 
-  console.log("countNotifications:", countNotifications);
-
   const receiverId = useSelector((state) => state.user.user.userData._id);
 
   //gets therapists list by receiver id
   useEffect(() => {
-    console.log("1111111111111111")
     const fetchData = async () => {
       try {
-        console.log("receiverId 0 ", receiverId);
         const responseTherapist = await patientService.getPatientsTherapist(
           receiverId
         );
         if (responseTherapist && responseTherapist.therapists) {
           setTherapists(responseTherapist.therapists);
           // setCountNotifications(responseTherapist.count);
-          console.log("response.therapists ", responseTherapist.therapists);
-          // console.log("response.count ", responseTherapist.count);
         } else {
           console.error("Invalid response data:", responseTherapist);
         }
@@ -72,8 +66,6 @@ export default function GetTherapist() {
       //   id: id,
       //   receiverID: receiverId,
       // });
-
-      // console.log("responseChange", responseChange);
 
       // if (countNotifications > 0) {
       if (countNotifications.numOfUnread > 0) {

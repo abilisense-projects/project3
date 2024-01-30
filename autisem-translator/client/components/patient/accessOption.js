@@ -28,14 +28,10 @@ export default function AccessOption() {
       receiverID: receiverId,
     });
 
-    console.log("responseChange", responseChange);
-
-
     const response = await patientService.statusChangeToConfirmed({
       id: therapist.id,
       receiverID: receiverId,
     });
-    console.log("response", response);
     //here show banner
     setBannerMessage(
       `Therapist ${therapist.firstName} ${therapist.lastName} added successfully.`

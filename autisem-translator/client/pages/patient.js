@@ -31,12 +31,10 @@ const PatientScreen = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log("receiverId 0 ", receiverId);
         const response = await patientService.unreadNotifications(receiverId);
         if (response) {
           dispatch(setUnreadNotification(response));
           setCountNotifications(response);
-          console.log("response. ", response);
         } else {
           console.log("Invalid response data - CountNotifications:", 0);
         }

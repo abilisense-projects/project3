@@ -98,7 +98,6 @@ const TherapistScreen = () => {
     try {
       const deletion = await therapistService.unAssociatePatient(therapistId, patient.patientDetails._id)
       if (deletion) {
-        console.log("deletion", deletion)
         // const updatedPatients = patients.filter((p) => p.patientDetails._id !== patient.patientDetails._id);
         // setPatients(updatedPatients);
         setBannerMessage(`Patient ${patient.patientDetails.firstName} ${patient.patientDetails.lastName} deleted successfully.`);

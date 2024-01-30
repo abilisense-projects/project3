@@ -108,7 +108,6 @@ async function loginUser(userName, password) {
 
     if (user) {
       const result = await comparePassword(password, user.password);
-      console.log("result", result);  
       if (result==true) {
         if (therapist) {
           return { user: { ...therapist.toObject(), type: "therapist" } };
@@ -126,7 +125,6 @@ async function loginUser(userName, password) {
 async function comparePassword(password, hashedPassword) {
   // Compare the entered password with the hashed password stored in the database using bcrypt
   const passwordMatch = await bcrypt.compare(password, hashedPassword);
-  // console.log("Password match:", passwordMatch);
   return passwordMatch;
 }
 
@@ -162,7 +160,6 @@ async function updateNewImage(userName, image) {
 
 async function uploadProfileImage(userId, image) {
   try {
-    console.log(userId,"image-repository",image)
     let therapist = await Therapist.findOneAndUpdate( { _id: userId },
       { profileImage: image},
       { new: true } )

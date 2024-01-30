@@ -30,7 +30,6 @@ export default function AssociateTherapist() {
   const [isLoading, setIsLoading] = useState(false);
 
   const userName = useSelector((state) => state.user.user.userData.userName);
-  console.log("userName ", userName);
 
   const onGet = async (data) => {
     try {
@@ -40,7 +39,6 @@ export default function AssociateTherapist() {
         userName: userName,
         password: data.password,
       });
-      console.log("response ", response);
 
       if (response.message === "User exists") {
         navigation.navigate("ManagementByTheParent");

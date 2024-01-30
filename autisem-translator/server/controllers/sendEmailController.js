@@ -23,8 +23,6 @@ const sendEmail = async (req, res) => {
 
   // Extract username from the request body
   const { userName } = req.body;
-  console.log(userName);
-
   //  Check if the required fields are provided
   if (!userName) {
     return (
@@ -40,12 +38,8 @@ const sendEmail = async (req, res) => {
   if (userNameExist.exists) {
     // User exists, return the user details
     res.status(200).json({ message: "User exists", userNameExist });
-
-    console.log(req.body);
-
     // Extract email address (username) from the request body
     let to = userName;
-    console.log(to);
     verificationCode = generateRandomNumber();
 
     // Create a Nodemailer transporter using Gmail credentials
@@ -90,16 +84,11 @@ const disableDuration = 2 * 60 * 1000; // 30 minutes in milliseconds
 const verifyCode = (req, res) => {
   // Increment verification attempts counter
   verificationAttempts = verificationAttempts + 1;
-  console.log("attempts: ", verificationAttempts);
-
   // Check if the maximum attempts have been reached
   if (verificationAttempts >= maxAttempts) {
     verificationAttempts = 0;
     const currentTime = new Date().getTime();
-    console.log("time:", currentTime);
     const disableUntil = currentTime + disableDuration;
-    console.log("disableUntil: ", disableUntil);
-
     // Return a message indicating the maximum attempts reached and the time until reactivation
     return res.status(200).json({
       message: "Maximum attempts reached. Please try again later.",
@@ -109,16 +98,11 @@ const verifyCode = (req, res) => {
 
   // Extract the verification code from the request body
   const { code } = req.body;
-
-  console.log("Received code:", code);
-  console.log("Stored verificationCode:", verificationCode);
-
   const storedCode = verificationCode;
   // Compare the received code with the stored verificationCode
   if (code === storedCode) {
     res.status(200).json("Code is valid");
   } else {
-    console.log("Invalid code");
     res.status(200).json("Invalid code");
     //500
   }

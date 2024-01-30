@@ -29,9 +29,7 @@ const therapistService = {
 
   unAssociatePatient: async (therapistId, patientId) => {
     try {
-      console.log("cliiii", therapistId, patientId)
       const response = await axios.delete(`${REACT_APP_BASE_URL}/therapist?therapistID=${therapistId}&patientID=${patientId}`);
-      console.log("response", response)
       if (response.data.success != true) {
         return 'failed'
       }
@@ -47,7 +45,6 @@ const therapistService = {
   getPatientsDetailes: async (patientId) => {
     try {
       const response = await axios.get(`${REACT_APP_BASE_URL}/therapist/patients-details/${patientId}`);
-      console.log("response", response);
       return response.data;
     } catch (error) {
       console.error('Error sending notification:', error);
