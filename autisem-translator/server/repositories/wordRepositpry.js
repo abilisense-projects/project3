@@ -3,15 +3,11 @@ const Word = require('../models/word');
 const Recording = require('../services/recordingService');
 
 async function createWord(recordings, patientID, translation) {
-    console.log('recordings: ', recordings);
-    console.log('patientID: ', patientID);
-    console.log('translation: ', translation);
     try {
         const recordingLinks = await Promise.all(recordings.map(recording => 
             Recording.uploadAudio(recording)
         ));
 
-        console.log(`Recording links: ${recordingLinks}`);
 
         const newWord = new Word({
             translation: translation,
@@ -19,14 +15,12 @@ async function createWord(recordings, patientID, translation) {
         });
 
         const savedWord = await newWord.save();
-        console.log(savedWord);
 
         const updatedPatient = await Patient.findByIdAndUpdate(
             patientID,
             { $push: { wordIds: savedWord._id } },
             { new: true, useFindAndModify: false }
         );
-        console.log(updatedPatient);
 
         return savedWord._id;
     } catch (error) {
