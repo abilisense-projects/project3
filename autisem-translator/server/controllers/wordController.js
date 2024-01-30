@@ -12,7 +12,7 @@ async function createWord(req, res) {
         }
 
         const recordingsData = recordings.map(recording => recording.buffer);
-        await wordService.createWord(patientID, recordingsData, translation);
+        await wordService.createWord(recordingsData, patientID, translation);
 
         res.status(201).json({ message: 'Words added successfully to the dictionary' });
     } catch (error) {
