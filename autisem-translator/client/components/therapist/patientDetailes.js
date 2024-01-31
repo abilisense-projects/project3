@@ -4,6 +4,7 @@ import therapistService from '../../services/backendServices/therapistService';
 import GenericButton from '../shared/button';
 import Icon from "react-native-vector-icons/FontAwesome";
 import AddWordModal from './addWordModel';
+import SoundPlayer from 'react-native-sound-player'; // Import the library
 import { translationService } from "../../services/translationService";
 
 const PatientDetails = ({ route }) => {
@@ -41,9 +42,17 @@ const PatientDetails = ({ route }) => {
     setIsModalVisible(false);
   };
 
-  const handleRecordingIconPress = (recording) => {
-    // Log the recording or perform any other action
-    console.log('Clicked on recording icon. Recording:', recording);
+  const handleRecordingIconPress = async (recording) => {
+    try {
+      if (recording) {
+         SoundPlayer.loadUrl(recording);
+         SoundPlayer.play();
+      } else {
+        console.warn('No recording URL provided.');
+      }
+    } catch (error) {
+      console.error('Error playing audio:', error);
+    }
   };
 
   return (
@@ -59,7 +68,7 @@ const PatientDetails = ({ route }) => {
               <View>
                 {patientDetails.words && patientDetails.words.words.map((word, index) => (
                   <View key={index} style={styles.wordContainer}>
-                    <Pressable onPress={() => handleRecordingIconPress(word.recording)}>
+                    <Pressable onPress={() => handleRecordingIconPress(word.firstRecording)}>
                       <Icon name="microphone" size={20} color="green" />
                     </Pressable>
                     <Text style={styles.translationText}>{`${translate('translation')}: ${word.translation}`}</Text>

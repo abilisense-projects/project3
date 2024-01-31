@@ -41,13 +41,14 @@ async function getAllWords() {
     }
 }
 
-async function getAllWordsByPatientId(patientId) {
+async function getListOfWordsByIds(wordIds) {
     try {
-        const words = await Word.find({ patientID: patientId });
-        if (words.length == 0) {
-            return null;
-        }
-        return { success: true, words: words };
+        const words = await Word.find({ _id: { $in: wordIds } });
+        const wordDetailsArray = words.map(word => {
+            const firstRecording = word.recordings.length > 0 ? word.recordings[0] : null;
+            return { translation: word.translation, firstRecording: firstRecording };
+        });
+        return { success: true, words: wordDetailsArray };
     } catch (error) {
         console.error(error);
         return { success: false, message: 'Internal server error' };
@@ -58,5 +59,5 @@ async function getAllWordsByPatientId(patientId) {
 module.exports = {
     createWord,
     getAllWords,
-    getAllWordsByPatientId
+    getListOfWordsByIds
 };

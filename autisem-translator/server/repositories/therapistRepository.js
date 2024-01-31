@@ -18,6 +18,7 @@ async function getPatientsDetails(patientId) {
     const selectedDetails = {
       firstName: patient.firstName,
       lastName: patient.lastName,
+      words: patient.wordIds,
     };
     return selectedDetails;
   } catch (error) {

@@ -33,8 +33,8 @@ async function getPatientsDetails(patientId) {
     //get basic detailes
     const details = await TherapistRepository.getPatientsDetails(patientId)
     //get list of words
-    const words = await wordService.getAllWordsByPatientId(patientId)
-    return {patient:details,words:words}
+    const words = await wordService.getListOfWordsByIds(details.words)
+    return {patient:{firstName:details.firstName,lastName:details.lastName},words:words}
   } catch (error) {
     throw new Error('Error sending notification');
   }
