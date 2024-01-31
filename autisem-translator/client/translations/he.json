@@ -66,6 +66,8 @@
     "no such patient": "אין מטופל כזה",
     "patient already exists": "המטופל כבר קיים ברשימה שלך",
     "new Therapist": "מטפלים חדשים",
+    "show Confirmed Patients": "הצג מטופלים משוייכים",
+    "show Unconfirmed Patients": "הצג מטופלים לא מאושרים",
     "my Therapist": "המטפלים שלי",
     "enter your password": " הכנס סיסמה",
     "wants to access your Abilisense account":"רוצה לגשת לחשבון  Abilisense שלך" ,

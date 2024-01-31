@@ -65,6 +65,8 @@
   "failed to send notification": "Failed to send notification",
   "no such patient": "There is no such Patient",
   "patient already exists":"This patient already exists on your list",
+  "show Confirmed Patients": "Show Confirmed Patients",
+  "show Unconfirmed Patients": "Show Pending Patients",
   "my Therapist": "My Therapist",
   "enter your password": " Enter your password",
   "wants to access your Abilisense account": "wants to access your Abilisense account",

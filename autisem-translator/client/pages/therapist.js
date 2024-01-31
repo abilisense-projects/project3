@@ -170,7 +170,7 @@ const TherapistScreen = () => {
               <GenericButton
                 style={styles.toggleButton}
                 onPress={toggleDisplayPending}
-                title={isDisplayingPending ? 'Show Confirmed Patients' : 'Show Pending Patients'}
+                title={isDisplayingPending ? translate('show Confirmed Patients') : translate('show Unconfirmed Patients')}
                 buttonWidth={250}
               />
             </View>

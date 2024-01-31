@@ -152,6 +152,7 @@ const App = () => {
             component={Notifications}
             options={{ title: "" }}
           />
+          {/* this should naviga to a setting page */}
           <Drawer.Screen
             name="Settings"
             component={PatientScreen}

@@ -70,7 +70,9 @@ const PatientDetails = ({ route }) => {
           ) : (
             <Text style={styles.infoText}>{translate('no words available for this patient')}</Text>
           )}
-          <GenericButton onPress={handleAddWord} title={translate('add new word')} buttonWidth={120}></GenericButton>
+          <View style={{margin:20, justifyContent: 'space-between', alignItems: 'center' }}>
+          <GenericButton onPress={handleAddWord} title={translate('add new word')} buttonWidth={140}></GenericButton>
+          </View>
           <AddWordModal isVisible={isModalVisible} onClose={handleCloseModal} patientId={patientId}  />
         </View>
       ) : (
