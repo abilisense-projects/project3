@@ -10,7 +10,7 @@ async function sendNotificationToPatient(therapistId, patientUserName) {
   try {
     //first check if there is patient with this userName
     const userNameExists = await userService.doesUserNameExist(patientUserName)
-    if (userNameExists.exists ) {
+    if (userNameExists.exists) {
       const patientId = userNameExists.exists._id;
       //create notification
       const notification = await notificationService.createNotification(therapistId, patientId, "hi");

@@ -23,7 +23,7 @@ const SideNavigator = ({ navigation, shouldDisplaySideNavigator, onLanguageChang
     }
   }
 
-  const pages = [homePage, "Manage", "Settings", "Theme", "Language"];
+  const pages = [homePage, "Notifications", "Settings", "Theme", "Language"];
   const icons = ["home", "notifications", "settings", "color-palette", "language"];
   const languages = ["English","Hebrew"];
   const countNotifications = useSelector((state) => state.patient.num);
@@ -97,7 +97,7 @@ const SideNavigator = ({ navigation, shouldDisplaySideNavigator, onLanguageChang
         >
           {/* Conditionally render the badge for the 'notifications' icon */}
 
-          {icons[index] === "notifications" &&
+          {/* {icons[index] === "notifications" &&
             countNotifications &&
             countNotifications.numOfUnread > 0 && (
               <View style={styles.notificationBadgeContainer}>
@@ -105,7 +105,7 @@ const SideNavigator = ({ navigation, shouldDisplaySideNavigator, onLanguageChang
                   {countNotifications.numOfUnread}
                 </Text>
               </View>
-            )}
+            )} */}
           <Ionicons
             name={icons[index]}
             size={20}
@@ -184,22 +184,22 @@ const styles = StyleSheet.create({
     backgroundColor: "black",
     marginBottom: 10,
   },
-  notificationBadgeContainer: {
-    position: "absolute",
-    zIndex: 1,
-    backgroundColor: "green",
-    borderRadius: 10,
-    width: 11,
-    height: 11,
-    justifyContent: "center",
-    alignItems: "center",
-    border: "1px solid white",
-  },
+  // notificationBadgeContainer: {
+  //   position: "absolute",
+  //   zIndex: 1,
+  //   backgroundColor: "green",
+  //   borderRadius: 10,
+  //   width: 11,
+  //   height: 11,
+  //   justifyContent: "center",
+  //   alignItems: "center",
+  //   border: "1px solid white",
+  // },
 
-  notificationText: {
-    color: "white",
-    fontSize: 8,
-  },
+  // notificationText: {
+  //   color: "white",
+  //   fontSize: 8,
+  // },
   language:{
     marginBottom: 15,
     flexDirection: "row",

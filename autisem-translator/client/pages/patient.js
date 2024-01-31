@@ -13,11 +13,12 @@ import { useNavigation } from "@react-navigation/native"; // Import useNavigatio
 import GenericButton from "../components/shared/button";
 import RecordAudio from "../components/recording/recording";
 import patientService from "../services/backendServices/patientService";
-
 import { setUnreadNotification } from "../redux/actions/patientAction";
-import { globalStyles } from "../styles";
-import recordingService from "../services/backendServices/recordingService";
 import { translationService } from "../services/translationService";
+import recordingService from "../services/backendServices/recordingService";
+
+const translate = translationService.translate;
+
 const PatientScreen = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -80,7 +81,7 @@ const PatientScreen = () => {
       )}
       <View>
         <View style={styles.hello}>
-          <Text style={styles.label}>{translate('hello')} {user.firstName}</Text>
+          <Text style={styles.label}>{translate("hello")}{user.firstName}</Text>
         </View>
         <View style={styles.recordAudio}>
         <RecordAudio setRecordedData = {setRecordedData}>  </RecordAudio>
@@ -116,6 +117,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 20,
     marginBottom: 15,
+    color: 'green',
   },
   loadingContainer: {
     flex: 1,
@@ -128,8 +130,7 @@ const styles = StyleSheet.create({
   hello: {
     marginLeft: 25,
     marginTop:10,
-
-
+    
   },
 });
 

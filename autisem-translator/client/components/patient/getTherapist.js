@@ -62,24 +62,13 @@ export default function GetTherapist() {
     if (selectedTherapist) {
       const { userName, firstName, lastName, id, phoneNumber } = selectedTherapist;
       const therapistData = { userName, firstName, lastName, id, phoneNumber };
-      // const responseChange = await patientService.statusChange({
-      //   id: id,
-      //   receiverID: receiverId,
-      // });
-
-      // if (countNotifications > 0) {
       if (countNotifications.numOfUnread > 0) {
         dispatch(setUnreadNotification(countNotifications.numOfUnread - 1));
-
-        // navigation.navigate("AccessOption", { therapist: therapistData });
       }
       navigation.navigate("AccessOption", { therapist: therapistData });
-
     }
   };
-
   
-
   if (isLoading) {
     // Display a loading indicator while the data is being fetched
     return (
@@ -93,13 +82,13 @@ export default function GetTherapist() {
     <View style={styles.container}>
       <View style={styles.modalContainer}>
         {Therapists.length > 0 && (
-          <Text style={styles.label}>Look for therapists you know</Text>
+          <Text style={styles.label}>{translate("look for therapists you know")}</Text>
         )}
         {/* {countNotifications === "0" ? ( */}
         {Therapists.length === 0 ? (
           <View style={styles.noPatientsContainer}>
             <Text style={styles.noPatientsText}>
-            There are now no therapists {`\n`}who want an affiliation from you
+            {translate("there are now no therapists")} {`\n`}{translate("who want an affiliation from you")}
             </Text>
           </View>
         ) : (
@@ -153,7 +142,7 @@ export default function GetTherapist() {
               </Pressable>
             ))}
 
-            <GenericButton onPress={handleDone} title="Done" />
+            <GenericButton onPress={handleDone} title={translate("done")} />
           </View>
         )}
       </View>

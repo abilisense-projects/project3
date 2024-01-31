@@ -8,9 +8,10 @@ import {
 } from "react-native";
 import patientService from "../../services/backendServices/patientService";
 import { useSelector } from "react-redux";
-import GenericButton from "../shared/button";
 import Icon from "react-native-vector-icons/FontAwesome";
 import BannerNotification from "../shared/bannerNotification";
+import { translationService } from "../../services/translationService";
+const translate = translationService.translate;
 
 export default function ListOfAssociatedTherapists() {
   const [isLoading, setIsLoading] = useState(true);
@@ -31,7 +32,6 @@ export default function ListOfAssociatedTherapists() {
         await patientService.getlistOfAssociatedTherapist(receiverId);
       if (responseTherapist && responseTherapist.therapists) {
         setTherapists(responseTherapist.therapists);
-        // setCountNotifications(responseTherapist.count);
       } else {
         console.error("Invalid response data:", responseTherapist);
       }
@@ -72,11 +72,11 @@ export default function ListOfAssociatedTherapists() {
     <View style={styles.container}>
       <View style={styles.modalContainer}>
         {Therapists.length > 0 && (
-          <Text style={styles.label}>My Therapists</Text>
+          <Text style={styles.label}>{translate("my Therapists")}</Text>
         )}
         {Therapists.length === 0 ? (
           <View style={styles.noPatientsContainer}>
-            <Text style={styles.noPatientsText}>You do not yet have therapist {`\n`}associated with you</Text>
+            <Text style={styles.noPatientsText}>{translate("you do not yet have therapist")} {`\n`}{translate("associated with you")}</Text>
           </View>
         ) : (
           <View>
@@ -142,10 +142,6 @@ export default function ListOfAssociatedTherapists() {
                 </View>
               </Pressable>
             ))}
-            {/* <GenericButton
-                //  onPress={handleDone}
-                title="Done"
-              />*/}
           </View>
         )}
         {bannerMessage && (

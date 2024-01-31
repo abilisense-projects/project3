@@ -3,6 +3,11 @@ import React from "react";
 import { View } from "react-native-animatable";
 import GenericButton from "../shared/button";
 import { globalStyles } from '../../styles';
+import { translationService } from "../../services/translationService";
+
+// Translation function alias for shorter usage
+const translate = translationService.translate;
+
 
 
 export default function ManagementByTheParent() {
@@ -16,9 +21,9 @@ export default function ManagementByTheParent() {
       };
     return(
     <View style={globalStyles.whitePaper}>
-        <GenericButton onPress={handleNewTherapist} title="New Therapist" buttonWidth={150}/>
+        <GenericButton onPress={handleNewTherapist} title={translate("new Therapist")} buttonWidth={150}/>
 
-        <GenericButton onPress={handleMyTherapist} title="My Therapist" buttonWidth={150}/>
+        <GenericButton onPress={handleMyTherapist} title={translate("my Therapist")} buttonWidth={150}/>
 
     </View>)
 }

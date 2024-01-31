@@ -22,6 +22,8 @@ import SideNavigator from "./components/drawer/side";
 import ListOfAssociatedTherapists from "./components/patient/listOfAssociatedTherapists";
 import PatientDetails from "./components/therapist/patientDetailes";
 import ManagementByTheParent from "./components/patient/managementByTheParent";
+import CustomHeader from "./components/drawer/customHeader";
+import Notifications from "./components/side_bar/notifications";
 
 const Drawer = createDrawerNavigator();
 
@@ -36,9 +38,18 @@ const App = () => {
     <Provider store={store}>
       <NavigationContainer>
         <Drawer.Navigator
+        screenOptions={{
+          headerShown: true,
+          headerRight: () => <CustomHeader />,
+          headerStyle: {
+            backgroundColor: 'green', 
+          },
+          headerTintColor: '#fff',
+        }}
           drawerContent={(props) => (
             <SideNavigator
               {...props}
+              onLanguageChange={handleLanguageChange}
               shouldDisplaySideNavigator={
                 props.state.routes[props.state.index].name !== "Login" &&
                 props.state.routes[props.state.index].name !== "Registration" &&
@@ -123,6 +134,11 @@ const App = () => {
             component={ManagementByTheParent}
             options={{ title: "" }}
           />
+          <Drawer.Screen
+            name="Manage"
+            component={AssociateTherapist}
+            options={{ title: "" }}
+          />
 
           {/* all these will appear in the sidebar */}
           {/* <Drawer.Screen name="Home" component={BackgroundSelection} options={{ title: "" }} /> */}
@@ -132,8 +148,8 @@ const App = () => {
             options={{ title: "" }}
           />
           <Drawer.Screen
-            name="Manage"
-            component={AssociateTherapist}
+            name="Notifications"
+            component={Notifications}
             options={{ title: "" }}
           />
           <Drawer.Screen

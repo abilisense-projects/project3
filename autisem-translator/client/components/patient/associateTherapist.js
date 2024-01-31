@@ -6,7 +6,6 @@ import { useSelector } from "react-redux";
 import validations from "../../config/validations";
 import UserService from "../../services/backendServices/userService";
 import { translationService } from "../../services/translationService";
-import TextInputField from "../shared/textInputField";
 import GenericForm from "../shared/form";
 
 const translate = translationService.translate;
@@ -15,7 +14,7 @@ const translate = translationService.translate;
 const fields = [
   {
     name: "password",
-    placeholder: translate("password"),
+    placeholder: translate("enter your password"),
     type: "text",
     secureTextEntry: true,
     rules: validations.password,
@@ -59,16 +58,16 @@ export default function AssociateTherapist() {
   return (
     <View style={styles.container}>
       <View style={styles.modalContainer}>
-        <Text style={styles.label}>Get Therapist </Text>
-        <Text style={styles.labels}>Get your therapist to Abilisense.</Text>
-        <Text style={styles.labels}>It's very easy to get started.</Text>
+        <Text style={styles.label}>{translate("manage Therapist")}</Text>
+        <Text style={styles.labels}>{translate("get your therapist to Abilisense")}</Text>
+        <Text style={styles.labels}>{translate("it's very easy to get started")}</Text>
 
         <GenericForm
           accessible={true}
           fields={fields}
           onSubmit={onGet}
           navigation={navigation}
-          submitButton={isLoading ? "Verifying..." : "Get"}
+          submitButton={isLoading ? translate("verifying") : translate("get")}
           disabledButton={isLoading}
         ></GenericForm>
 
@@ -104,5 +103,9 @@ const styles = StyleSheet.create({
   labels: {
     fontSize: 15,
     marginBottom: 8,
+  },
+  errorText: {
+    color: "red",
+    marginTop: 10,
   },
 });
