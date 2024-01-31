@@ -2,11 +2,11 @@
 const wordRepository = require('../repositories/wordRepositpry');
 
 const wordService = {
-    async createWord(recording, patientID, translation) {
+    async createWord(recordings, patientID, translation) {
         try {
             const createdWord = await wordRepository.createWord(
+                recordings,
                 patientID,
-                recording,
                 translation
             );
 
@@ -34,7 +34,7 @@ const wordService = {
         try {
             const fetchedWords = await wordRepository.getAllWordsByPatientId(patientId)
             if(fetchedWords==null){
-                return { success: false, message: null };
+                return { success: false, message: { success: false, message: null } };
             }
             else if (!fetchedWords.success) {
                 return { success: false, message: 'Failed to retrieve words' };

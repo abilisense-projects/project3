@@ -18,9 +18,7 @@ async function createAssociation(therapistID, patientID) {
 
 async function removeAssociation(therapistID, patientID) {
   try {
-    console.log(therapistID,patientID)
     const result = await Associations.findOneAndDelete({ therapistId: therapistID, patientId: patientID });
-   console.log("result",result) 
     if (!result) {
       // No document found matching the criteria
       return { success: false, message: "Association not found" };
@@ -65,8 +63,6 @@ async function markNotificationAsConfirmed(id, receiverID) {
       { status: "Confirmed" },
       { new: true }
     );
-    console.log("updatedAssociations", updatedAssociations);
-
     return true;
   } catch (error) {
     console.error("Error in getSenderIdByUsernameAndReceiverID:", error);
@@ -76,7 +72,6 @@ async function markNotificationAsConfirmed(id, receiverID) {
 
 async function getlistTherapist(patientID) {
   try {
-    console.log("patientId: ", patientID);
     const associations = await Associations.find({
       patientId: patientID.toString(),
       status: "Confirmed",
@@ -86,13 +81,9 @@ async function getlistTherapist(patientID) {
       associations.map(async (association) => {
         // Check if the senderId is present
         if (association.therapistId) {
-          console.log("therapistId: ", association.therapistId);
           const therapistDetails = await Therapist.findOne({
             $or: [{ _id: association.therapistId }],
           });
-
-          console.log("therapistDetails", therapistDetails);
-          console.log("therapistDetails._id", therapistDetails._id);
           return {
             id: therapistDetails._id,
             userName: therapistDetails.userName,
@@ -111,7 +102,6 @@ async function getlistTherapist(patientID) {
     const filteredTherapists = therapists.filter(
       (therapist) => therapist !== null
     );
-    console.log("filteredTherapists", filteredTherapists);
     return {
       therapists: filteredTherapists,
       // count,
@@ -135,8 +125,6 @@ async function deletingTherapistOfPatient(id, receiverID) {
       { status: "Confirmed" },
       { new: true }
     );
-    console.log("deleteAssociations", deleteAssociations);
-
     return true;
   } catch (error) {
     console.error("Error in getSenderIdByUsernameAndReceiverID:", error);

@@ -68,9 +68,7 @@ export default function GetTherapist() {
       navigation.navigate("AccessOption", { therapist: therapistData });
     }
   };
-
   
-
   if (isLoading) {
     // Display a loading indicator while the data is being fetched
     return (

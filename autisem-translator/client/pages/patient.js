@@ -19,7 +19,6 @@ import recordingService from "../services/backendServices/recordingService";
 
 const translate = translationService.translate;
 
-
 const PatientScreen = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();

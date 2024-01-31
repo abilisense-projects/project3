@@ -31,8 +31,6 @@ async function getUnreadNotificationsForPatient(receiverID) {
     status: "unread",
   }).populate("senderId");
   const count = notifications.length;
-  console.log("count: ", count);
-
   return count;
 }
 
@@ -46,8 +44,6 @@ async function markNotificationAsRead(id, receiverID) {
       { status: "read" },
       { new: true }
     );
-    console.log("updatedNotification", updatedNotification);
-
     return true;
   } catch (error) {
     console.error("Error in getSenderIdByUsernameAndReceiverID:", error);
@@ -65,8 +61,6 @@ async function deletingTherapistOfPatient(id, receiverID) {
       { status: "read" },
       { new: true }
     );
-    console.log("deleteNotification", deleteNotification);
-
     return true;
   } catch (error) {
     console.error("Error in getSenderIdByUsernameAndReceiverID:", error);
@@ -76,26 +70,20 @@ async function deletingTherapistOfPatient(id, receiverID) {
 
 async function getListOfTherapistsByReceiverID(receiverID) {
   try {
-    console.log("receiverID 2: ", receiverID);
     const notifications = await Notification.find({
       receiverId: receiverID.toString(),
       status: "unread",
     }).populate("senderId");
 
     // const count = notifications.length;
-    // console.log("count: ", count);
 
     const therapists = await Promise.all(
       notifications.map(async (notification) => {
         // Check if the senderId is present
         if (notification.senderId) {
-          console.log("senderId: ", notification.senderId);
           const therapistDetails = await Therapist.findOne({
             $or: [{ _id: notification.senderId }],
           });
-
-          console.log("therapistDetails", therapistDetails);
-          console.log("therapistDetails._id", therapistDetails._id);
           return {
             id: therapistDetails._id,
             userName: therapistDetails.userName,
@@ -114,7 +102,6 @@ async function getListOfTherapistsByReceiverID(receiverID) {
     const filteredTherapists = therapists.filter(
       (therapist) => therapist !== null
     );
-    console.log("filteredTherapists", filteredTherapists);
     return {
       therapists: filteredTherapists,
       // count,

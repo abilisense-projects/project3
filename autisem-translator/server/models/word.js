@@ -1,10 +1,8 @@
 const mongoose = require('mongoose');
 
 const wordSchema = new mongoose.Schema({
-  patientID: String,
-  recording:String,
-  translation:String,
-});
+  translation: String,
+  recordings: [String]});
 
 const Word = mongoose.model('Words', wordSchema,'word');
 
