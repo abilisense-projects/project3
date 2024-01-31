@@ -10,8 +10,8 @@ async function sendNotificationToPatient(therapistId, patientUserName) {
   try {
     //first check if there is patient with this userName
     const userNameExists = await userService.doesUserNameExist(patientUserName)
-    if (userNameExists.exists && userNameExists.type=='patient') {
-      const patientId = userNameExists.data._id;
+    if (userNameExists.exists ) {
+      const patientId = userNameExists.exists._id;
       //create notification
       const notification = await notificationService.createNotification(therapistId, patientId, "hi");
       //create association 
