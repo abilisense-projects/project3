@@ -3,12 +3,15 @@ import { View, Text, StyleSheet, ActivityIndicator, ScrollView, Pressable } from
 import therapistService from '../../services/backendServices/therapistService';
 import GenericButton from '../shared/button';
 import Icon from "react-native-vector-icons/FontAwesome";
-
+import AddWordModal from './addWordModel';
+import { translationService } from "../../services/translationService";
 
 const PatientDetails = ({ route }) => {
   const { patientId } = route.params;
   const [patientDetails, setPatientDetails] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const translate = translationService.translate;
 
   useEffect(() => {
     fetchData();
@@ -26,11 +29,16 @@ const PatientDetails = ({ route }) => {
   };
 
   const handleAddWord = async () => {
+    setIsModalVisible(true);
     try {
       console.log("adding new word")
     } catch (error) {
       console.error('Error fetching data:', error);
     }
+  };
+
+  const handleCloseModal = () => {
+    setIsModalVisible(false);
   };
 
   const handleRecordingIconPress = (recording) => {
@@ -44,28 +52,29 @@ const PatientDetails = ({ route }) => {
         <ActivityIndicator size="large" color="green" />
       ) : patientDetails ? (
         <View>
-          <Text style={styles.title}>{`Patient: ${patientDetails.patient.firstName} ${patientDetails.patient.lastName}`}</Text>
+          <Text style={styles.title}>{`${translate('patient')}: ${patientDetails.patient.firstName} ${patientDetails.patient.lastName}`}</Text>
           {patientDetails.words.words ? (
             <View>
-              <Text style={styles.subtitle}>Words:</Text>
+              <Text style={styles.subtitle}>{translate('words')}:</Text>
               <View>
                 {patientDetails.words && patientDetails.words.words.map((word, index) => (
                   <View key={index} style={styles.wordContainer}>
                     <Pressable onPress={() => handleRecordingIconPress(word.recording)}>
                       <Icon name="microphone" size={20} color="green" />
                     </Pressable>
-                    <Text style={styles.translationText}>{`Translation: ${word.translation}`}</Text>
+                    <Text style={styles.translationText}>{`${translate('translation')}: ${word.translation}`}</Text>
                   </View>
                 ))}
               </View>
             </View>
           ) : (
-            <Text style={styles.infoText}>No words available for this patient</Text>
+            <Text style={styles.infoText}>{translate('no words available for this patient')}</Text>
           )}
-          <GenericButton onPress={handleAddWord} title='Add new word' buttonWidth={120}></GenericButton>
+          <GenericButton onPress={handleAddWord} title={translate('add new word')} buttonWidth={120}></GenericButton>
+          <AddWordModal isVisible={isModalVisible} onClose={handleCloseModal} patientId={patientId}  />
         </View>
       ) : (
-        <Text style={styles.infoText}>No patient details available</Text>
+        <Text style={styles.infoText}>{translate('no patient details available')}</Text>
       )}
     </ScrollView>
   );
@@ -91,7 +100,7 @@ const styles = StyleSheet.create({
   },
   wordContainer: {
     flexDirection: 'row', // Make children align horizontally
-    alignItems: 'center', 
+    alignItems: 'center',
     marginBottom: 10,
   },
   translationText: {

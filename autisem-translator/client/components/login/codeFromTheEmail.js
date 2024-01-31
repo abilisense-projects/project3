@@ -83,7 +83,6 @@ export default function CodeFromTheEmail(userName) {
   // Verification code handling function
   const HandleVerification = async (data) => {
     try {
-      console.log(data.Code);
       // Set loading state to true to indicate that the code is being verified
       setIsLoading(true);
 
@@ -91,11 +90,9 @@ export default function CodeFromTheEmail(userName) {
       const response = await sendTheEmailService.createCodeFromEmail({
         code: data.Code,
       });
-      console.log(response);
 
       // Validate the server response
       const validationResult = validations.code.server.validate(response);
-      console.log(validationResult);
 
       if (validationResult !== true) {
         // Set the error state with the validation message
@@ -131,7 +128,6 @@ export default function CodeFromTheEmail(userName) {
   // Render the component
   return (
     <View  style={globalStyles.whitePaper} accessible accesabilityLabel='verification code screen'>
-      {console.log("isButtonDisabled:", isButtonDisabled)}
 
       {/* GenericForm component for entering verification code */}
       <GenericForm

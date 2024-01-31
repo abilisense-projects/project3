@@ -29,9 +29,7 @@ const therapistService = {
 
   unAssociatePatient: async (therapistId, patientId) => {
     try {
-      console.log("cliiii", therapistId, patientId)
       const response = await axios.delete(`${REACT_APP_BASE_URL}/therapist?therapistID=${therapistId}&patientID=${patientId}`);
-      console.log("response", response)
       if (response.data.success != true) {
         return 'failed'
       }
@@ -47,14 +45,27 @@ const therapistService = {
   getPatientsDetailes: async (patientId) => {
     try {
       const response = await axios.get(`${REACT_APP_BASE_URL}/therapist/patients-details/${patientId}`);
-      console.log("response", response);
       return response.data;
     } catch (error) {
       console.error('Error sending notification:', error);
       throw new Error('Error sending notification');
     }
+  },
+
+   createWord: async (patientID, translation) => {
+    try {
+      if (recordedData) {
+        const response = await recordingService.uploadRecording('words/word', recordedData, patientID, translation);
+        console.log('Recording uploaded to server', response);
+      } else {
+        console.warn('No recording data available.');
+      }
+    } catch (error) {
+      console.error('Error uploading recording', error);
+    }
   }
 
 }
+
 
 export default therapistService;
