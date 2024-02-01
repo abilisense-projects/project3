@@ -85,8 +85,11 @@ const PatientScreen = () => {
         </View>
         <View style={styles.recordAudio}>
         <RecordAudio setRecordedData = {setRecordedData}>  </RecordAudio>
-        <Button title={translate("upload")} onPress={() => uploadToServer(recordedData)} />
+        {/* <Button title={translate("upload")} onPress={() => uploadToServer(recordedData)} /> */}
         
+        </View>
+        <View style={styles.centeredButton}>
+          <GenericButton title={translate("upload")} onPress={() => uploadToServer(recordedData)} buttonWidth={80}></GenericButton>
         </View>
       </View>
     </View>
@@ -131,6 +134,12 @@ const styles = StyleSheet.create({
     marginLeft: 25,
     marginTop:10,
     
+  },
+  centeredButton: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 20, // Adjust this value as needed
   },
 });
 

@@ -38,8 +38,6 @@ export default function AccessOption() {
     });
     //here show banner
     setBannerMessage(
-      // `Therapist ${therapist.firstName} ${therapist.lastName} added successfully.`
-      // {translate("therapist")} ${therapist.firstName} ${therapist.lastName} {translate("added successfully")}
       `${translate("therapist")} ${therapist.firstName} ${therapist.lastName} ${translate("added successfully")}`
     );
   };
