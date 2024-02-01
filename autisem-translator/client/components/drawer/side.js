@@ -47,20 +47,48 @@ const SideNavigator = ({ navigation, shouldDisplaySideNavigator, onLanguageChang
     setOverlayVisible(!showLanguageOptions);
   };
 
+  // const handleLanguageSelection = (language) => {
+  //   setSelectedLanguage(language);
+  //   onLanguageChange(language); // קריאה לפונקצית הקולבק לעדכון השפה בקומפוננטת האב
+  
+  //   if (language === 'Hebrew') {
+  //     console.log('נבחר עברית');
+  //     translationService.storeLanguage('he');
+  //   } else if (language === 'English') {
+  //     console.log('Selected English');
+  //     translationService.storeLanguage('en');
+  //   }
+  
+  //   translationService.initializeLanguage();
+  //   setShowLanguageList(false); // הסתרת רשימת השפות לאחר בחירה
+  //   console.log("Language selected:", language);
+  // };
+
   const handleLanguageSelection = (language) => {
     setSelectedLanguage(language);
-    onLanguageChange(language); // קריאה לפונקצית הקולבק לעדכון השפה בקומפוננטת האב
+    onLanguageChange(language);
   
     if (language === 'Hebrew') {
-      console.log('נבחר עברית');
+      setShowLanguageOptions(false);  // Close language options
+      setOverlayVisible(false);  // Close overlay
       translationService.storeLanguage('he');
+      // Add logic to stay on the current page
+      if (page !== "Language") {
+        goToFirstScreen(page);
+      }
+  
     } else if (language === 'English') {
-      console.log('Selected English');
+      setShowLanguageOptions(false);  // Close language options
+      setOverlayVisible(false);  // Close overlay
       translationService.storeLanguage('en');
+      // Add logic to stay on the current page
+      if (page !== "Language") {
+        goToFirstScreen(page);
+      }
     }
   
     translationService.initializeLanguage();
-    setShowLanguageList(false); // הסתרת רשימת השפות לאחר בחירה
+    setShowLanguageList(false);
     console.log("Language selected:", language);
   };
 
@@ -120,31 +148,17 @@ const SideNavigator = ({ navigation, shouldDisplaySideNavigator, onLanguageChang
       
       {showLanguageOptions && (
         <View>
-        {languages.map((item, index) => (
-          <Pressable
-            style={styles.language}
-            key={index}
-            onPress={() => handleLanguageSelection(item)}
-            // onPress={() => {
-              // setPage(item);
-              // setSelectedLanguage(item);
-              // if (item === 'Hebrew') {
-              //   translationService.storeLanguage('he');
-                
-              // } else if (item === 'English') {
-              //   translationService.storeLanguage('en');
-              // }
-              // translationService.initializeLanguage();
-          
-              // setShowLanguageList(false);
-              // goToFirstScreen(item);
-            // }} 
-          >
-            <Text style={page === item ? { color: "green" } : { color: "black" }}>
-              {item}
-            </Text>
-          </Pressable>
-        ))}
+          {languages.map((item, index) => (
+            <Pressable
+              style={styles.language}
+              key={index}
+              onPress={() => handleLanguageSelection(item)}
+            >
+              <Text style={selectedLanguage === item ? { color: "green" } : { color: "black" }}>
+                {item}
+              </Text>
+            </Pressable>
+          ))}
         </View>
       )}
     </View>
