@@ -4,7 +4,7 @@ import therapistService from '../../services/backendServices/therapistService';
 import GenericButton from '../shared/button';
 import Icon from "react-native-vector-icons/FontAwesome";
 import AddWordModal from './addWordModel';
-import SoundPlayer from 'react-native-sound-player'; // Import the library
+import { Audio } from 'expo-av';
 import { translationService } from "../../services/translationService";
 
 const PatientDetails = ({ route }) => {
@@ -45,8 +45,10 @@ const PatientDetails = ({ route }) => {
   const handleRecordingIconPress = async (recording) => {
     try {
       if (recording) {
-         SoundPlayer.loadUrl(recording);
-         SoundPlayer.play();
+        const { sound } = await Audio.Sound.createAsync(
+          { uri: recording },
+          { shouldPlay: true }
+        );
       } else {
         console.warn('No recording URL provided.');
       }
@@ -69,7 +71,7 @@ const PatientDetails = ({ route }) => {
                 {patientDetails.words && patientDetails.words.words.map((word, index) => (
                   <View key={index} style={styles.wordContainer}>
                     <Pressable onPress={() => handleRecordingIconPress(word.firstRecording)}>
-                      <Icon name="microphone" size={20} color="green" />
+                      <Icon name="volume-up" size={20} color="green" />
                     </Pressable>
                     <Text style={styles.translationText}>{`${translate('translation')}: ${word.translation}`}</Text>
                   </View>
@@ -79,10 +81,10 @@ const PatientDetails = ({ route }) => {
           ) : (
             <Text style={styles.infoText}>{translate('no words available for this patient')}</Text>
           )}
-          <View style={{margin:20, justifyContent: 'space-between', alignItems: 'center' }}>
-          <GenericButton onPress={handleAddWord} title={translate('add new word')} buttonWidth={140}></GenericButton>
+          <View style={{ margin: 20, justifyContent: 'space-between', alignItems: 'center' }}>
+            <GenericButton onPress={handleAddWord} title={translate('add new word')} buttonWidth={140}></GenericButton>
           </View>
-          <AddWordModal isVisible={isModalVisible} onClose={handleCloseModal} patientId={patientId}  />
+          <AddWordModal isVisible={isModalVisible} onClose={handleCloseModal} patientId={patientId} />
         </View>
       ) : (
         <Text style={styles.infoText}>{translate('no patient details available')}</Text>
