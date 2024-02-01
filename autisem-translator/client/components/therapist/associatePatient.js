@@ -3,9 +3,11 @@ import { View, Modal, StyleSheet,Text } from 'react-native';
 import TextInputField from '../shared/textInputField';
 import GenericButton from '../shared/button';
 import { globalStyles } from '../../styles';
+import { translationService } from "../../services/translationService";
 
 const AssociatePatient = ({ isVisible, onConfirm, onCancel, errorMessage }) => {
     const [newPatientUsername, setNewPatientUsername] = useState('');
+    const translate = translationService.translate;
 
     const handleModalConfirm = () => {
         if (newPatientUsername.trim() !== '') {
@@ -26,15 +28,15 @@ const AssociatePatient = ({ isVisible, onConfirm, onCancel, errorMessage }) => {
             <View style={styles.modalContainer}>
                 <View style={globalStyles.whitePaper}>
                     <TextInputField
-                        placeholder="Enter patient username"
+                        placeholder={translate("enter patient username")}
                         value={newPatientUsername}
                         onChangeText={(text) => setNewPatientUsername(text)}
                     />
                     {errorMessage && (
                         <Text style={styles.errorMessage}>{errorMessage}</Text>
                     )}
-                    <GenericButton onPress={handleModalConfirm} title='Confirm' buttonWidth={160} />
-                    <GenericButton onPress={handleModalCancel} title='Cancel' buttonWidth={160} />
+                    <GenericButton onPress={handleModalConfirm} title={translate('confirm')} buttonWidth={160} />
+                    <GenericButton onPress={handleModalCancel} title={translate('cancel')} buttonWidth={160} />
                 </View>
             </View>
         </Modal>

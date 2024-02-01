@@ -6,11 +6,13 @@ import im1 from '../../assets/images/default-user-image.svg';
 import ImageService from '../../services/imageService';
 import UserService from '../../services/backendServices/userService';
 import { useSelector } from "react-redux";
+import { translationService } from "../../services/translationService";
 
 export default function UploadImage() {
   const [image, setImage] = useState(im1);
   const [errorMessage, setErrorMessage] = useState(null);
   const user = useSelector((state) => state.user.user.userData);
+  const translate = translationService.translate;
 
   useEffect(() => {
     if (user.profileImage) {
@@ -33,16 +35,13 @@ export default function UploadImage() {
         const maxAllowedSize = 100 * 1024;
         if (codedImage.length > maxAllowedSize) {
           setImage(null);
-          setErrorMessage(
-            "That’s a very nice photo, \nbut it’s a bit too big.\n Try one that’s smaller."
-          );
+          setErrorMessage(translate("profile image too large"));
         } else {
           setImage(_image.assets[0].uri);
           const response = await UserService.uploadProfileImage(
             user._id,
             codedImage
           );
-          console.log(response);
         }
       } catch (error) {
         console.log(error);

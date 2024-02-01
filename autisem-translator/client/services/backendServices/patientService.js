@@ -7,9 +7,6 @@ const patientService = {
       const response = await axios.get(
         `${REACT_APP_BASE_URL}/patient/list/${receiverId}`
       );
-      console.log("receiverId 1:", receiverId);
-      console.log("response", response);
-
       return response.data;
     } catch (error) {
       console.error("Error fetching therapist patients:", error);
@@ -22,9 +19,6 @@ const patientService = {
       const response = await axios.get(
         `${REACT_APP_BASE_URL}/patient/ListOfAssociatedTherapists/${receiverId}`
       );
-      console.log("receiverId 2:", receiverId);
-      console.log("response 2", response);
-
       return response.data;
     } catch (error) {
       console.error("Error fetching therapist patients:", error);
@@ -37,9 +31,6 @@ const patientService = {
       const response = await axios.get(
         `${REACT_APP_BASE_URL}/patient/${patientId}`
       );
-      console.log("receiverId 444:", patientId);
-      console.log("response 444", response);
-
       return response.data;
     } catch (error) {
       console.error("Error fetching therapist patients:", error);
@@ -48,15 +39,11 @@ const patientService = {
   },
 
   statusChange: async (notificationId) => {
-    console.log("receiverId notificationId:", notificationId);
     try {
       const response = await axios.put(
         `${REACT_APP_BASE_URL}/patient/change`,
         notificationId
       );
-      console.log("notificationId:", notificationId);
-      console.log("response notificationId", response);
-
       return response.data;
     } catch (error) {
       console.error("Error fetching therapist patients:", error);
@@ -65,15 +52,11 @@ const patientService = {
   },
 
   statusChangeToConfirmed: async (associationsId) => {
-    console.log(" associationsId:", associationsId);
     try {
       const response = await axios.put(
         `${REACT_APP_BASE_URL}/patient/changeAssociations`,
         associationsId
       );
-      console.log("associationsId:", associationsId);
-      console.log("response associationsId", response);
-
       return response.data;
     } catch (error) {
       console.error("Error fetching therapist patients:", error);
@@ -81,7 +64,6 @@ const patientService = {
     }
   },
   deletingTherapist: async (deleting) => {
-    console.log("delete:", deleting);
     try {
       const response = await axios.delete(
         `${REACT_APP_BASE_URL}/patient/deleteFromNotification`,
@@ -93,11 +75,6 @@ const patientService = {
         // deleting
         { data: deleting }
       );
-      console.log("delete:", deleting);
-      console.log("response 1", response);
-      console.log("response 2", responseDelete);
-
-
       return response.data;
     } catch (error) {
       console.error("Error fetching therapist patients:", error);

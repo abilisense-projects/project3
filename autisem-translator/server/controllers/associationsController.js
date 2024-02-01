@@ -13,9 +13,7 @@ async function create(req, res) {
 
 async function remove(req, res) {
   try {
-    console.log("req.bodyyy",req.query)
     const { therapistID, patientID } = req.query;
-    console.log("ppp",therapistID,patientID)
     const association = await AssociationService.removeAssociation(therapistID, patientID)
     if(association!=null){
       res.status(201).json(association);
@@ -30,7 +28,6 @@ async function remove(req, res) {
 async function statusChangeToConfirmed(req, res) {
   try {
     const { id, receiverID } = req.body;
-    console.log("id, receiverID ", id, receiverID);
     const change = await AssociationService.markNotificationAsConfirmed(
       id,
       receiverID
@@ -46,7 +43,6 @@ async function getlistOfAssociatedTherapist(req, res) {
   try {
     // const { receiverId } = req.body;
     const receiverId = req.params.receiverId;
-    console.log("receiver Id123: ", receiverId);
     const therapists =
       await AssociationService.getlistTherapist(receiverId);
     res.json(therapists);
@@ -59,7 +55,6 @@ async function getlistOfAssociatedTherapist(req, res) {
 async function deletingTherapistFromAssociations(req, res) {
   try {
     const { id, receiverID } = req.body;
-    console.log("id, receiverID 2", id, receiverID);
     const deleting = await AssociationService.deletingTherapistOfPatient(
       id,
       receiverID
@@ -70,9 +65,6 @@ async function deletingTherapistFromAssociations(req, res) {
     res.status(500).json({ error: "Internal Server Error" });
   }
 }
-
-
-
 
 module.exports = {
   create,

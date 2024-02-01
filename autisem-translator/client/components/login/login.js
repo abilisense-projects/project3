@@ -62,14 +62,12 @@ export default function Login() {
 
   // Form submission handler
   const onSubmit = async (data) => {
-    console.log("Form data:", data);
     try {
       // Set loading state to true to indicate that the login is in progress
       setIsLoading(true);
 
       // Send login request to the server
       const response = await UserService.loginUser(data);
-      console.log(response);
       if (response.message === "User exists") {
         dispatch(setUser({ ...response.user.user, _id: response.user.user._id }));
         if (response.user.user.type == "therapist") {

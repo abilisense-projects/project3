@@ -5,6 +5,10 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { useSelector } from "react-redux";
 import patientService from "../../services/backendServices/patientService";
 import BannerNotification from "../shared/bannerNotification";
+import { translationService } from "../../services/translationService";
+
+const translate = translationService.translate;
+
 
 export default function AccessOption() {
   const navigation = useNavigation();
@@ -28,17 +32,15 @@ export default function AccessOption() {
       receiverID: receiverId,
     });
 
-    console.log("responseChange", responseChange);
-
-
     const response = await patientService.statusChangeToConfirmed({
       id: therapist.id,
       receiverID: receiverId,
     });
-    console.log("response", response);
     //here show banner
     setBannerMessage(
-      `Therapist ${therapist.firstName} ${therapist.lastName} added successfully.`
+      // `Therapist ${therapist.firstName} ${therapist.lastName} added successfully.`
+      // {translate("therapist")} ${therapist.firstName} ${therapist.lastName} {translate("added successfully")}
+      `${translate("therapist")} ${therapist.firstName} ${therapist.lastName} ${translate("added successfully")}`
     );
   };
 
@@ -48,39 +50,39 @@ export default function AccessOption() {
         {therapist && (
           <>
             <Text style={styles.label}>
+              {translate("the therapist")}
               <Text style={{ color: "green" }}>
                 {`${therapist.firstName} ${therapist.lastName} `}
               </Text>
-              wants to access your Abilisense account
+              {translate("wants to access your Abilisense account")}
             </Text>
             <Text>
-              This will allow
+            {translate("this will allow")}
               <Text style={{ color: "green" }}>
                 {` ${therapist.firstName} ${therapist.lastName} `}
               </Text>
-              to perform operations on your Abilisense account
+              {translate("to perform operations on your Abilisense account")}
             </Text>
             <Text>
-              It is possible that your sensitive information will be shared with
-              the
+            {translate("it is possible that your sensitive information will be shared with the")}
               <Text style={{ color: "green" }}>
                 {` ${therapist.firstName} ${therapist.lastName}`}
               </Text>
               .
             </Text>
-            <Text>You can always add or remove access.</Text>
+            <Text>{translate("you can always add or remove access")}</Text>
           </>
         )}
         <View style={styles.buttonContainer}>
           <GenericButton
             onPress={handleModalCancel}
-            title="Cancel"
+            title={translate("cancel")}
             buttonWidth={80}
           />
           <View style={styles.buttonSpacer} />
           <GenericButton
             onPress={handleModalOk}
-            title="Allow"
+            title={translate("allow")}
             buttonWidth={80}
           />
         </View>

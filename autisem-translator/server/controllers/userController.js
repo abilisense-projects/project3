@@ -34,8 +34,6 @@ async function userLogin(req, res) {
 async function updateImage(req, res) {
   try {
     const { userName, image } = req.body;
-    console.log("userName:",userName, "image",image);
-
     //  Check if the required fields are provided
     if (!userName) {
       return (
@@ -75,8 +73,6 @@ async function updateImage(req, res) {
 async function updatePassword(req, res) {
   try {
     const { userName, newPassword } = req.body;
-    console.log(userName, newPassword);
-
     //  Check if the required fields are provided
     if (!userName || !newPassword) {
       return (
@@ -88,7 +84,6 @@ async function updatePassword(req, res) {
     }
 
     const passwordUpdateResult = await userService.doesUserNameExist(userName);
-    console.log("passwordUpdateResult", passwordUpdateResult);
     if (passwordUpdateResult) {
       const updateResult = await userService.updateNew(userName, newPassword);
 
@@ -124,7 +119,8 @@ async function createUser(req, res) {
 
     // Check if the username already exists
     const userNameExists = await userService.doesUserNameExist(userName);
-    if (userNameExists) {
+    
+    if (userNameExists.exists) {
       return res.status(409).json({ message: "Username already exists" });
     }
     const createUserResult = await userService.createUser(
@@ -166,7 +162,6 @@ async function getUserDetailes(req, res) {
 async function updateImage(req, res) {
   try {
     const { userName, image } = req.body;
-    console.log("userName:", userName, "image", image);
     //  Check if the required fields are provided
     if (!userName) {
       return (

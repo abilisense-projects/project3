@@ -8,18 +8,17 @@ async function sendNotificationToPatient(therapistId,patientUserName) {
 }
 
 async function getPatientsDetails(patientId) {
-  console.log(patientId)
   try {
     // Find the patient by ID
     const patient = await Patient.findById(patientId);
     if (!patient) {
-      console.log(`Patient with ID ${patientId} not found`);
       return null;
     }
     // Apply the projection to the patient object
     const selectedDetails = {
       firstName: patient.firstName,
       lastName: patient.lastName,
+      words: patient.wordIds,
     };
     return selectedDetails;
   } catch (error) {

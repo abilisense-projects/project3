@@ -65,19 +65,11 @@ export default function NewPassword({ route }) {
     try {
       // Extract the userName from the route parameters
       const { userName } = route.params;
-      console.log(userName);
-
       // Call the backend service to update the user's password
       const response = await UserService.updateUsersPassword({
         userName: userName.route.params.userName,
         newPassword: data.repeatPassword,
       });
-      // Log relevant information for debugging
-      console.log(userName.route.params.userName);
-      console.log("Form Data:", data, route);
-      console.log(response);
-      console.log("response.Message", response.message);
-
       // Check the response from the server
       if (response.message === "Success update") {
         // Set a success message to be displayed

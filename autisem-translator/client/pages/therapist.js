@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet, Image, Pressable } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Image, Pressable, ActivityIndicator } from 'react-native';
 import therapistService from '../services/backendServices/therapistService';
 import GenericButton from '../components/shared/button';
 import { useSelector } from 'react-redux';
@@ -9,6 +9,7 @@ import BannerNotification from '../components/shared/bannerNotification';
 import { globalStyles } from '../styles';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { translationService } from '../services/translationService';
 
 const TherapistScreen = () => {
   const [patients, setPatients] = useState([]);
@@ -19,6 +20,7 @@ const TherapistScreen = () => {
   const [message, setMessage] = useState(null);
   const therapistId = useSelector((state) => state.user.user.userData._id);
   const navigation = useNavigation();
+  const translate = translationService.translate;
   const [isDisplayingPending, setIsDisplayingPending] = useState(false);
 
   useEffect(() => {
@@ -32,9 +34,9 @@ const TherapistScreen = () => {
       if (!patientsData || patientsData.length <= 0) {
         setPatients([]);
         setFilteredPatients([]);
-      // } else if (patientsData.length === 1 && patientsData[0].status === 'Confirmed') {
-      //   // Automatically navigate to patient details if there's only one patient and status is Confirmed
-      //   navigation.navigate('PatientDetails', { patientId: patientsData[0].patientDetails._id });
+        // } else if (patientsData.length === 1 && patientsData[0].status === 'Confirmed') {
+        //   // Automatically navigate to patient details if there's only one patient and status is Confirmed
+        //   navigation.navigate('PatientDetails', { patientId: patientsData[0].patientDetails._id });
       } else {
         setPatients(patientsData);
         // Display confirmed patients initially
@@ -73,18 +75,18 @@ const TherapistScreen = () => {
       ));
 
       if (isUserNameExists) {
-        setMessage(`This patient already exists on your list.`);
+        setMessage(`${translate('patient already exists')}.`);
         return;
       }
       // send notification to patient
       const notificationStatus = await therapistService.sendNotificationToPatient(therapistId, patientUsername);
       if (notificationStatus === 'no such patient') {
-        setBannerMessage('Failed to send notification. There is no such Patient.');
+        setBannerMessage(`${translate("failed to send notification")}, ${translate('no such patient')}`);
       } else {
-        setBannerMessage(`Notification sent to ${patientUsername}`);
+        setBannerMessage(`${translate('notification sent to')} ${patientUsername}`);
       }
     } catch (error) {
-      setBannerMessage("Failed to send notification. Please try again.");
+      setBannerMessage(`${translate("failed to send notification")}`);
     }
     // close modal
     setAssociatePatientModalVisible(false);
@@ -98,14 +100,13 @@ const TherapistScreen = () => {
     try {
       const deletion = await therapistService.unAssociatePatient(therapistId, patient.patientDetails._id)
       if (deletion) {
-        console.log("deletion", deletion)
         // const updatedPatients = patients.filter((p) => p.patientDetails._id !== patient.patientDetails._id);
         // setPatients(updatedPatients);
-        setBannerMessage(`Patient ${patient.patientDetails.firstName} ${patient.patientDetails.lastName} deleted successfully.`);
+        setBannerMessage(`${translate('patient')} ${patient.patientDetails.firstName} ${patient.patientDetails.lastName} ${translate('deleted successfully')}.`);
       }
     } catch (error) {
       console.error('Error deleting patient:', error);
-      setBannerMessage('Failed to delete patient. Please try again.');
+      setBannerMessage(`${translate('failed to delete patient')}`);
     }
   };
 
@@ -121,25 +122,28 @@ const TherapistScreen = () => {
   };
 
   return (
-    <View style={globalStyles.whitePaper}>
+    <View>
       {isLoading ? (
-        <Text>Loading...</Text>
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="green" />
+        </View>
       ) : (
         <>
-          {patients.length > 0 && (
-            <Text style={styles.header}>My Patients</Text>
-          )}
-          {patients.length === 0 ? (
-            <View style={styles.noPatientsContainer}>
-              <Text style={styles.noPatientsText}>No patients yet</Text>
-              <Image source={NoPatientsImage} style={styles.noPatientsImage} />
-            </View>
-          ) : (
-            <FlatList
-              data={filteredPatients}
-              keyExtractor={(item) => item.patientDetails._id}
-              renderItem={({ item }) => (
-             <View style={[styles.patientContainer, { backgroundColor: getStatusColor(item.status) }]}>
+          <View style={globalStyles.whitePaper}>
+            {patients.length > 0 && (
+              <Text style={styles.header}>{translate('my patients')}</Text>
+            )}
+            {patients.length === 0 ? (
+              <View style={styles.noPatientsContainer}>
+                <Text style={styles.noPatientsText}>{translate('no patients yet')}</Text>
+                <Image source={NoPatientsImage} style={styles.noPatientsImage} />
+              </View>
+            ) : (
+              <FlatList
+                data={filteredPatients}
+                keyExtractor={(item) => item.patientDetails._id}
+                renderItem={({ item }) => (
+                  <View style={[styles.patientContainer, { backgroundColor: getStatusColor(item.status) }]}>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                       {item.status === 'Confirmed' ? (
                         <Pressable onPress={() => navigation.navigate('PatientDetails', { patientId: item.patientDetails._id })}>
@@ -153,36 +157,37 @@ const TherapistScreen = () => {
                       </Pressable>
                     </View>
                   </View>
-              )}
-            />
-          )}
-          <GenericButton
-            style={styles.addButton}
-            onPress={handleAddPatient}
-            title="Add Patient"
-            buttonWidth={160}
-          />
-           <View style={styles.toggleButtonContainer}>
+                )}
+              />
+            )}
             <GenericButton
-              style={styles.toggleButton}
-              onPress={toggleDisplayPending}
-              title={isDisplayingPending ? 'Show Confirmed Patients' : 'Show Pending Patients'}
-              buttonWidth={250}
+              style={styles.addButton}
+              onPress={handleAddPatient}
+              title={translate("add patient")}
+              buttonWidth={160}
             />
+            <View style={styles.toggleButtonContainer}>
+              <GenericButton
+                style={styles.toggleButton}
+                onPress={toggleDisplayPending}
+                title={isDisplayingPending ? translate('show Confirmed Patients') : translate('show Unconfirmed Patients')}
+                buttonWidth={250}
+              />
+            </View>
+            <AssociatePatient
+              isVisible={isAssociatePatientModalVisible}
+              onConfirm={handleAssociatePatientConfirm}
+              onCancel={handleAssociatePatientCancel}
+              errorMessage={message}
+            />
+            {bannerMessage && (
+              <BannerNotification
+                message={bannerMessage}
+                severity={bannerMessage.includes('Failed') ? 'error' : 'success'}
+                onClose={() => { setBannerMessage(null), fetchData() }}
+              />
+            )}
           </View>
-          <AssociatePatient
-            isVisible={isAssociatePatientModalVisible}
-            onConfirm={handleAssociatePatientConfirm}
-            onCancel={handleAssociatePatientCancel}
-            errorMessage={message}
-          />
-          {bannerMessage && (
-            <BannerNotification
-              message={bannerMessage}
-              severity={bannerMessage.includes('Failed') ? 'error' : 'success'}
-              onClose={() => { setBannerMessage(null), fetchData() }}
-            />
-          )}
         </>
       )}
     </View>
@@ -266,6 +271,13 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignItems: 'center',
   },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 250,
+  },
+  
 });
 
 export default TherapistScreen;

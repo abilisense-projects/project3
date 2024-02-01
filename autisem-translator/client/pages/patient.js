@@ -13,15 +13,20 @@ import { useNavigation } from "@react-navigation/native"; // Import useNavigatio
 import GenericButton from "../components/shared/button";
 import RecordAudio from "../components/recording/recording";
 import patientService from "../services/backendServices/patientService";
-
 import { setUnreadNotification } from "../redux/actions/patientAction";
-import { globalStyles } from "../styles";
+import { translationService } from "../services/translationService";
+import recordingService from "../services/backendServices/recordingService";
+
+const translate = translationService.translate;
 
 const PatientScreen = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const translate = translationService.translate;
   const [countNotifications, setCountNotifications] = useState(" ");
   const [isLoading, setIsLoading] = useState(true);
+  const [recordedData, setRecordedData] = useState(null);
+
 
   const receiverId = useSelector((state) => state.user.user.userData._id);
 
@@ -29,12 +34,10 @@ const PatientScreen = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log("receiverId 0 ", receiverId);
         const response = await patientService.unreadNotifications(receiverId);
         if (response) {
           dispatch(setUnreadNotification(response));
           setCountNotifications(response);
-          console.log("response. ", response);
         } else {
           console.log("Invalid response data - CountNotifications:", 0);
         }
@@ -46,6 +49,14 @@ const PatientScreen = () => {
     };
     fetchData();
   }, [receiverId, setCountNotifications]);
+  const uploadToServer = async (recordedData) => {
+    try {
+      const response = await recordingService.translateWord(recordedData);
+      console.log("Recordings uploaded to server", response);
+    } catch (error) {
+      console.error("Error uploading recordings", error);
+    }
+  }
 
   const user = useSelector((state) => state.user.user.userData);
  
@@ -70,10 +81,12 @@ const PatientScreen = () => {
       )}
       <View>
         <View style={styles.hello}>
-          <Text style={styles.label}>hello {user.firstName}</Text>
+          <Text style={styles.label}>{translate("hello")}{user.firstName}</Text>
         </View>
         <View style={styles.recordAudio}>
-          <RecordAudio />
+        <RecordAudio setRecordedData = {setRecordedData}>  </RecordAudio>
+        <Button title={translate("upload")} onPress={() => uploadToServer(recordedData)} />
+        
         </View>
       </View>
     </View>
@@ -104,6 +117,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 20,
     marginBottom: 15,
+    color: 'green',
   },
   loadingContainer: {
     flex: 1,
@@ -116,8 +130,7 @@ const styles = StyleSheet.create({
   hello: {
     marginLeft: 25,
     marginTop:10,
-
-
+    
   },
 });
 

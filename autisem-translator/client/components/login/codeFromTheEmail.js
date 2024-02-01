@@ -5,25 +5,14 @@ import validations from "../../config/validations";
 import { useNavigation } from "@react-navigation/native";
 import sendTheEmailService from "../../services/backendServices/sendTheEmailService";
 import { translationService } from "../../services/translationService";
+import { globalStyles } from "../../styles";
+
 
 // Translation function alias for shorter usage
 const translate = translationService.translate;
 
 // StyleSheet for styling components
 const styles = StyleSheet.create({
-  modalContent: {
-    backgroundColor: "white",
-    padding: 20,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.5,
-    shadowRadius: 2,
-    elevation: 3,
-    marginTop: 40, // Adjust this value as needed
-  },
   errorText: {
     color: "red",
     marginTop: 10,
@@ -94,7 +83,6 @@ export default function CodeFromTheEmail(userName) {
   // Verification code handling function
   const HandleVerification = async (data) => {
     try {
-      console.log(data.Code);
       // Set loading state to true to indicate that the code is being verified
       setIsLoading(true);
 
@@ -102,11 +90,9 @@ export default function CodeFromTheEmail(userName) {
       const response = await sendTheEmailService.createCodeFromEmail({
         code: data.Code,
       });
-      console.log(response);
 
       // Validate the server response
       const validationResult = validations.code.server.validate(response);
-      console.log(validationResult);
 
       if (validationResult !== true) {
         // Set the error state with the validation message
@@ -141,8 +127,7 @@ export default function CodeFromTheEmail(userName) {
 
   // Render the component
   return (
-    <View style={styles.modalContent} accessible accesabilityLabel='verification code screen'>
-      {console.log("isButtonDisabled:", isButtonDisabled)}
+    <View  style={globalStyles.whitePaper} accessible accesabilityLabel='verification code screen'>
 
       {/* GenericForm component for entering verification code */}
       <GenericForm

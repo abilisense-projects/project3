@@ -10,8 +10,8 @@ async function sendNotificationToPatient(therapistId, patientUserName) {
   try {
     //first check if there is patient with this userName
     const userNameExists = await userService.doesUserNameExist(patientUserName)
-    if (userNameExists.exists && userNameExists.type=='patient') {
-      const patientId = userNameExists.data._id;
+    if (userNameExists.exists) {
+      const patientId = userNameExists.exists._id;
       //create notification
       const notification = await notificationService.createNotification(therapistId, patientId, "hi");
       //create association 
@@ -33,8 +33,8 @@ async function getPatientsDetails(patientId) {
     //get basic detailes
     const details = await TherapistRepository.getPatientsDetails(patientId)
     //get list of words
-    const words = await wordService.getAllWordsByPatientId(patientId)
-    return {patient:details,words:words}
+    const words = await wordService.getListOfWordsByIds(details.words)
+    return {patient:{firstName:details.firstName,lastName:details.lastName},words:words}
   } catch (error) {
     throw new Error('Error sending notification');
   }

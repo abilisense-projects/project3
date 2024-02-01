@@ -30,24 +30,18 @@ export default function GetTherapist() {
   const countNotifications = useSelector((state) => state.patient.num);
   // const countNotifications = useSelector((state) => state.patient.num?.numOfUnread);
 
-  console.log("countNotifications:", countNotifications);
-
   const receiverId = useSelector((state) => state.user.user.userData._id);
 
   //gets therapists list by receiver id
   useEffect(() => {
-    console.log("1111111111111111")
     const fetchData = async () => {
       try {
-        console.log("receiverId 0 ", receiverId);
         const responseTherapist = await patientService.getPatientsTherapist(
           receiverId
         );
         if (responseTherapist && responseTherapist.therapists) {
           setTherapists(responseTherapist.therapists);
           // setCountNotifications(responseTherapist.count);
-          console.log("response.therapists ", responseTherapist.therapists);
-          // console.log("response.count ", responseTherapist.count);
         } else {
           console.error("Invalid response data:", responseTherapist);
         }
@@ -68,26 +62,13 @@ export default function GetTherapist() {
     if (selectedTherapist) {
       const { userName, firstName, lastName, id, phoneNumber } = selectedTherapist;
       const therapistData = { userName, firstName, lastName, id, phoneNumber };
-      // const responseChange = await patientService.statusChange({
-      //   id: id,
-      //   receiverID: receiverId,
-      // });
-
-      // console.log("responseChange", responseChange);
-
-      // if (countNotifications > 0) {
       if (countNotifications.numOfUnread > 0) {
         dispatch(setUnreadNotification(countNotifications.numOfUnread - 1));
-
-        // navigation.navigate("AccessOption", { therapist: therapistData });
       }
       navigation.navigate("AccessOption", { therapist: therapistData });
-
     }
   };
-
   
-
   if (isLoading) {
     // Display a loading indicator while the data is being fetched
     return (
@@ -101,13 +82,13 @@ export default function GetTherapist() {
     <View style={styles.container}>
       <View style={styles.modalContainer}>
         {Therapists.length > 0 && (
-          <Text style={styles.label}>Look for therapists you know</Text>
+          <Text style={styles.label}>{translate("look for therapists you know")}</Text>
         )}
         {/* {countNotifications === "0" ? ( */}
         {Therapists.length === 0 ? (
           <View style={styles.noPatientsContainer}>
             <Text style={styles.noPatientsText}>
-            There are now no therapists {`\n`}who want an affiliation from you
+            {translate("there are now no therapists")} {`\n`}{translate("who want an affiliation from you")}
             </Text>
           </View>
         ) : (
@@ -161,7 +142,7 @@ export default function GetTherapist() {
               </Pressable>
             ))}
 
-            <GenericButton onPress={handleDone} title="Done" />
+            <GenericButton onPress={handleDone} title={translate("done")} />
           </View>
         )}
       </View>
