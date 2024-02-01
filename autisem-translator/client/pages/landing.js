@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { View, Text, StyleSheet, Image, Animated, Easing, Dimensions } from "react-native";
+import { View, Text, StyleSheet, Image, Animated, Easing, Dimensions, ActivityIndicator } from "react-native";
 import * as Animatable from "react-native-animatable";
 
 import { useNavigation } from "@react-navigation/native";
@@ -21,48 +21,25 @@ export default function LandingScreen() {
   const dispatch = useDispatch();
 
   const [showLoading, setShowLoading] = useState(false);
+  const [loginChecked, setLoginChecked] = useState(false);
 
   const fadeIn = useRef(new Animated.Value(0)).current; // for fade-in animation
   const scaleValue = useRef(new Animated.Value(1)).current; // for scale animation
   const translateY = useRef(new Animated.Value(0)).current; // for translation animation
-  
-//Connecting, using async storage
-const checkLogin = async () => {
-  const username = await AsyncStorage.getItem('username');
-  const password = await AsyncStorage.getItem('password');
-  //Checking whether the user information exists in async storage
-  if (username && password) {
-    try {
-      const data = { userName: username, password: password };
-      const response = await UserService.loginUser(data);
-      if (response.message === "User exists") {
-        dispatch(setUser({ ...response.user.user, _id: response.user.user._id }));
-        if (response.user.user.type === "therapist") {
-          navigation.navigate("Therapist");
-        } else {
-          navigation.navigate("Patient");
-        }
-      } 
-    } catch (error) {
-      console.error("Error:", error);
-      setShowLoading(true); 
-    }
-  } else {
-    setShowLoading(true); // If there is no data, the login screen is displayed
-  }
-};
 
 
   useEffect(() => {
-    checkLogin();
+     
     // Start the scale animation when the component mounts
     startScaleAnimation();
 
     // Display login screen after 3 seconds
-    const timeoutId = setTimeout(() => {
+    const timeoutId = setTimeout(async () => {
       setShowLoading(true);
+      await checkLogin(); // Move checkLogin inside the setTimeout
+      setLoginChecked(true); // Set loginChecked to true after checkLogin completes
     }, 2000);
-
+ 
     // Clear the timeout when the component unmounts
     return () => clearTimeout(timeoutId);
   }, []);
@@ -92,6 +69,33 @@ const checkLogin = async () => {
       }).start();
     }
   }, [showLoading]);
+
+  //Connecting, using async storage
+const checkLogin = async () => {
+  const username = await AsyncStorage.getItem('username');
+  const password = await AsyncStorage.getItem('password');
+  //Checking whether the user information exists in async storage
+  if (username && password) {
+    try {
+      const data = { userName: username, password: password };
+      const response = await UserService.loginUser(data);
+      if (response.message === "User exists") {
+        dispatch(setUser({ ...response.user.user, _id: response.user.user._id }));
+        if (response.user.user.type === "therapist") {
+          navigation.navigate("Therapist");
+        } else {
+          navigation.navigate("Patient");
+        }
+      } 
+    } catch (error) {
+      console.error("Error:", error);
+      setShowLoading(true); 
+    }
+  } else {
+    setShowLoading(true); // If there is no data, the login screen is displayed
+  }
+};
+
 
   const startScaleAnimation = () => {
     Animated.loop(
@@ -125,7 +129,7 @@ const checkLogin = async () => {
         />
       </Animated.View>
 
-      {showLoading && (
+      {showLoading && loginChecked && (
         <Animatable.View
           animation="slideInUp" // You can choose the animation type
           duration={1000} // Animation duration

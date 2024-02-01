@@ -1,69 +1,75 @@
 import React from "react";
-import { View, StyleSheet, TouchableOpacity,Text} from "react-native";
+import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 
-
 const CustomHeader = () => {
   const countNotifications = useSelector((state) => state.patient.num);
   const navigation = useNavigation();
+  const user = useSelector((state) => state.user.user);
 
-  const handlePress = () => {
-    // Navigate to 'AssociateTherapist' component
-    navigation.reset({
-      index: 0,
-      routes: [{ name: 'Manage' }]
-    });
-    // navigation.navigate('Manage');
-  };
+  if (user) {
+    const type = user.userData.type;
+    if (type === "patient") {
+      const handlePress = () => {
+        // Navigate to 'AssociateTherapist' component
+        navigation.reset({
+          index: 0,
+          routes: [{ name: "Manage" }],
+        });
+      };
+      return (
+        <TouchableOpacity style={styles.circleContainer} onPress={handlePress}>
+          <Ionicons name="notifications" size={20} style={styles.icon} />
+          {countNotifications && countNotifications.numOfUnread > 0 && (
+            <View style={styles.notificationBadgeContainer}>
+              <Text style={styles.notificationText}>
+                {countNotifications.numOfUnread}
+              </Text>
+            </View>
+          )}
+        </TouchableOpacity>
+      );
+    }
+  }
 
-  return (
-    <TouchableOpacity style={styles.circleContainer} onPress={handlePress}>
-    <Ionicons name="notifications" size={20} style={styles.icon} />
-    {countNotifications && countNotifications.numOfUnread > 0 && (
-      <View style={styles.notificationBadgeContainer}>
-        <Text style={styles.notificationText}>
-          {countNotifications.numOfUnread}
-        </Text>
-      </View>
-    )}
-  </TouchableOpacity>
-  );
+  // Return null if the user is not a patient
+  return null;
 };
 export default CustomHeader;
 
 const styles = StyleSheet.create({
   circleContainer: {
-    position: 'relative',  // Add this line to make position:relative
+    position: "relative", // Add this line to make position:relative
     width: 25,
     height: 25,
     borderRadius: 20,
-    backgroundColor: 'white',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "white",
+    justifyContent: "center",
+    alignItems: "center",
     marginRight: 15,
   },
   icon: {
-    color: 'black',
+    color: "black",
   },
   notificationBadgeContainer: {
-    position: 'absolute',
-    right: -1,  // Adjust this value to move the badge to the right side
-    top: -1,   // Adjust this value to move the badge to the top
+    position: "absolute",
+    right: -1, // Adjust this value to move the badge to the right side
+    top: -1, // Adjust this value to move the badge to the top
     zIndex: 1,
-    backgroundColor: 'green',
+    backgroundColor: "green",
     borderRadius: 10,
     width: 12,
     height: 12,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 1,  // Change 'border' to 'borderWidth'
-    borderColor: 'white',  // Add 'borderColor'
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 1, // Change 'border' to 'borderWidth'
+    borderColor: "white", // Add 'borderColor'
   },
 
   notificationText: {
-    color: 'white',
+    color: "white",
     fontSize: 9,
   },
 });

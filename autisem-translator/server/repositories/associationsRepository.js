@@ -53,14 +53,15 @@ async function getListOfPatientsByTherapistID(therapistID, status) {
   }
 }
 
-async function markNotificationAsConfirmed(id, receiverID) {
+async function updateStatusAssociation(id, receiverID, status3) {
+  console.log("status3",status3)
   try {
     const updatedAssociations = await Associations.findOneAndUpdate(
       {
         therapistId: id,
         patientId: receiverID,
       },
-      { status: "Confirmed" },
+      { status: "Cancelled" },
       { new: true }
     );
     return true;
@@ -136,7 +137,7 @@ module.exports = {
   createAssociation,
   removeAssociation,
   getListOfPatientsByTherapistID,
-  markNotificationAsConfirmed,
+  updateStatusAssociation,
   getlistTherapist,
   deletingTherapistOfPatient,
 };

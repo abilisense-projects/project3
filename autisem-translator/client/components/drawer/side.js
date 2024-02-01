@@ -56,23 +56,6 @@ const SideNavigator = ({ navigation, shouldDisplaySideNavigator, onLanguageChang
     setOverlayVisible(!showLanguageOptions);
   };
 
-  // const handleLanguageSelection = (language) => {
-  //   setSelectedLanguage(language);
-  //   onLanguageChange(language); // קריאה לפונקצית הקולבק לעדכון השפה בקומפוננטת האב
-  
-  //   if (language === 'Hebrew') {
-  //     console.log('נבחר עברית');
-  //     translationService.storeLanguage('he');
-  //   } else if (language === 'English') {
-  //     console.log('Selected English');
-  //     translationService.storeLanguage('en');
-  //   }
-  
-  //   translationService.initializeLanguage();
-  //   setShowLanguageList(false); // הסתרת רשימת השפות לאחר בחירה
-  //   console.log("Language selected:", language);
-  // };
-
   const handleLanguageSelection = (language) => {
     setSelectedLanguage(language);
     onLanguageChange(language);
@@ -98,7 +81,6 @@ const SideNavigator = ({ navigation, shouldDisplaySideNavigator, onLanguageChang
   
     translationService.initializeLanguage();
     setShowLanguageList(false);
-    console.log("Language selected:", language);
   };
 
   const handleOverlayPress = () => {
@@ -127,9 +109,10 @@ const SideNavigator = ({ navigation, shouldDisplaySideNavigator, onLanguageChang
           key={index}
           onPress={() => {
             setPage(item);
-            goToFirstScreen(item);
             if (item === "Language") {
               handleLanguageIconClick();
+            } else{
+              goToFirstScreen(item);
             }
           }}
         >
@@ -236,6 +219,11 @@ const styles = StyleSheet.create({
     right: 10,
     padding: 10,
   },
+  logout:{
+    marginBottom:20
+  }
+  
+  
 });
 
 export default SideNavigator;
