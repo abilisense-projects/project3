@@ -75,18 +75,18 @@ const TherapistScreen = () => {
       ));
 
       if (isUserNameExists) {
-        setMessage(`This patient already exists on your list.`);
+        setMessage(`${translate('patient already exists')}.`);
         return;
       }
       // send notification to patient
       const notificationStatus = await therapistService.sendNotificationToPatient(therapistId, patientUsername);
       if (notificationStatus === 'no such patient') {
-        setBannerMessage('Failed to send notification. There is no such Patient.');
+        setBannerMessage(`${translate("failed to send notification")}, ${translate('no such patient')}`);
       } else {
-        setBannerMessage(`Notification sent to ${patientUsername}`);
+        setBannerMessage(`${translate('notification sent to')} ${patientUsername}`);
       }
     } catch (error) {
-      setBannerMessage("Failed to send notification. Please try again.");
+      setBannerMessage(`${translate("failed to send notification")}`);
     }
     // close modal
     setAssociatePatientModalVisible(false);
@@ -170,7 +170,7 @@ const TherapistScreen = () => {
               <GenericButton
                 style={styles.toggleButton}
                 onPress={toggleDisplayPending}
-                title={isDisplayingPending ? 'Show Confirmed Patients' : 'Show Pending Patients'}
+                title={isDisplayingPending ? translate('show Confirmed Patients') : translate('show Unconfirmed Patients')}
                 buttonWidth={250}
               />
             </View>

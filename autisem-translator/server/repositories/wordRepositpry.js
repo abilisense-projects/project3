@@ -1,41 +1,54 @@
-
+const Patient = require('../models/patient');
 const Word = require('../models/word');
 const Recording = require('../services/recordingService');
 
-async function createWord(recording, patientID, translation,) {
+async function createWord(recordings, patientID, translation) {
     try {
-        const recordingLink = Recording.uploadAudio('recording', recording);
-        console.log('recordingLink',recordingLink);
+        const recordingLinks = await Promise.all(recordings.map(recording => 
+            Recording.uploadAudio(recording)
+        ));
+
+
         const newWord = new Word({
-            recordingLink,
-            patientID,
-            translation
+            translation: translation,
+            recordings: recordingLinks,
         });
-        return newWord.save();
+
+        const savedWord = await newWord.save();
+
+        const updatedPatient = await Patient.findByIdAndUpdate(
+            patientID,
+            { $push: { wordIds: savedWord._id } },
+            { new: true, useFindAndModify: false }
+        );
+
+        return savedWord._id;
     } catch (error) {
         console.error(error);
         return { success: false, message: 'Internal server error' };
     }
-
 }
+
+
 
 async function getAllWords() {
     try {
         const words = await Word.find({});
-        return { success: true, words:words};
+        return { success: true, words: words };
     } catch (error) {
         console.error(error);
         return { success: false, message: 'Internal server error' };
     }
 }
 
-async function getAllWordsByPatientId(patientId) {
+async function getListOfWordsByIds(wordIds) {
     try {
-        const words = await Word.find({ patientID: patientId });
-        if(words.length==0){
-            return null;
-        }
-        return { success: true, words: words };
+        const words = await Word.find({ _id: { $in: wordIds } });
+        const wordDetailsArray = words.map(word => {
+            const firstRecording = word.recordings.length > 0 ? word.recordings[0] : null;
+            return { translation: word.translation, firstRecording: firstRecording };
+        });
+        return { success: true, words: wordDetailsArray };
     } catch (error) {
         console.error(error);
         return { success: false, message: 'Internal server error' };
@@ -46,5 +59,5 @@ async function getAllWordsByPatientId(patientId) {
 module.exports = {
     createWord,
     getAllWords,
-    getAllWordsByPatientId
+    getListOfWordsByIds
 };
