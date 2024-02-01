@@ -38,7 +38,7 @@ const patientService = {
     }
   },
 
-  statusChange: async (notificationId) => {
+  statusChangeToRead: async (notificationId) => {
     try {
       const response = await axios.put(
         `${REACT_APP_BASE_URL}/patient/change`,
@@ -51,11 +51,13 @@ const patientService = {
     }
   },
 
-  statusChangeToConfirmed: async (associationsId) => {
+  associationStatusChange: async (therapistId,patientId,status) => {
     try {
       const response = await axios.put(
         `${REACT_APP_BASE_URL}/patient/changeAssociations`,
-        associationsId
+        {therapistId,
+        patientId,
+        status}
       );
       return response.data;
     } catch (error) {

@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { Provider } from "react-redux";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet } from "react-native";
 import LandingScreen from "./pages/landing";
 import RegistrationScreen from "./pages/register";
 import LoginScreen from "./pages/login";
@@ -32,6 +32,7 @@ const App = () => {
 
   const handleLanguageChange = (language) => {
     setSelectedLanguage(language);
+
   };
   return (
     

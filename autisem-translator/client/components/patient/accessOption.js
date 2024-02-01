@@ -19,6 +19,17 @@ export default function AccessOption() {
   const { therapist } = route.params || {};
 
   const handleModalCancel = async () => {
+    const responseChange = await patientService.statusChangeToRead({
+      id: therapist.id,
+      receiverID: receiverId,
+    });
+
+    const response = await patientService.associationStatusChange(
+       therapist.id,
+       receiverId,
+       "Canceled"
+    );
+
     // navigation.navigate("GetTherapist");
     navigation.reset({
       index: 0,
@@ -27,15 +38,15 @@ export default function AccessOption() {
   };
 
   const handleModalOk = async () => {
-    const responseChange = await patientService.statusChange({
+    const responseChange = await patientService.statusChangeToRead({
       id: therapist.id,
       receiverID: receiverId,
     });
 
-    const response = await patientService.statusChangeToConfirmed({
-      id: therapist.id,
-      receiverID: receiverId,
-    });
+    const response = await patientService.associationStatusChange(
+      therapist.id,
+      receiverId,
+      "Confirmed");
     //here show banner
     setBannerMessage(
       `${translate("therapist")} ${therapist.firstName} ${therapist.lastName} ${translate("added successfully")}`

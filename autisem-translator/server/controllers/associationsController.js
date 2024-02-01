@@ -25,12 +25,14 @@ async function remove(req, res) {
 };
 
 
-async function statusChangeToConfirmed(req, res) {
+async function updateStatusAssociation(req, res) {
   try {
-    const { id, receiverID } = req.body;
-    const change = await AssociationService.markNotificationAsConfirmed(
+    const { id, receiverID, status } = req.body;
+    console.log("status",status)
+    const change = await AssociationService.updateStatusAssociation(
       id,
-      receiverID
+      receiverID,
+      status
     );
     res.json(change);
   } catch (error) {
@@ -69,7 +71,7 @@ async function deletingTherapistFromAssociations(req, res) {
 module.exports = {
   create,
   remove,
-  statusChangeToConfirmed,
+  updateStatusAssociation,
   getlistOfAssociatedTherapist,
   deletingTherapistFromAssociations
 };
