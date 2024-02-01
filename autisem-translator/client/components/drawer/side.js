@@ -34,6 +34,15 @@ const SideNavigator = ({ navigation, shouldDisplaySideNavigator, onLanguageChang
     setPage(currentPage);
   });
 
+  const CloseDrawerButton = () => (
+    <Pressable
+      style={styles.closeButton}
+      onPress={() => navigation.closeDrawer()} // This line closes the drawer
+    >
+      <Ionicons name="close" size={30} color="#000" />
+    </Pressable>
+  );
+
   const goToFirstScreen = (pageName) => {
     navigation.reset({
       index: 0,
@@ -76,6 +85,7 @@ const SideNavigator = ({ navigation, shouldDisplaySideNavigator, onLanguageChang
 
   return (
     <View style={styles.drawerContent}>
+       <CloseDrawerButton />
       <TouchableWithoutFeedback onPress={handleOverlayPress}>
         <View style={[styles.overlay, { display: overlayVisible ? "flex" : "none" }]} />
       </TouchableWithoutFeedback>
@@ -205,11 +215,18 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 8,
   },
+  
   language:{
     marginBottom: 15,
     flexDirection: "row",
-    marginLeft: 30,
-    
+    marginLeft: 30,    
+  },
+
+  closeButton: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    padding: 10,
   },
 });
 
