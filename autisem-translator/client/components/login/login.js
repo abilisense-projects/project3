@@ -7,6 +7,8 @@ import { translationService } from "../../services/translationService";
 import UserService from "../../services/backendServices/userService";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../redux/actions/userAction";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 // Translation function alias for shorter usage
 const translate = translationService.translate;
@@ -69,6 +71,8 @@ export default function Login() {
       // Send login request to the server
       const response = await UserService.loginUser(data);
       if (response.message === "User exists") {
+        await AsyncStorage.setItem('username', data.userName);
+        await AsyncStorage.setItem('password', data.password);
         dispatch(setUser({ ...response.user.user, _id: response.user.user._id }));
         if (response.user.user.type == "therapist") {
           navigation.navigate("Therapist");
@@ -116,3 +120,4 @@ export default function Login() {
     </View>
   );
 }
+

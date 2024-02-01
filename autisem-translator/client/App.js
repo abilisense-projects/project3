@@ -22,9 +22,7 @@ import SideNavigator from "./components/drawer/side";
 import ListOfAssociatedTherapists from "./components/patient/listOfAssociatedTherapists";
 import PatientDetails from "./components/therapist/patientDetailes";
 import ManagementByTheParent from "./components/patient/managementByTheParent";
-import CustomHeader from "./components/drawer/customHeader";
-import Notifications from "./components/side_bar/notifications";
-
+import Logout from "./components/login/logout";
 const Drawer = createDrawerNavigator();
 
 const App = () => {
@@ -38,18 +36,9 @@ const App = () => {
     <Provider store={store}>
       <NavigationContainer>
         <Drawer.Navigator
-        screenOptions={{
-          headerShown: true,
-          headerRight: () => <CustomHeader />,
-          headerStyle: {
-            backgroundColor: 'green', 
-          },
-          headerTintColor: '#fff',
-        }}
           drawerContent={(props) => (
             <SideNavigator
               {...props}
-              onLanguageChange={handleLanguageChange}
               shouldDisplaySideNavigator={
                 props.state.routes[props.state.index].name !== "Login" &&
                 props.state.routes[props.state.index].name !== "Registration" &&
@@ -58,11 +47,18 @@ const App = () => {
                 props.state.routes[props.state.index].name !== "CodeFromTheEmail" &&
                 props.state.routes[props.state.index].name !== "NewPassword"
               }
+              // countNotifications={
+              //   props.state.routes[props.state.index].name == "Patient"
+              // }
             />
           )}
           drawerPosition={selectedLanguage === "Hebrew" ? "right" : "left"}
 
+          // screenOptions={{
+          //   headerShown: true,
+          //   header: (props) => <CustomHeader {...props} />,
           
+          // }}
         >
           <Drawer.Screen
             name="Landing"
@@ -134,11 +130,6 @@ const App = () => {
             component={ManagementByTheParent}
             options={{ title: "" }}
           />
-          <Drawer.Screen
-            name="Manage"
-            component={AssociateTherapist}
-            options={{ title: "" }}
-          />
 
           {/* all these will appear in the sidebar */}
           {/* <Drawer.Screen name="Home" component={BackgroundSelection} options={{ title: "" }} /> */}
@@ -148,16 +139,21 @@ const App = () => {
             options={{ title: "" }}
           />
           <Drawer.Screen
-            name="Notifications"
-            component={Notifications}
+            name="Manage"
+            component={AssociateTherapist}
             options={{ title: "" }}
           />
-          {/* this should naviga to a setting page */}
           <Drawer.Screen
             name="Settings"
             component={PatientScreen}
             options={{ title: "" }}
           />
+
+         <Drawer.Screen
+          name="Logout" 
+          component={Logout}
+          options={{ title: "" }}
+        />
 
         </Drawer.Navigator>
       </NavigationContainer>

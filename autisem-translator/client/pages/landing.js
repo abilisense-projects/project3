@@ -7,6 +7,10 @@ import { translationService } from "../services/translationService";
 import image100 from "../assets/images/100.png";
 import { globalStyles } from '../styles';
 import Login from "../components/login/login";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { setUser } from "../redux/actions/userAction";
+import { useDispatch } from "react-redux";
+import UserService from "../services/backendServices/userService";
 
 const translate = translationService.translate;
 
@@ -14,13 +18,43 @@ const windowHeight = Dimensions.get('window').height;
 
 export default function LandingScreen() {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+
   const [showLoading, setShowLoading] = useState(false);
 
   const fadeIn = useRef(new Animated.Value(0)).current; // for fade-in animation
   const scaleValue = useRef(new Animated.Value(1)).current; // for scale animation
   const translateY = useRef(new Animated.Value(0)).current; // for translation animation
+  
+//Connecting, using async storage
+const checkLogin = async () => {
+  const username = await AsyncStorage.getItem('username');
+  const password = await AsyncStorage.getItem('password');
+  //Checking whether the user information exists in async storage
+  if (username && password) {
+    try {
+      const data = { userName: username, password: password };
+      const response = await UserService.loginUser(data);
+      if (response.message === "User exists") {
+        dispatch(setUser({ ...response.user.user, _id: response.user.user._id }));
+        if (response.user.user.type === "therapist") {
+          navigation.navigate("Therapist");
+        } else {
+          navigation.navigate("Patient");
+        }
+      } 
+    } catch (error) {
+      console.error("Error:", error);
+      setShowLoading(true); 
+    }
+  } else {
+    setShowLoading(true); // If there is no data, the login screen is displayed
+  }
+};
+
 
   useEffect(() => {
+    checkLogin();
     // Start the scale animation when the component mounts
     startScaleAnimation();
 

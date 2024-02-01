@@ -23,8 +23,8 @@ const SideNavigator = ({ navigation, shouldDisplaySideNavigator, onLanguageChang
     }
   }
 
-  const pages = [homePage, "Notifications", "Settings", "Theme", "Language"];
-  const icons = ["home", "notifications", "settings", "color-palette", "language"];
+  const pages = [homePage, "Notifications", "Settings", "Theme", "Language", "Logout"];
+  const icons = ["home", "notifications", "settings", "color-palette", "language", "log-out"];
   const languages = ["English","Hebrew"];
   const countNotifications = useSelector((state) => state.patient.num);
 
@@ -33,6 +33,15 @@ const SideNavigator = ({ navigation, shouldDisplaySideNavigator, onLanguageChang
       navigation.getState().routes[navigation.getState().index].name;
     setPage(currentPage);
   });
+
+  const CloseDrawerButton = () => (
+    <Pressable
+      style={styles.closeButton}
+      onPress={() => navigation.closeDrawer()} // This line closes the drawer
+    >
+      <Ionicons name="close" size={30} color="#000" />
+    </Pressable>
+  );
 
   const goToFirstScreen = (pageName) => {
     navigation.reset({
@@ -103,6 +112,7 @@ const SideNavigator = ({ navigation, shouldDisplaySideNavigator, onLanguageChang
 
   return (
     <View style={styles.drawerContent}>
+       <CloseDrawerButton />
       <TouchableWithoutFeedback onPress={handleOverlayPress}>
         <View style={[styles.overlay, { display: overlayVisible ? "flex" : "none" }]} />
       </TouchableWithoutFeedback>
@@ -217,8 +227,14 @@ const styles = StyleSheet.create({
   language:{
     marginBottom: 15,
     flexDirection: "row",
-    marginLeft: 30,
-    
+    marginLeft: 30,    
+  },
+
+  closeButton: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    padding: 10,
   },
 });
 
