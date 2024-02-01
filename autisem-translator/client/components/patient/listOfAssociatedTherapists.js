@@ -64,7 +64,7 @@ export default function ListOfAssociatedTherapists() {
         receiverID: receiverId,
       });
       setBannerMessage(
-        `Therapist ${firstName} ${lastName} deleted successfully.`
+        `${translate("Therapist")} ${firstName} ${lastName} ${translate("Deleted successfully")}`
       );
     }
   };
