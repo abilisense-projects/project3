@@ -23,8 +23,8 @@ const SideNavigator = ({ navigation, shouldDisplaySideNavigator, onLanguageChang
     }
   }
 
-  const pages = [homePage, "Notifications", "Settings", "Theme", "Language"];
-  const icons = ["home", "notifications", "settings", "color-palette", "language"];
+  const pages = [homePage, "Notifications", "Settings", "Theme", "Language", "Logout"];
+  const icons = ["home", "notifications", "settings", "color-palette", "language", "log-out"];
   const languages = ["English","Hebrew"];
   const countNotifications = useSelector((state) => state.patient.num);
 
