@@ -219,6 +219,11 @@ const styles = StyleSheet.create({
     right: 10,
     padding: 10,
   },
+  logout:{
+    marginBottom:20
+  }
+  
+  
 });
 
 export default SideNavigator;

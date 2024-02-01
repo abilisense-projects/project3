@@ -5,7 +5,6 @@ import {
   Text,
   StyleSheet,
   Image,
-  ImageBackground,
   ActivityIndicator,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,7 +21,6 @@ const translate = translationService.translate;
 const PatientScreen = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const translate = translationService.translate;
   const [countNotifications, setCountNotifications] = useState(" ");
   const [isLoading, setIsLoading] = useState(true);
   const [recordedData, setRecordedData] = useState(null);
@@ -133,7 +131,6 @@ const styles = StyleSheet.create({
   hello: {
     marginLeft: 25,
     marginTop:10,
-    
   },
   centeredButton: {
     flex: 1,
