@@ -23,10 +23,9 @@ const SideNavigator = ({ navigation, shouldDisplaySideNavigator, onLanguageChang
     }
   }
 
-  const pages = [homePage, "Notifications", "Settings", "Theme", "Language", "Logout"];
-  const icons = ["home", "notifications", "settings", "color-palette", "language", "log-out"];
+  const pages = [homePage, "Notifications", "Settings", "Theme", "Language"];
+  const icons = ["home", "notifications", "settings", "color-palette", "language"];
   const languages = ["English","Hebrew"];
-  const countNotifications = useSelector((state) => state.patient.num);
 
   useFocusEffect(() => {
     const currentPage =
@@ -116,17 +115,6 @@ const SideNavigator = ({ navigation, shouldDisplaySideNavigator, onLanguageChang
             }
           }}
         >
-          {/* Conditionally render the badge for the 'notifications' icon */}
-
-          {/* {icons[index] === "notifications" &&
-            countNotifications &&
-            countNotifications.numOfUnread > 0 && (
-              <View style={styles.notificationBadgeContainer}>
-                <Text style={styles.notificationText}>
-                  {countNotifications.numOfUnread}
-                </Text>
-              </View>
-            )} */}
           <Ionicons
             name={icons[index]}
             size={20}
@@ -166,12 +154,8 @@ const styles = StyleSheet.create({
   },
   drawerItem: {
     marginBottom: 20,
-    flexDirection: "row", // Add this line
+    flexDirection: "row",
   },
-  // iconTextContainer: {
-  //   flexDirection: "row",
-  //   alignItems: "center",
-  // },
   icon: {
     marginRight: 8,
   },
@@ -191,22 +175,6 @@ const styles = StyleSheet.create({
     backgroundColor: "black",
     marginBottom: 10,
   },
-  // notificationBadgeContainer: {
-  //   position: "absolute",
-  //   zIndex: 1,
-  //   backgroundColor: "green",
-  //   borderRadius: 10,
-  //   width: 11,
-  //   height: 11,
-  //   justifyContent: "center",
-  //   alignItems: "center",
-  //   border: "1px solid white",
-  // },
-
-  // notificationText: {
-  //   color: "white",
-  //   fontSize: 8,
-  // },
   language:{
     marginBottom: 15,
     flexDirection: "row",
@@ -218,12 +186,7 @@ const styles = StyleSheet.create({
     top: 10,
     right: 10,
     padding: 10,
-  },
-  logout:{
-    marginBottom:20
   }
-  
-  
 });
 
 export default SideNavigator;

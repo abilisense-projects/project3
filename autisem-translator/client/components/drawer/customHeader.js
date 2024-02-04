@@ -9,18 +9,32 @@ const CustomHeader = () => {
   const navigation = useNavigation();
   const user = useSelector((state) => state.user.user);
 
-  if (user) {
-    const type = user.userData.type;
-    if (type === "patient") {
-      const handlePress = () => {
-        // Navigate to 'AssociateTherapist' component
-        navigation.reset({
-          index: 0,
-          routes: [{ name: "Manage" }],
-        });
-      };
-      return (
-        <TouchableOpacity style={styles.circleContainer} onPress={handlePress}>
+  const handleNotificationsPress = () => {
+    // Navigate to 'Manage' component for patients
+    navigation.reset({
+      index: 0,
+      routes: [{ name: "Manage" }],
+    });
+  };
+
+  const handleLogout = () => {
+     navigation.reset({
+      index: 0,
+      routes: [{ name: "Logout" }],
+    });
+  };
+
+  return (
+    <View style={styles.container}>
+      <TouchableOpacity onPress={handleLogout}>
+        <Text style={styles.logOutText}>Log out</Text>
+      </TouchableOpacity>
+      <View style={styles.space} />
+      {user && user.userData.type === "patient" && (
+        <TouchableOpacity
+          style={styles.circleContainer}
+          onPress={handleNotificationsPress}
+        >
           <Ionicons name="notifications" size={20} style={styles.icon} />
           {countNotifications && countNotifications.numOfUnread > 0 && (
             <View style={styles.notificationBadgeContainer}>
@@ -30,16 +44,22 @@ const CustomHeader = () => {
             </View>
           )}
         </TouchableOpacity>
-      );
-    }
-  }
-
-  // Return null if the user is not a patient
-  return null;
+      )}
+    </View>
+  );
 };
+
 export default CustomHeader;
 
 const styles = StyleSheet.create({
+  container: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginRight: 15,
+  },
+  space: {
+    width: 20, // Adjust the width as needed for the desired spacing
+  },
   circleContainer: {
     position: "relative", // Add this line to make position:relative
     width: 25,
@@ -71,5 +91,9 @@ const styles = StyleSheet.create({
   notificationText: {
     color: "white",
     fontSize: 9,
+  },
+  logOutText: {
+    color: "white",
+    fontSize: 20,
   },
 });

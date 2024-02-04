@@ -9,6 +9,7 @@ const Logout = () => {
     const navigation = useNavigation();
 
   const handleLogout = async () => {
+    console.log("Logging out");
     // Clear user data from AsyncStorage
     await AsyncStorage.removeItem("username");
     await AsyncStorage.removeItem("password");
