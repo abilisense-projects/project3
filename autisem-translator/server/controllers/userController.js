@@ -16,7 +16,7 @@ async function userLogin(req, res) {
     }
 
     const user = await userService.loginUser(userName, password);
-    if (user) {
+    if (user && user.user != null) {
       // User exists, return the user details
       res.status(200).json({ message: "User exists", user });
     } else {
@@ -119,7 +119,7 @@ async function createUser(req, res) {
 
     // Check if the username already exists
     const userNameExists = await userService.doesUserNameExist(userName);
-    
+
     if (userNameExists.exists) {
       return res.status(409).json({ message: "Username already exists" });
     }
@@ -198,9 +198,9 @@ async function updateImage(req, res) {
 
 async function uploadProfileImage(req, res) {
   try {
-    const {userId}=req.query;
-    const {image} = req.body;
-    const imageResult = await userService.uploadProfileImage(userId,image);
+    const { userId } = req.query;
+    const { image } = req.body;
+    const imageResult = await userService.uploadProfileImage(userId, image);
     return res.json(imageResult);
   } catch (error) {
     console.error(error);
