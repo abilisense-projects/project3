@@ -9,11 +9,9 @@ const HamburgerModal = ({ modalVisible, closeModal, openBackgroundSelection }) =
   const handleLanguageChange = (language) => {
     setSelectedLanguage(language);
     if (language === 'Hebrew') {
-      console.log('נבחר עברית');
       translationService.storeLanguage('he');
       
     } else if (language === 'English') {
-      console.log('Selected English');
       translationService.storeLanguage('en');
     }
     translationService.initializeLanguage();
