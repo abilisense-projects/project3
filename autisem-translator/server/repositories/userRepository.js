@@ -6,12 +6,9 @@ async function updateNew(userName, newPassword) {
   try {
     const filter = { userName };
     const hashedPassword = await bcrypt.hash(newPassword, 10);
-    const update = { password: newPassword };
-    // const update = { password: newPassword };
-
+    const update = { password: hashedPassword };
     const therapistUpdate = await Therapist.findOneAndUpdate(filter, update);
     const patientUpdate = await Patient.findOneAndUpdate(filter, update);
-
     if (therapistUpdate || patientUpdate) {
       return { success: true };
     } else {
