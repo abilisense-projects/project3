@@ -16,12 +16,13 @@ import * as Animatable from "react-native-animatable";
 
 import image100 from "../assets/images/100.png";
 
-import ForgotYourPassword from "../components/login/forgotYourPassword"; 
+import NewPassword from "../components/login/newPassword"; 
 
 
 const windowHeight = Dimensions.get('window').height;
 
-export default function ForgotPassword() {
+export default function NewPasswordChange(userName) {
+  console.log(userName);
 
   const [showLoading, setShowLoading] = useState(false);
 
@@ -85,7 +86,7 @@ export default function ForgotPassword() {
           ]}
           accessible={true}
         >
-           <ForgotYourPassword /> 
+           <NewPassword /> 
         </Animatable.View>
       )}
     </View>

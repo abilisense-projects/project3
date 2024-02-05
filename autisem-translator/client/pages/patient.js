@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 20, // Adjust this value as needed
+    marginTop: 50, // Adjust this value as needed
   },
 });
 

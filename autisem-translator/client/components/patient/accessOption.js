@@ -103,7 +103,7 @@ export default function AccessOption() {
               setBannerMessage(null),
                 navigation.reset({
                   index: 0,
-                  routes: [{ name: "GetTherapist" }]
+                  routes: [{ name: "ListOfAssociatedTherapists" }]
                 });
             }}
           />

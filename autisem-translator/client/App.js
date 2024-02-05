@@ -33,21 +33,21 @@ const App = () => {
 
   const handleLanguageChange = (language) => {
     setSelectedLanguage(language);
-
   };
+
+
   return (
-    
     <Provider store={store}>
       <NavigationContainer>
         <Drawer.Navigator
           screenOptions={{
-          headerShown: true,
-          headerRight: () => <CustomHeader />,
-          headerStyle: {
-            backgroundColor: 'green', 
-          },
-          headerTintColor: '#fff',
-        }}
+            headerShown: true,
+            headerRight: () => <CustomHeader />,
+            headerStyle: {
+              backgroundColor: "green",
+            },
+            headerTintColor: "#fff",
+          }}
           drawerContent={(props) => (
             <SideNavigator
               {...props}
@@ -56,14 +56,14 @@ const App = () => {
                 props.state.routes[props.state.index].name !== "Login" &&
                 props.state.routes[props.state.index].name !== "Registration" &&
                 props.state.routes[props.state.index].name !== "Landing" &&
-                props.state.routes[props.state.index].name !== "ForgotYourPassword" &&
-                props.state.routes[props.state.index].name !== "CodeFromTheEmail" &&
+                props.state.routes[props.state.index].name !==
+                  "ForgotYourPassword" &&
+                props.state.routes[props.state.index].name !==
+                  "CodeFromTheEmail" &&
                 props.state.routes[props.state.index].name !== "NewPassword"
               }
             />
           )}
-          drawerPosition={selectedLanguage === "Hebrew" ? "right" : "left"}
-
         >
           <Drawer.Screen
             name="Landing"
@@ -148,7 +148,7 @@ const App = () => {
             component={BackgroundSelection}
             options={{ title: "" }}
           />
-           <Drawer.Screen
+          <Drawer.Screen
             name="Notifications"
             component={Notifications}
             options={{ title: "" }}
@@ -159,12 +159,11 @@ const App = () => {
             options={{ title: "" }}
           />
 
-         <Drawer.Screen
-          name="Logout" 
-          component={Logout}
-          options={{ title: "" }}
-        />
-
+          <Drawer.Screen
+            name="Logout"
+            component={Logout}
+            options={{ title: "" }}
+          />
         </Drawer.Navigator>
       </NavigationContainer>
     </Provider>
