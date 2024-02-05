@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
   View,
-  Button,
   Text,
   StyleSheet,
   Image,
@@ -15,6 +14,8 @@ import patientService from "../services/backendServices/patientService";
 import { setUnreadNotification } from "../redux/actions/patientAction";
 import { translationService } from "../services/translationService";
 import recordingService from "../services/backendServices/recordingService";
+import WordTranslationModal from "../components/patient/wordTranslationModal";
+
 
 const translate = translationService.translate;
 
@@ -24,6 +25,10 @@ const PatientScreen = () => {
   const [countNotifications, setCountNotifications] = useState(" ");
   const [isLoading, setIsLoading] = useState(true);
   const [recordedData, setRecordedData] = useState(null);
+  const [ModalVisible, setModalVisible] = useState(false);
+  const [translationResponse, setTranslationResponse] = useState(null);
+
+
 
 
   const receiverId = useSelector((state) => state.user.user.userData._id);
@@ -47,16 +52,28 @@ const PatientScreen = () => {
     };
     fetchData();
   }, [receiverId, setCountNotifications]);
+
   const uploadToServer = async (recordedData) => {
     try {
       const response = await recordingService.translateWord(recordedData);
       console.log("Recordings uploaded to server", response);
+      setTranslationResponse(response); // Set the translation response
+      handleAddPatient(); // Open the modal
     } catch (error) {
       console.error("Error uploading recordings", error);
     }
   }
 
   const user = useSelector((state) => state.user.user.userData);
+
+  //set opem modal true for entering patient's name
+  const handleAddPatient = () => {
+    setModalVisible(true);
+  };
+
+  const handleAssociatePatientCancel = () => {
+    setModalVisible(false);
+  };
  
 
   if (isLoading) {
@@ -82,13 +99,20 @@ const PatientScreen = () => {
           <Text style={styles.label}>{translate("hello")}{user.firstName}</Text>
         </View>
         <View style={styles.recordAudio}>
-        <RecordAudio setRecordedData = {setRecordedData}>  </RecordAudio>
-        {/* <Button title={translate("upload")} onPress={() => uploadToServer(recordedData)} /> */}
-        
+        <RecordAudio setRecordedData = {setRecordedData}>  </RecordAudio>     
         </View>
+
         <View style={styles.centeredButton}>
-          <GenericButton title={translate("upload")} onPress={() => uploadToServer(recordedData)} buttonWidth={80}></GenericButton>
+          <GenericButton title={translate("upload")} 
+          onPress={() => uploadToServer(recordedData)}
+          buttonWidth={80}></GenericButton>
         </View>
+
+        <WordTranslationModal
+              isVisible={ModalVisible}
+              onCancel={handleAssociatePatientCancel}
+              translationResponse={translationResponse} // Pass the translation response
+            />
       </View>
     </View>
   );
@@ -141,5 +165,8 @@ const styles = StyleSheet.create({
 });
 
 export default PatientScreen;
+
+
+
 
 

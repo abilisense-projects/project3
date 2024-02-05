@@ -6,7 +6,7 @@ import { Provider } from "react-redux";
 import { StyleSheet } from "react-native";
 import LandingScreen from "./pages/landing";
 import RegistrationScreen from "./pages/register";
-import LoginScreen from "./pages/login";
+// import LoginScreen from "./pages/login";
 import ForgotPassword from "./pages/forgotPassword";
 import CodeFromTheEmail from "./components/login/codeFromTheEmail";
 import NewPassword from "./components/login/newPassword";
@@ -25,6 +25,7 @@ import ManagementByTheParent from "./components/patient/managementByTheParent";
 import Logout from "./components/login/logout";
 import CustomHeader from "./components/drawer/customHeader";
 import Notifications from "./components/side_bar/notifications";
+import WordTranslationModal from "./components/patient/wordTranslationModal";
 
 const Drawer = createDrawerNavigator();
 
@@ -70,11 +71,11 @@ const App = () => {
             component={LandingScreen}
             options={{ headerShown: false }}
           />
-          <Drawer.Screen
+          {/* <Drawer.Screen
             name="Login"
             component={LoginScreen}
             options={{ headerShown: false }}
-          />
+          /> */}
           <Drawer.Screen
             name="ForgotYourPassword"
             component={ForgotPassword}
@@ -138,6 +139,11 @@ const App = () => {
           <Drawer.Screen
             name="Manage"
             component={AssociateTherapist}
+            options={{ title: "" }}
+          />
+          <Drawer.Screen
+            name="WordTranslationModal"
+            component={WordTranslationModal}
             options={{ title: "" }}
           />
 

@@ -1,11 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { View, StyleSheet, Text, Pressable } from "react-native";
+import React, { useState, useEffect , useRef } from "react";
+import { View, StyleSheet, Text, Pressable, Image, Animated, Dimensions} from "react-native";
 import GenericForm from "../shared/form";
 import validations from "../../config/validations";
 import { useNavigation } from "@react-navigation/native";
 import sendTheEmailService from "../../services/backendServices/sendTheEmailService";
 import { translationService } from "../../services/translationService";
 import { globalStyles } from "../../styles";
+import * as Animatable from "react-native-animatable";
+import image100 from "../../assets/images/100.png";
+
+const windowHeight = Dimensions.get('window').height;
 
 
 // Translation function alias for shorter usage
@@ -16,6 +20,28 @@ const styles = StyleSheet.create({
   errorText: {
     color: "red",
     marginTop: 10,
+  },
+  container: {
+    flex: 1,
+    backgroundColor: "green",
+    alignItems: "center",
+    // justifyContent: "center",
+    justifyContent: "flex-start",
+  },
+
+  image: {
+    width: 250,
+    height: 150,
+    marginTop: 12,
+  },
+  loadingContainer: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: "white",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
 
@@ -45,6 +71,44 @@ export default function CodeFromTheEmail(userName) {
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [disableUntil, setDisableUntil] = useState(0);
   const [remainingTime, setRemainingTime] = useState(0);
+
+  const [showLoading, setShowLoading] = useState(false);
+
+  const fadeIn = useRef(new Animated.Value(0)).current; // for fade-in animation
+  const translateY = useRef(new Animated.Value(0)).current; // for translation animation
+
+
+  useEffect(() => {
+
+    setShowLoading(true);
+    
+}, []);
+
+useEffect(() => {
+  if (showLoading) {
+    Animated.timing(fadeIn, {
+      toValue: 1,
+      duration: 1000,
+      useNativeDriver: true,
+    }).start();
+    Animated.timing(translateY, {
+      toValue: -windowHeight * 0.37,
+      duration: 1000,
+      useNativeDriver: true,
+    }).start();
+  } else {
+    Animated.timing(fadeIn, {
+      toValue: 0,
+      duration: 1000,
+      useNativeDriver: true,
+    }).start();
+    Animated.timing(translateY, {
+      toValue: 0,
+      duration: 1000,
+      useNativeDriver: true,
+    }).start();
+  }
+}, [showLoading]);
 
   // Form submission handler
   const onSubmit = (data) => {
@@ -127,6 +191,29 @@ export default function CodeFromTheEmail(userName) {
 
   // Render the component
   return (
+    <View style={styles.container}>
+
+      <Image
+        source={image100}
+        style={[
+          styles.image,
+        ]}
+        resizeMode="contain"
+      />
+      
+
+      {showLoading && (
+        <Animatable.View
+          animation="slideInUp" // You can choose the animation type
+          duration={1000} // Animation duration
+          style={[
+            styles.loadingContainer,
+            { opacity: fadeIn, height: windowHeight * 0.75 },
+          ]}
+          accessible={true}
+        >
+
+        
     <View  style={globalStyles.whitePaper} accessible accesabilityLabel='verification code screen'>
 
       {/* GenericForm component for entering verification code */}
@@ -159,6 +246,9 @@ export default function CodeFromTheEmail(userName) {
           Time remaining: {Math.floor(remainingTime / 60000)} minutes and{" "}
           {Math.ceil((remainingTime % 60000) / 1000)} seconds
         </Text>
+      )}
+    </View>
+  </Animatable.View>
       )}
     </View>
   );

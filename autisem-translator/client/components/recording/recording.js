@@ -95,6 +95,7 @@
 import React, { useState, useRef } from 'react';
 import { View, Pressable, Text, StyleSheet, Animated } from 'react-native';
 
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 import { translationService } from '../../services/translationService';
 
@@ -185,10 +186,11 @@ export default function RecordAudio(props) {
         style={[styles.recordButton, { backgroundColor: buttonColor }]}
         onPress={handleButtonPress}
       >
-        <Text style={styles.buttonText}>
+        {/* <Text style={styles.buttonText}>
           {isRecording ? translate('stop recording') : translate('start recording')}
+        </Text> */}
+        <Ionicons name="mic" size={60} style={styles.icon} />
 
-        </Text>
       </Pressable>
     </View>
   );
@@ -222,6 +224,9 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: 'white',
+  },
+  icon: {
+    color: "white",
   },
 });
 
