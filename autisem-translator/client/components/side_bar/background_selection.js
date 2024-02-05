@@ -47,7 +47,6 @@ const BackgroundSelection = () => {
       const selectedOption = backgroundOptions.find(
         (option) => option.id === selectedImage
       );
-      console.log(`Image ${selectedImage} selected`);
       const response = await UserService.updateImage({
         userName: userName,
         image: selectedOption.image,
