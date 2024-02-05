@@ -28,7 +28,6 @@ async function remove(req, res) {
 async function updateStatusAssociation(req, res) {
   try {
     const { id, receiverID, status } = req.body;
-    console.log("status",status)
     const change = await AssociationService.updateStatusAssociation(
       id,
       receiverID,
