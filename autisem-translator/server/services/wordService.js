@@ -60,8 +60,11 @@ const wordService = {
                 transcription: transcription.text,
                 message: 'Transcription retrieved successfully'
             };
+            
         } else {
-            throw new Error('Word not found');
+            return {
+            message: 'Word not found'
+          }
         }
     },
     
