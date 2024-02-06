@@ -9,6 +9,8 @@ import { useNavigation } from "@react-navigation/native";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../redux/actions/userAction";
 import { globalStyles } from '../../styles';
+import { Ionicons } from "@expo/vector-icons";
+
 
 const translate = translationService.translate;
 
@@ -85,6 +87,8 @@ export default function RegistrationForm() {
   const [notification, setNotification] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const dispatch = useDispatch();
+  
+
 
   const onSubmit = async (data) => {
     try {
@@ -108,10 +112,19 @@ export default function RegistrationForm() {
       }
     }
   };
+  const handleArrowBack = () => {
+    navigation.reset({
+      index: 0,
+      routes: [{ name: "Landing" }]
+    });
+  };
 
   return (
     <View style={globalStyles.whitePaper} accessible accessibilityLabel="registration screen">
       {/* check if fields & userTypeOptions are not null */}
+      <View style={styles.arrowIconContainer}>
+        <Ionicons name="arrow-forward" size={25} color="green" onPress={handleArrowBack}/>
+        </View>
       <GenericForm
         fields={fields}
         onSubmit={onSubmit}
@@ -139,5 +152,9 @@ const styles = StyleSheet.create({
   errorText: {
     color: "red",
     marginTop: 10,
+  },
+  arrowIconContainer: {
+    alignSelf: 'flex-end',
+    // marginTop: 10,
   },
 });

@@ -2,8 +2,14 @@ import React, { useState } from 'react';
 import { Modal, View, Text, StyleSheet, Pressable, Button, TextInput } from 'react-native';
 import RecordAudio from '../recording/recording';
 import recordingService from '../../services/backendServices/recordingService';
+import GenericButton from '../shared/button';
+import { translationService } from "../../services/translationService";
+
 
 const AddWordModal = ({ isVisible, onClose, patientId }) => {
+
+    const translate = translationService.translate;
+
     const [recordings, setRecordings] = useState([]); 
     const [word, setWord] = useState('');
 
@@ -39,14 +45,20 @@ const AddWordModal = ({ isVisible, onClose, patientId }) => {
                         value={word}
                         onChangeText={setWord}
                     />
+                    <View style={styles.recordAudio}>
                     <RecordAudio setRecordedData={handleRecord} />
-                    <Button title="Add the word" onPress={uploadToServer} />
-                    <Pressable
+                    </View>
+                    <View style={styles.centeredButton}>
+                    <GenericButton title={translate("add the word")} onPress={uploadToServer} buttonWidth={120}></GenericButton>
+                    <GenericButton title={translate("close")} onPress={onClose} buttonWidth={120}></GenericButton>
+                    </View>
+                    {/* <Button title="Add the word" onPress={uploadToServer} /> */}
+                    {/* <Pressable
                         style={[styles.button, styles.buttonClose]}
                         onPress={onClose}
                     >
                         <Text style={styles.textStyle}>Close</Text>
-                    </Pressable>
+                    </Pressable> */}
                 </View>
             </View>
         </Modal>
@@ -75,16 +87,16 @@ const styles = StyleSheet.create({
         shadowRadius: 4,
         elevation: 5,
     },
-    button: {
-        borderRadius: 20,
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        elevation: 2,
-        marginTop: 10, // Add space above the button
-    },
-    buttonClose: {
-        backgroundColor: 'green', // Change to green to match the login button
-    },
+    // button: {
+    //     borderRadius: 20,
+    //     paddingVertical: 10,
+    //     paddingHorizontal: 20,
+    //     elevation: 2,
+    //     marginTop: 10, // Add space above the button
+    // },
+    // buttonClose: {
+    //     backgroundColor: 'green', // Change to green to match the login button
+    // },
     textStyle: {
         color: 'white',
         fontWeight: 'bold',
@@ -106,6 +118,12 @@ const styles = StyleSheet.create({
         color: '#FFF',
         fontSize: 16,
     },
+    centeredButton:{
+        marginTop: 10,
+    },
+    recordAudio: {
+        marginTop: 20,
+      },
 });
 
 

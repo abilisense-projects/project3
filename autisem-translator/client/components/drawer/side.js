@@ -12,7 +12,11 @@ const SideNavigator = ({ navigation, shouldDisplaySideNavigator, onLanguageChang
   const [overlayVisible, setOverlayVisible] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState('English');
   const [showLanguageList, setShowLanguageList] = useState(true);
+
+
   const user = useSelector((state) => state.user.user);
+
+
   let homePage = "";
   if (user) {
     const type = user.userData.type;

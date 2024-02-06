@@ -7,12 +7,12 @@ const translate = translationService.translate;
 
 
 
-export default function Notifications() {
+export default function Settings() {
   return (
     <View style={globalStyles.whitePaper}>
       <View style={styles.noPatientsContainer}>
         <Text style={styles.noPatientsText}>
-        {translate("there are no new notifications")}
+        {translate("there are no settings")}
         </Text>
       </View>
     </View>

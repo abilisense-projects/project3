@@ -6,7 +6,7 @@ import { Provider } from "react-redux";
 import { StyleSheet } from "react-native";
 import LandingScreen from "./pages/landing";
 import RegistrationScreen from "./pages/register";
-import LoginScreen from "./pages/login";
+// import LoginScreen from "./pages/login";
 import ForgotPassword from "./pages/forgotPassword";
 import CodeFromTheEmail from "./components/login/codeFromTheEmail";
 import NewPassword from "./components/login/newPassword";
@@ -25,6 +25,8 @@ import ManagementByTheParent from "./components/patient/managementByTheParent";
 import Logout from "./components/login/logout";
 import CustomHeader from "./components/drawer/customHeader";
 import Notifications from "./components/side_bar/notifications";
+import WordTranslationModal from "./components/patient/wordTranslationModal";
+import Settings from "./components/side_bar/settings";
 
 const Drawer = createDrawerNavigator();
 
@@ -33,21 +35,21 @@ const App = () => {
 
   const handleLanguageChange = (language) => {
     setSelectedLanguage(language);
-
   };
+
+
   return (
-    
     <Provider store={store}>
       <NavigationContainer>
         <Drawer.Navigator
           screenOptions={{
-          headerShown: true,
-          headerRight: () => <CustomHeader />,
-          headerStyle: {
-            backgroundColor: 'green', 
-          },
-          headerTintColor: '#fff',
-        }}
+            headerShown: true,
+            headerRight: () => <CustomHeader />,
+            headerStyle: {
+              backgroundColor: "green",
+            },
+            headerTintColor: "#fff",
+          }}
           drawerContent={(props) => (
             <SideNavigator
               {...props}
@@ -56,25 +58,25 @@ const App = () => {
                 props.state.routes[props.state.index].name !== "Login" &&
                 props.state.routes[props.state.index].name !== "Registration" &&
                 props.state.routes[props.state.index].name !== "Landing" &&
-                props.state.routes[props.state.index].name !== "ForgotYourPassword" &&
-                props.state.routes[props.state.index].name !== "CodeFromTheEmail" &&
+                props.state.routes[props.state.index].name !==
+                  "ForgotYourPassword" &&
+                props.state.routes[props.state.index].name !==
+                  "CodeFromTheEmail" &&
                 props.state.routes[props.state.index].name !== "NewPassword"
               }
             />
           )}
-          drawerPosition={selectedLanguage === "Hebrew" ? "right" : "left"}
-
         >
           <Drawer.Screen
             name="Landing"
             component={LandingScreen}
             options={{ headerShown: false }}
           />
-          <Drawer.Screen
+          {/* <Drawer.Screen
             name="Login"
             component={LoginScreen}
             options={{ headerShown: false }}
-          />
+          /> */}
           <Drawer.Screen
             name="ForgotYourPassword"
             component={ForgotPassword}
@@ -140,6 +142,11 @@ const App = () => {
             component={AssociateTherapist}
             options={{ title: "" }}
           />
+          <Drawer.Screen
+            name="WordTranslationModal"
+            component={WordTranslationModal}
+            options={{ title: "" }}
+          />
 
           {/* all these will appear in the sidebar */}
           {/* <Drawer.Screen name="Home" component={BackgroundSelection} options={{ title: "" }} /> */}
@@ -148,23 +155,22 @@ const App = () => {
             component={BackgroundSelection}
             options={{ title: "" }}
           />
-           <Drawer.Screen
+          <Drawer.Screen
             name="Notifications"
             component={Notifications}
             options={{ title: "" }}
           />
           <Drawer.Screen
             name="Settings"
-            component={PatientScreen}
+            component={Settings}
             options={{ title: "" }}
           />
 
-         <Drawer.Screen
-          name="Logout" 
-          component={Logout}
-          options={{ title: "" }}
-        />
-
+          <Drawer.Screen
+            name="Logout"
+            component={Logout}
+            options={{ title: "" }}
+          />
         </Drawer.Navigator>
       </NavigationContainer>
     </Provider>
