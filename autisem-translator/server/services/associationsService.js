@@ -18,7 +18,6 @@ const associationService = {
     return associationRepository.getListOfPatientsByTherapistID(therapistID);
   },
   async updateStatusAssociation(id, receiverID,status) {
-    console.log("status",status)
     return associationRepository.updateStatusAssociation(id, receiverID,status);
   },
 

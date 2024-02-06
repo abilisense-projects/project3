@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const Associations = require("../models/associations");
 const Therapist = require("../models/therapist");
 
@@ -54,22 +55,30 @@ async function getListOfPatientsByTherapistID(therapistID, status) {
 }
 
 async function updateStatusAssociation(id, receiverID, status3) {
-  console.log("status3",status3)
   try {
+    // Convert strings to ObjectId
+    const therapistId = new mongoose.Types.ObjectId(id);
+    const patientId =new mongoose.Types.ObjectId(receiverID);
+    const queryConditions = { therapistId, patientId };
     const updatedAssociations = await Associations.findOneAndUpdate(
-      {
-        therapistId: id,
-        patientId: receiverID,
-      },
-      { status: "Cancelled" },
+      queryConditions,
+      { status: status3 },
       { new: true }
     );
-    return true;
+    if (updatedAssociations) {
+      console.log("Update successful:", updatedAssociations);
+      return true;
+    } else {
+      console.log("Association not found for update");
+      return false;
+    }
   } catch (error) {
-    console.error("Error in getSenderIdByUsernameAndReceiverID:", error);
-    return null;
+    console.error("Error in updateStatusAssociation:", error);
+    return false;
   }
 }
+
+
 
 async function getlistTherapist(patientID) {
   try {
@@ -89,7 +98,7 @@ async function getlistTherapist(patientID) {
             id: therapistDetails._id,
             userName: therapistDetails.userName,
             firstName: therapistDetails.firstName,
-            lastName: therapistDetails.lastName,           
+            lastName: therapistDetails.lastName,
             phoneNumber: therapistDetails.phoneNumber,
           };
         } else {

@@ -51,13 +51,15 @@ const patientService = {
     }
   },
 
-  associationStatusChange: async (therapistId,patientId,status) => {
+  associationStatusChange: async (therapistId, patientId, status) => {
     try {
       const response = await axios.put(
         `${REACT_APP_BASE_URL}/patient/changeAssociations`,
-        {therapistId,
-        patientId,
-        status}
+        {
+          id: therapistId,  // Use 'id' instead of 'therapistId'
+          receiverID: patientId,  // Use 'receiverID' instead of 'patientId'
+          status
+        }
       );
       return response.data;
     } catch (error) {
