@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import patientService from "../../services/backendServices/patientService";
 import BannerNotification from "../shared/bannerNotification";
 import { translationService } from "../../services/translationService";
+import { Ionicons } from "@expo/vector-icons";
 
 const translate = translationService.translate;
 
@@ -53,9 +54,19 @@ export default function AccessOption() {
     );
   };
 
+  const handleArrowBack = () => {
+    navigation.reset({
+      index: 0,
+      routes: [{ name: "GetTherapist" }]
+    });
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.modalContainer}>
+      <View style={styles.arrowIconContainer}>
+        <Ionicons name="arrow-forward" size={25} color="green" onPress={handleArrowBack}/>
+        </View>
         {therapist && (
           <>
             <Text style={styles.label}>
@@ -140,5 +151,9 @@ const styles = StyleSheet.create({
   },
   buttonSpacer: {
     width: 20, // Adjust as needed for the desired space
+  },
+  arrowIconContainer: {
+    alignSelf: 'flex-end',
+    // marginTop: 10,
   },
 });

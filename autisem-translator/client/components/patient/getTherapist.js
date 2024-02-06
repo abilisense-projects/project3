@@ -13,6 +13,7 @@ import patientService from "../../services/backendServices/patientService";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { translationService } from "../../services/translationService";
 import { setUnreadNotification } from "../../redux/actions/patientAction";
+import { Ionicons } from "@expo/vector-icons";
 
 
 // Translation function alias for shorter usage
@@ -68,6 +69,13 @@ export default function GetTherapist() {
       navigation.navigate("AccessOption", { therapist: therapistData });
     }
   };
+
+  const handleArrowBack = () => {
+    navigation.reset({
+      index: 0,
+      routes: [{ name: "ManagementByTheParent" }]
+    });
+  };
   
   if (isLoading) {
     // Display a loading indicator while the data is being fetched
@@ -81,6 +89,9 @@ export default function GetTherapist() {
   return (
     <View style={styles.container}>
       <View style={styles.modalContainer}>
+      <View style={styles.arrowIconContainer}>
+        <Ionicons name="arrow-forward" size={25} color="green" onPress={handleArrowBack}/>
+        </View>
         {Therapists.length > 0 && (
           <Text style={styles.label}>{translate("look for therapists you know")}</Text>
         )}
@@ -204,5 +215,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     flex: 1,
+  },
+  arrowIconContainer: {
+    alignSelf: 'flex-end',
+    // marginTop: 10,
   },
 });

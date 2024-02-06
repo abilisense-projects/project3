@@ -243,7 +243,7 @@ useEffect(() => {
       {/* Display remaining time if the button is disabled */}
       {disableUntil > 0 && (
         <Text style={{ marginTop: 10 }}>
-          Time remaining: {Math.floor(remainingTime / 60000)} minutes and{" "}
+          Time remaining: {Math.floor(remainingTime / 60000)} {`\n`}minutes and{" "}
           {Math.ceil((remainingTime % 60000) / 1000)} seconds
         </Text>
       )}

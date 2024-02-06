@@ -26,6 +26,7 @@ import Logout from "./components/login/logout";
 import CustomHeader from "./components/drawer/customHeader";
 import Notifications from "./components/side_bar/notifications";
 import WordTranslationModal from "./components/patient/wordTranslationModal";
+import Settings from "./components/side_bar/settings";
 
 const Drawer = createDrawerNavigator();
 
@@ -161,7 +162,7 @@ const App = () => {
           />
           <Drawer.Screen
             name="Settings"
-            component={PatientScreen}
+            component={Settings}
             options={{ title: "" }}
           />
 

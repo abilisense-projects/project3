@@ -11,9 +11,14 @@ import { useSelector } from "react-redux";
 import Icon from "react-native-vector-icons/FontAwesome";
 import BannerNotification from "../shared/bannerNotification";
 import { translationService } from "../../services/translationService";
+import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+
 const translate = translationService.translate;
 
 export default function ListOfAssociatedTherapists() {
+  const navigation = useNavigation();
+
   const [isLoading, setIsLoading] = useState(true);
   const [selectedTherapist, setSelectedTherapist] = useState(null);
   const [Therapists, setTherapists] = useState([]);
@@ -51,6 +56,13 @@ export default function ListOfAssociatedTherapists() {
     );
   }
 
+  const handleArrowBack = () => {
+    navigation.reset({
+      index: 0,
+      routes: [{ name: "ManagementByTheParent" }]
+    });
+  };
+
   const handleTherapist = (therapists) => {
     setSelectedTherapist(therapists);
   };
@@ -71,6 +83,9 @@ export default function ListOfAssociatedTherapists() {
   return (
     <View style={styles.container}>
       <View style={styles.modalContainer}>
+        <View style={styles.arrowIconContainer}>
+        <Ionicons name="arrow-forward" size={25} color="green" onPress={handleArrowBack}/>
+        </View>
         {Therapists.length > 0 && (
           <Text style={styles.label}>{translate("my Therapists")}</Text>
         )}
@@ -219,5 +234,9 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
+  },
+  arrowIconContainer: {
+    alignSelf: 'flex-end',
+    // marginTop: 10,
   },
 });

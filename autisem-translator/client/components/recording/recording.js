@@ -227,6 +227,7 @@ const styles = StyleSheet.create({
   },
   icon: {
     color: "white",
+    marginLeft: 4,
   },
 });
 
