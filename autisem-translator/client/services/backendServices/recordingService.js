@@ -40,7 +40,7 @@ const backendService = {
         'Content-Type': 'multipart/form-data',
       },
     });
-    return response.data;
+    return response.data.translation;
   } catch (error) {
     console.error('Error translating word using AI:', error);
     throw error;
