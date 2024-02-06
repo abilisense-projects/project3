@@ -26,21 +26,26 @@ const backendService = {
       throw error;
     }}
  ,
-  translateWord: async (recording) => {
-    try {
-      const formData = new FormData();
-      formData.append('audio', recording);
-      const response = await axios.post(`${baseUrl}/words/translate`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      return response.data.translation;
-    } catch (error) {
-      console.error('Error translating word', error);
-      throw error;
-    }
+ translateWord:async(audioFile)=> {
+  try {
+    const formData = new FormData();
+
+    const audioURI = audioFile; 
+    const audioBlob = await fetch(audioURI).then(r => r.blob());
+    const audio = new File([audioBlob], `audiofile.mp3`, { type: 'audio/mpeg' });
+
+    formData.append('audio', audio);
+    const response = await axios.post(`${baseUrl}/words/translateAi`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error translating word using AI:', error);
+    throw error;
   }
+}
 }
 
 export default backendService;
