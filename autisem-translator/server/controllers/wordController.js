@@ -2,7 +2,6 @@ const wordService = require("../services/wordService");
 
 async function createWord(req, res) {
     try {
-        console.log('req.body: ', req.body);
         const patientID = req.body.patientID;
         const translation = req.body.translation; 
         const recordings = req.files; 
