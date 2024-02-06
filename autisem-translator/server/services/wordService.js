@@ -1,5 +1,10 @@
 
 const wordRepository = require('../repositories/wordRepositpry');
+const fs = require('fs');
+require('dotenv').config();
+const OpenAI = require('openai').default;
+const openai = new OpenAI({ apiKey: process.env.OPEN_AI_API_KEY });
+
 
 const wordService = {
     async createWord(recordings, patientID, translation) {
@@ -45,6 +50,30 @@ const wordService = {
             return { success: false, message: 'Internal server error' };
         }
     },
+
+    async translateWord(audioFile) {
+        const transcription = await this.getTranscription(audioFile);
+        const word = await wordRepository.findWordByTranscription(transcription.text);
+        if (word) {
+            return {
+                translation: word.translation,
+                transcription: transcription.text,
+                message: 'Transcription retrieved successfully'
+            };
+        } else {
+            throw new Error('Word not found');
+        }
+    },
+    
+    async getTranscription(audioFile) {
+        const transcription = await openai.audio.transcriptions.create({
+            file: fs.createReadStream(audioFile.path),
+            model: 'whisper-1',
+            language: 'he',
+        });
+        fs.unlinkSync(audioFile.path);
+        return transcription;
+    }
     
 };
 

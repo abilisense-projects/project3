@@ -48,8 +48,23 @@ async function translateWord(req, res) {
         res.status(500).json({ message: 'Internal server error' });
     }
 }
+
+async function translateWordOpenAi(req, res) {
+    if (!req.file) {
+        return res.status(400).send('No file uploaded.');
+    }
+    try {
+        const result = await wordService.translateWord(req.file);
+        res.json(result);
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).send('Error processing the file.');
+    }
+}
+
 module.exports = {
     createWord,
     getAllWords,
-    translateWord
+    translateWord,
+    translateWordOpenAi
 };

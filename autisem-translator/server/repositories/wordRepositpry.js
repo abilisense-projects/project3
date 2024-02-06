@@ -10,6 +10,7 @@ async function createWord(recordings, patientID, translation) {
 
 
         const newWord = new Word({
+            word: 'word', // This is for the meantime
             translation: translation,
             recordings: recordingLinks,
         });
@@ -55,9 +56,14 @@ async function getListOfWordsByIds(wordIds) {
     }
 }
 
+async function findWordByTranscription(transcription) {
+    return await Word.findOne({ word: transcription });
+}
+
 
 module.exports = {
     createWord,
     getAllWords,
-    getListOfWordsByIds
+    getListOfWordsByIds,
+    findWordByTranscription
 };
